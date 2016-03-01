@@ -134,12 +134,16 @@ ul {
   margin-top: 10px
 }
 
+.realname {
+  padding: 5px;
+}
+
 .username {
   padding: 5px;
 }
 
-.tweetname {
-  padding: 5px;
+.tweet-username {
+  margin-right: 25px;
 }
 
 .following, .followers {
@@ -148,6 +152,10 @@ ul {
 
 .numFollowing, .numFollowers {
   color: blue;
+}
+
+.row-tweet {
+  margin-bottom: 10px;
 }
 
 /*----*/

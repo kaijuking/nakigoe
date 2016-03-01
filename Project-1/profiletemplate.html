@@ -30,7 +30,7 @@
       <div class='row'>
         <img src='images/osakaflu.jpg' alt='' class='img-thumbnail profile-pic'>
         <div class='user-info'>
-          <p><span class='username'>Michael Field</span><span class='tweetname'>@kaijuking</span><p>
+          <p><span class='realname'>Michael Field</span><span class='username'>@kaijuking</span><p>
           <p><span class='following'><span class='numFollowing'>##</span> FOLLOWING</span><span class='followers'><span class='numFollowers'>##</span> FOLLOWERS</span></p>
         </div>
       </div><!--END OF ROW DIV-->
@@ -41,7 +41,7 @@
         <div class="col-md-10 col-md-offset-1">
           <form id='form-createTweet' action='' method='post'>
             <div class='form-group'>
-              <input type='text' class='form-control' id='newTweet' maxlength='140' value='newTweet' placeholder='type tweet message here'>
+              <input type='text' class='form-control' id='newTweet' name='newTweet' maxlength='140' placeholder='type tweet message here'>
             </div>
             <button type='submit' class='btn btn-default' id="submit-button" value="PostTweet">Post Tweet</button>
           </form>
@@ -50,16 +50,17 @@
       <hr class='hr-width-75'>
     </div><!--END OF DIV: POST TWEET FORM-->
 
-    <div class='container-fluid'>
-      <div class='row'>
+    <div class='container-fluid' id='all-tweets'>
+      <div class='row row-tweet'>
         <div class="media col-md-10 col-md-offset-1">
           <div class="media-left media-top">
             <a href="#">
               <img class="media-object img-thumbnail" src="images/osakaflu.jpg" alt="...">
             </a>
           </div>
+
           <div class="media-body">
-            <h4 class="media-heading"><span class='tweet-username'>USERNAME</span><span class='tweet-tweetname'>USERNAME</span></h4>
+            <h4 class="media-heading"><span class='tweet-realname'>USERNAME</span><span class='tweet-username'>USERNAME</span></h4>
             <h4>This is a tweet. This is a tweet. This is a tweet. This is a tweet. This is a tweet. This is a tweet. The 140 character limit reached.......</h4>
           </div>
         </div>

@@ -4,6 +4,7 @@
   var allTweets = [];
   var allUsers = [];
   var activeUser = 'kaijuking';
+  var inactiveUser = '';
 
   var kaijuking = {
     username: 'kaijuking',
@@ -146,7 +147,7 @@ function displayTweet(username, tweetMessage) {
   newDiv3.appendChild(newDiv2);
 
   /*Append the ROW div, which holds the new tweet, to the parent element*/
-  var parentNode = document.getElementById('all-tweets');
+  var parentNode = document.getElementById('activeuser-all-tweets');
   parentNode.appendChild(newDiv3);
 
 };

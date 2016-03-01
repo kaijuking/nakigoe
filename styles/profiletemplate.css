@@ -143,7 +143,7 @@ ul {
 }
 
 .tweet-realname {
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
 .following, .followers {
@@ -159,11 +159,18 @@ ul {
   margin-bottom: 10px;
 }
 
+.tweet-retweet {
+  margin-left: 10px;
+  margin-right: 15px;
+}
+
 /*----*/
 /*THIS IS FOR THE POST TWEET DIV*/
 #container-post-tweet {
   margin-top: 65px;
 }
+
+
 
 /*--------------------------------------------------------------------------------*/
 /*THIS IS THE CSS FOR THE TWEET BOX THAT APPEARS ON THE TIMELINE & USER'S PROFILE*/

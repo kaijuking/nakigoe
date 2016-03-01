@@ -95,21 +95,39 @@ function displayTweet(username, tweetMessage) {
   newLink.appendChild(newImg);
   newDiv.appendChild(newLink);
 
-  /*Create the elements to hold the user's realname, username and tweet message*/
+  /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
   var newDiv1 = document.createElement('div');
   newDiv1.setAttribute('class', 'media-body');
+
   var newH4_span  = document.createElement('h4');
   newH4_span.setAttribute('class', 'media-heading');
+
   var newSpan1 = document.createElement('span');
   newSpan1.setAttribute('class', 'tweet-realname');
   var userName = document.createTextNode(getRealName(username));
   newSpan1.appendChild(userName);
+
   var newSpan2 = document.createElement('span');
   newSpan2.setAttribute('class', 'tweet-username');
   var tweetUserName = document.createTextNode('@' + getUserName(username));
   newSpan2.appendChild(tweetUserName);
+
+  var newSpan3 = document.createElement('span');
+  newSpan3.setAttribute('class', 'tweet-retweet');
+  var retweetIcon = document.createElement('i');
+  retweetIcon.setAttribute('class', 'fa fa-retweet');
+  newSpan3.appendChild(retweetIcon);
+
+  var newSpan4 = document.createElement('span');
+  newSpan4.setAttribute('class', 'tweet-favorite');
+  var favoriteIcon = document.createElement('i');
+  favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+  newSpan4.appendChild(favoriteIcon);
+
   newH4_span.appendChild(newSpan1);
   newH4_span.appendChild(newSpan2);
+  newH4_span.appendChild(newSpan3);
+  newH4_span.appendChild(newSpan4);
   var newH4_message = document.createElement('h4');
   var message = document.createTextNode(tweetMessage);
   newH4_message.appendChild(message);

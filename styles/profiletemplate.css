@@ -142,8 +142,8 @@ ul {
   padding: 5px;
 }
 
-.tweet-username {
-  margin-right: 25px;
+.tweet-realname {
+  margin-right: 20px;
 }
 
 .following, .followers {
@@ -151,7 +151,8 @@ ul {
 }
 
 .numFollowing, .numFollowers {
-  color: blue;
+  margin-right: 5px;
+  padding: 5px;
 }
 
 .row-tweet {
@@ -161,7 +162,7 @@ ul {
 /*----*/
 /*THIS IS FOR THE POST TWEET DIV*/
 #container-post-tweet {
-  margin-top: 45px;
+  margin-top: 65px;
 }
 
 /*--------------------------------------------------------------------------------*/

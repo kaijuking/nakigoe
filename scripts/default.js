@@ -176,6 +176,8 @@ function displayTweet(username, tweetMessage) {
   parentNode.appendChild(newDiv3);
 };
 
+
+
 /*Generate and append the elements needed to post a new tweet*/
 /*Tweitter Timeline - Used for Issue #1*/
 function displayDefaultTweet() {
@@ -187,6 +189,9 @@ function displayDefaultTweet() {
     newDiv.setAttribute('class', 'media-left media-top');
     var newLink = document.createElement('a');
     newLink.setAttribute('href', '#');
+    newLink.setAttribute('name', getUserName(username));
+    newLink.setAttribute('class', 'timeline');
+    newLink.setAttribute('role', 'button');
     var newImg = document.createElement('img');
     newImg.setAttribute('class', 'media-object img-thumbnail');
     newImg.setAttribute('src', getProfileImageUrl(username));
@@ -345,6 +350,23 @@ function getRealName(username) {
   }
 };
 
-function getInactiveUserName() {
-  //CODE TO GET THE 'username' of the InactiveUser
+
+var linkBtn = document.getElementsByTagName('a');
+var postTweetDiv = document.getElementById('post-tweet');
+var followUserDiv = document.getElementById('follow-user');
+for(var i = 0; i < linkBtn.length; i++){
+  var att = linkBtn[i].getAttribute('role');
+  var name = linkBtn[i].getAttribute('name');
+  if(att === 'button' && name === activeUser)
+  {
+    linkBtn[i].setAttribute('href', '#post-tweet');
+    linkBtn[i].onclick = function() {
+      postTweetDiv.setAttribute('class', 'show');}
+  }
+  else if(att === 'button' && name != activeUser)
+  {
+    linkBtn[i].setAttribute('href', '#follow-user');
+    linkBtn[i].onclick = function() {
+      followUserDiv.setAttribute('class', 'show');}
+  };
 };

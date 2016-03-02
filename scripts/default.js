@@ -1,8 +1,60 @@
 'use-strict';
 
   /*SETUP DEFAULT VALUES ON DOCUMENT LOAD*/
-  var allTweets = [];
-  var allUsers = [];
+  var allTweets = [
+    {
+      username: 'kaijuking',
+      message: '怪獣だ。海の中から。ゴジラ来た。'
+    },
+    {
+      username: 'godzilla',
+      message: '俺は怪獣王だ！'
+    },
+    {
+      username: 'kingkong',
+      message: 'I like climbing tall buildings. But man, watch out for those planes!'
+    },
+    {
+      username: 'godzilla',
+      message: 'Things seem to be getting rather rough for #Gamera these days!'
+    },
+    {
+      username: 'kingkong',
+      message: 'godzilla - Just wait till we meet on the big screen again!'
+    },
+    {
+      username: 'kaijuking',
+      message: 'Cannot wait to get a new job!'
+    }
+  ];
+
+  var allUsers = [
+    {
+      username: 'kaijuking',
+      realname: 'Michael Field',
+      followers:['godzilla', 'kingkong'],
+      following: ['godzilla'],
+      tweetCount: 2,
+      profileImage: 'images/osakaflu.jpg'
+    },
+    {
+      username: 'godzilla',
+      realname: '怪獣王',
+      followers:['kaijuking', 'kingkong'],
+      following: ['kaijuking', 'kingkong'],
+      tweetCount: 2,
+      profileImage: 'images/godzilla.jpg'
+    },
+    {
+      username: 'kingkong',
+      realname: 'King Kong',
+      followers: ['godzilla'],
+      following: ['kaijuking', 'godzilla'],
+      tweetCount: 2,
+      profileImage: 'images/kingkong.jpg'
+    }
+  ];
+
   var activeUser = 'kaijuking';
   var inactiveUser = '';
 
@@ -11,81 +63,10 @@
     this.message = message;
   };
 
-  var kaijuking = {
-    username: 'kaijuking',
-    realname: 'Michael Field',
-    followers:['godzilla', 'kingkong'],
-    following: ['godzilla'],
-    tweetCount: 2,
-    profileImage: 'images/osakaflu.jpg'
-  };
-
-  var godzilla = {
-    username: 'godzilla',
-    realname: '怪獣王',
-    followers:['kaijuking', 'kingkong'],
-    following: ['kaijuking', 'kingkong'],
-    tweetCount: 2,
-    profileImage: 'images/godzilla.jpg'
-  };
-
-  var kingkong = {
-    username: 'kingkong',
-    realname: 'King Kong',
-    followers: ['godzilla'],
-    following: ['kaijuking', 'godzilla'],
-    tweetCount: 2,
-    profileImage: 'images/kingkong.jpg'
-  };
-
-  //allUsers.push(kaijuking);
-  //allUsers.push(godzilla);
-  //allUsers.push(kingkong);
-  //console.log(allUsers);
-
-  var defaultTweet1 = {
-    username: 'kaijuking',
-    message: '怪獣だ。海の中から。ゴジラ来た。'
-  };
-
-  var defaultTweet2 = {
-    username: 'godzilla',
-    message: '俺は怪獣王だ！'
-  };
-
-  var defaultTweet3 = {
-    username: 'kingkong',
-    message: 'I like climbing tall buildings. But man, watch out for those planes!'
-  };
-
-  var defaultTweet4 = {
-    username: 'godzilla',
-    message: 'Things seem to be getting rather rough for #Gamera these days!'
-  };
-
-  var defaultTweet5 = {
-    username: 'kingkong',
-    message: 'godzilla - Just wait till we meet on the big screen again!'
-  };
-
-  var defaultTweet6 = {
-    username: 'kaijuking',
-    message: 'Cannot wait to get a new job!'
-  };
-
-  allTweets.push(defaultTweet1);
-  allTweets.push(defaultTweet2);
-  allTweets.push(defaultTweet3);
-  allTweets.push(defaultTweet4);
-  allTweets.push(defaultTweet5);
-  allTweets.push(defaultTweet6);
   console.log(allTweets);
 
 /*Populate the user's REALNAME, USERNAME, #FOLLOWING and #FOLLOWERS <span> elments on DOM load*/
 /*Active User's Timeline - Used for Issue #3*/
-  allUsers.push(kaijuking);
-  allUsers.push(godzilla);
-  allUsers.push(kingkong);
   console.log(allUsers);
 
   var realNameText = getRealName(activeUser);
@@ -103,7 +84,6 @@
   var followingCount = getTotalFollowing(activeUser);
   var numFollowing = document.getElementById('activeuser-numFollowing')
   numFollowing.textContent = followingCount + " Following";
-  console.log(event);
   displayDefaultTweet();
 
 /*GET 'Post Tweet' BUTTON's 'submit' EVENT ON FORM*/
@@ -119,8 +99,6 @@ myForm.addEventListener('submit', function(event){
   displayTweet(activeUser, tweetMessage);
   updateTweetCount(activeUser);
 
-  console.log(allTweets);
-  console.log(allUsers);
 }, false);
 
 /*Create a new tweet object and push it into the allTweets array*/
@@ -201,7 +179,7 @@ function displayTweet(username, tweetMessage) {
 /*Generate and append the elements needed to post a new tweet*/
 /*Tweitter Timeline - Used for Issue #1*/
 function displayDefaultTweet() {
-  for(i = 0; i < allTweets.length; i++) {
+  for(var i = 0; i < allTweets.length; i++) {
     var username = allTweets[i].username;
 
     /*Create the element to hold the user's profile picture*/
@@ -273,7 +251,7 @@ function displayDefaultTweet() {
 
 /*Return all the user's Tweets based upon the user's username*/
 function getAllTweets(username) {
-  for(i = 0; i < allTweets.length; i++) {
+  for(var i = 0; i < allTweets.length; i++) {
     if(allTweets[i].username === username) {
       //return allTweets[i].message;
       console.log(allTweets[i].message);
@@ -283,7 +261,7 @@ function getAllTweets(username) {
 
 /*Return all the user's followers based upon the user's username*/
 function getAllFollowers(username) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       return allUsers[i].followers;
       console.log(allUsers[i].followers);
@@ -293,7 +271,7 @@ function getAllFollowers(username) {
 
 /*Return all the people the user is following based upon the user's username*/
 function getAllFollowing(username) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       return allUsers[i].following;
       console.log(allUsers[i].following);
@@ -303,7 +281,7 @@ function getAllFollowing(username) {
 
 /*Add a new 'follower' to the user*/
 function addFollower(username, newFollower) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       allUsers[i].followers.push(newFollower);
     };
@@ -312,7 +290,7 @@ function addFollower(username, newFollower) {
 
 /*Add a new 'following' to the user*/
 function addFollowing(username, newFollowing) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       allUsers[i].following.push(newFollowing);
     };
@@ -320,7 +298,7 @@ function addFollowing(username, newFollowing) {
 };
 
 function updateTweetCount(username) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       allUsers[i].tweetCount++;
     };
@@ -328,7 +306,7 @@ function updateTweetCount(username) {
 };
 
 function getTotalFollowers(username) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       return allUsers[i].followers.length;
     };
@@ -336,7 +314,7 @@ function getTotalFollowers(username) {
 };
 
 function getTotalFollowing(username) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       return allUsers[i].following.length;
     };
@@ -344,7 +322,7 @@ function getTotalFollowing(username) {
 };
 
 function getProfileImageUrl(username) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       return allUsers[i].profileImage;
     };
@@ -352,7 +330,7 @@ function getProfileImageUrl(username) {
 };
 
 function getUserName(username) {
-  for(i = 0; i < allUsers.length; i++) {
+  for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       return allUsers[i].username;
     };
@@ -360,9 +338,13 @@ function getUserName(username) {
 };
 
 function getRealName(username) {
-  for(i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === activeUser) {
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === username) {
       return allUsers[i].realname;
     }
   }
+};
+
+function getInactiveUserName() {
+  //CODE TO GET THE 'username' of the InactiveUser
 };

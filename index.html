@@ -12,6 +12,7 @@
   <body>
     <!--Isuse #1: USER CAN VIEW OTHER USER'S TIMELINE-->
     <div id='twitter-timeline' class='show'>
+      <a name='timeline'></a>
       <div class='container' id='hero-twitter-timeline'>
         <div class='cointainer' id='overlay'>
         </div>
@@ -19,26 +20,8 @@
           <h1 id='hero-twitter-timeline-text'>Welcome! ようこそ！<h1>
         </div>
       </div><!--END OF DIV: HERO-->
-
-      <div class='container-fluid' id='activeuser-all-tweets'>
-        <div class='row row-tweet'>
-          <div class="media col-md-10 col-md-offset-1">
-            <div class="media-left media-top">
-              <a href="#">
-                <img class="media-object img-thumbnail" src="images/osakaflu.jpg" alt="...">
-              </a>
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">
-                <span class='tweet-realname'>REALNAME</span>
-                <span class='tweet-username'>@USERNAME</span>
-                <span class='tweet-retweet'><i class="fa fa-retweet"></i></span>
-                <span class='tweet-favorite'><i class="fa fa-heart-o"></i><span></h4>
-              <p>This is a template of what a tweet will look like</p>
-            </div>
-          </div>
-        </div><!--END OF ROW DIV-->
-      </div><!--END OF CONTAINER DIV-->
+      <div class='container-fluid' id='default-tweets'>
+      </div><!--END OF CONTAINER DIV: 'default-tweets'-->
     </div>
 
     <!--Issue #2: USER CAN FOLLOW ANOTHER USER-->
@@ -46,9 +29,7 @@
       <div class='container' id='hero'>
         <div class='container' id='navbar'>
           <ul class='navigation'>
-            <li class='navigation'><a href='#' class='navbar-a' id='public-timeline'></a></li>
-            <li class='navigation'><a href='#' class='navbar-a' id='follow-user'></a></li>
-            <li class='navigation'><a href='#' class='navbar-a' id='profile-post'></a></li>
+            <li class='navigation'><a href='#timeline' class='navbar-a' id='public-timeline'>Home</a></li>
           </ul>
         </div>
         <!--<div class='cointainer' id='overlay'>
@@ -78,9 +59,7 @@
       <div class='container' id='hero'>
         <div class='container' id='navbar'>
           <ul class='navigation'>
-            <li class='navigation'><a href='#' class='navbar-a' id='public-timeline'></a></li>
-            <li class='navigation'><a href='#' class='navbar-a' id='follow-user'></a></li>
-            <li class='navigation'><a href='#' class='navbar-a' id='profile-post'></a></li>
+            <li class='navigation'><a href='#timeline' class='navbar-a' id='public-timeline'>Home</a></li>
           </ul>
         </div>
         <!--<div class='cointainer' id='overlay'>
@@ -95,8 +74,8 @@
         <div class='row'>
           <img src='images/osakaflu.jpg' alt='' class='img-thumbnail profile-pic'>
           <div class='user-info'>
-            <p><span class='realname' id='realname'></span><span class='username' id='username'></span></p>
-            <p><span class='numFollowing' id='numFollowing'></span><span class='numFollowers' id='numFollowers'></span></p>
+            <p><span class='realname' id='activeuser-realname'></span><span class='username' id='activeuser-username'></span></p>
+            <p><span class='numFollowing' id='activeuser-numFollowing'></span><span class='numFollowers' id='activeuser-numFollowers'></span></p>
           </div>
         </div><!--END OF ROW DIV-->
       </div><!--END OF CONTAINER DIV: MAIN-->

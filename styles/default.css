@@ -181,7 +181,14 @@ ul {
   margin-top: 65px;
 }
 
+#submit-button {
+  color: white;
+  background-color: rgb(89,209,249);
+}
 
+#twitter-timeline, #follow-user, #post-tweet {
+  margin-bottom: 50px;
+}
 
 /*--------------------------------------------------------------------------------*/
 /*THIS IS THE CSS FOR THE TWEET BOX THAT APPEARS ON THE TIMELINE & USER'S PROFILE*/

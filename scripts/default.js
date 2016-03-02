@@ -6,12 +6,17 @@
   var activeUser = 'kaijuking';
   var inactiveUser = '';
 
+  var tweet = function(username, message) {
+    this.username = username;
+    this.message = message;
+  };
+
   var kaijuking = {
     username: 'kaijuking',
     realname: 'Michael Field',
     followers:['godzilla', 'kingkong'],
     following: ['godzilla'],
-    tweetCount: 0,
+    tweetCount: 2,
     profileImage: 'images/osakaflu.jpg'
   };
 
@@ -20,8 +25,8 @@
     realname: '怪獣王',
     followers:['kaijuking', 'kingkong'],
     following: ['kaijuking', 'kingkong'],
-    tweetCount: 0,
-    profileImage: 'images/osakaflu.jpg'
+    tweetCount: 2,
+    profileImage: 'images/godzilla.jpg'
   };
 
   var kingkong = {
@@ -29,42 +34,80 @@
     realname: 'King Kong',
     followers: ['godzilla'],
     following: ['kaijuking', 'godzilla'],
-    tweetCount: 0,
-    profileImage: 'images/osakaflu.jpg'
+    tweetCount: 2,
+    profileImage: 'images/kingkong.jpg'
   };
 
+  //allUsers.push(kaijuking);
+  //allUsers.push(godzilla);
+  //allUsers.push(kingkong);
+  //console.log(allUsers);
+
+  var defaultTweet1 = {
+    username: 'kaijuking',
+    message: '怪獣だ。海の中から。ゴジラ来た。'
+  };
+
+  var defaultTweet2 = {
+    username: 'godzilla',
+    message: '俺は怪獣王だ！'
+  };
+
+  var defaultTweet3 = {
+    username: 'kingkong',
+    message: 'I like climbing tall buildings. But man, watch out for those planes!'
+  };
+
+  var defaultTweet4 = {
+    username: 'godzilla',
+    message: 'Things seem to be getting rather rough for #Gamera these days!'
+  };
+
+  var defaultTweet5 = {
+    username: 'kingkong',
+    message: 'godzilla - Just wait till we meet on the big screen again!'
+  };
+
+  var defaultTweet6 = {
+    username: 'kaijuking',
+    message: 'Cannot wait to get a new job!'
+  };
+
+  allTweets.push(defaultTweet1);
+  allTweets.push(defaultTweet2);
+  allTweets.push(defaultTweet3);
+  allTweets.push(defaultTweet4);
+  allTweets.push(defaultTweet5);
+  allTweets.push(defaultTweet6);
+  console.log(allTweets);
+
+/*Populate the user's REALNAME, USERNAME, #FOLLOWING and #FOLLOWERS <span> elments on DOM load*/
+/*Active User's Timeline - Used for Issue #3*/
   allUsers.push(kaijuking);
   allUsers.push(godzilla);
   allUsers.push(kingkong);
   console.log(allUsers);
 
-  /*Populate the user's REALNAME, USERNAME, #FOLLOWING and #FOLLOWERS <span> elments on DOM load*/
-  document.addEventListener('DOMContentLoaded', function() {
-    var realNameText = getRealName(activeUser);
-    var realName = document.getElementById('realname');
-    realName.textContent = realNameText;
+  var realNameText = getRealName(activeUser);
+  var realName = document.getElementById('activeuser-realname');
+  realName.textContent = realNameText;
 
-    var userNameText = '@' + getUserName(activeUser);
-    var userName = document.getElementById('username');
-    userName.textContent = userNameText;
+  var userNameText = '@' + getUserName(activeUser);
+  var userName = document.getElementById('activeuser-username');
+  userName.textContent = userNameText;
 
-    var followerCount = getTotalFollowers(activeUser);
-    console.log(followerCount);
-    var numFollowers = document.getElementById('numFollowers')
-    numFollowers.textContent = followerCount + " Followers";
+  var followerCount = getTotalFollowers(activeUser);
+  var numFollowers = document.getElementById('activeuser-numFollowers')
+  numFollowers.textContent = followerCount + " Followers";
 
-    var followingCount = getTotalFollowing(activeUser);
-    var numFollowing = document.getElementById('numFollowing')
-    numFollowing.textContent = followingCount + " Following";
-
-  });
-
-var tweet = function(username, message) {
-  this.username = username;
-  this.message = message;
-};
+  var followingCount = getTotalFollowing(activeUser);
+  var numFollowing = document.getElementById('activeuser-numFollowing')
+  numFollowing.textContent = followingCount + " Following";
+  console.log(event);
+  displayDefaultTweet();
 
 /*GET 'Post Tweet' BUTTON's 'submit' EVENT ON FORM*/
+/*Active User's Timeline - Used for Issue #3*/
 var myForm = document.getElementById('form-createTweet');
 myForm.addEventListener('submit', function(event){
   event.preventDefault();
@@ -80,11 +123,15 @@ myForm.addEventListener('submit', function(event){
   console.log(allUsers);
 }, false);
 
-function createTweet(username, tweetMessage){
+/*Create a new tweet object and push it into the allTweets array*/
+/*Active User's Timeline - Used for Issue #3*/
+function createTweet(username, tweetMessage) {
   var newTweet = new tweet(username, tweetMessage);
   allTweets.push(newTweet);
 };
 
+/*Generate and append the elements needed to post a new tweet*/
+/*Active User's Timeline - Used for Issue #3*/
 function displayTweet(username, tweetMessage) {
   /*Create the element to hold the user's profile picture*/
   var newDiv = document.createElement('div');
@@ -149,7 +196,79 @@ function displayTweet(username, tweetMessage) {
   /*Append the ROW div, which holds the new tweet, to the parent element*/
   var parentNode = document.getElementById('activeuser-all-tweets');
   parentNode.appendChild(newDiv3);
+};
 
+/*Generate and append the elements needed to post a new tweet*/
+/*Tweitter Timeline - Used for Issue #1*/
+function displayDefaultTweet() {
+  for(i = 0; i < allTweets.length; i++) {
+    var username = allTweets[i].username;
+
+    /*Create the element to hold the user's profile picture*/
+    var newDiv = document.createElement('div');
+    newDiv.setAttribute('class', 'media-left media-top');
+    var newLink = document.createElement('a');
+    newLink.setAttribute('href', '#');
+    var newImg = document.createElement('img');
+    newImg.setAttribute('class', 'media-object img-thumbnail');
+    newImg.setAttribute('src', getProfileImageUrl(username));
+    newLink.appendChild(newImg);
+    newDiv.appendChild(newLink);
+
+    /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
+    var newDiv1 = document.createElement('div');
+    newDiv1.setAttribute('class', 'media-body');
+
+    var newH4_span  = document.createElement('h4');
+    newH4_span.setAttribute('class', 'media-heading');
+
+    var newSpan1 = document.createElement('span');
+    newSpan1.setAttribute('class', 'tweet-realname');
+    var userName = document.createTextNode(getRealName(username));
+    newSpan1.appendChild(userName);
+
+    var newSpan2 = document.createElement('span');
+    newSpan2.setAttribute('class', 'tweet-username');
+    var tweetUserName = document.createTextNode('@' + getUserName(username));
+    newSpan2.appendChild(tweetUserName);
+
+    var newSpan3 = document.createElement('span');
+    newSpan3.setAttribute('class', 'tweet-retweet');
+    var retweetIcon = document.createElement('i');
+    retweetIcon.setAttribute('class', 'fa fa-retweet');
+    newSpan3.appendChild(retweetIcon);
+
+    var newSpan4 = document.createElement('span');
+    newSpan4.setAttribute('class', 'tweet-favorite');
+    var favoriteIcon = document.createElement('i');
+    favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+    newSpan4.appendChild(favoriteIcon);
+
+    newH4_span.appendChild(newSpan1);
+    newH4_span.appendChild(newSpan2);
+    newH4_span.appendChild(newSpan3);
+    newH4_span.appendChild(newSpan4);
+    var newH4_message = document.createElement('h4');
+    var message = document.createTextNode(allTweets[i].message);
+    newH4_message.appendChild(message);
+    newDiv1.appendChild(newH4_span);
+    newDiv1.appendChild(newH4_message);
+
+    /*Create the element to hold the DIVs containing the user's image, realname, username and tweet message*/
+    var newDiv2 = document.createElement('div');
+    newDiv2.setAttribute('class', 'media col-md-10 col-md-offset-1');
+    newDiv2.appendChild(newDiv);
+    newDiv2.appendChild(newDiv1);
+
+    /*Create the ROW div needed to hold the new tweet*/
+    var newDiv3 = document.createElement('div');
+    newDiv3.setAttribute('class', 'row row-tweet');
+    newDiv3.appendChild(newDiv2);
+
+    /*Append the ROW div, which holds the new tweet, to the parent element*/
+    var parentNode = document.getElementById('default-tweets');
+    parentNode.appendChild(newDiv3);
+  };
 };
 
 /*Return all the user's Tweets based upon the user's username*/

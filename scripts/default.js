@@ -99,28 +99,42 @@ myForm.addEventListener('submit', function(event){
 
 /*Shows either the 'follow-user' DIV (Issue #2) or 'post-tweet' DIV (Issue #3)*/
 var linkBtn = document.getElementsByTagName('a');
+console.log(linkBtn);
 var postTweetDiv = document.getElementById('post-tweet');
 var followUserDiv = document.getElementById('follow-user');
 for(var i = 0; i < linkBtn.length; i++){
-  var att = linkBtn[i].getAttribute('role');
+  //var att = linkBtn[i].getAttribute('role');
   var name = linkBtn[i].getAttribute('name');
-  if(att === 'button' && name === activeUser) {
-    linkBtn[i].setAttribute('href', '#post-tweet');
-    linkBtn[i].addEventListener('click', function(e){
-      e.preventDefault();
-      postTweetDiv.setAttribute('class', 'show');
-    });
-  };
-  if(att === 'button' && name != activeUser){
-    linkBtn[i].setAttribute('href', '#follow-user');
-    linkBtn[i].addEventListener('click', function(e){
-      e.preventDefault();
-      followUserDiv.setAttribute('class', 'show');
-    });
-  };
+  console.log(name);
+
+  linkBtn[i].addEventListener('click', function() {
+    if(name[i] != null){
+      console.log('mememe');
+    } else {
+      console.log(name[i]);
+    }
+  });
+
+
+
+
+
+  //if(att === 'button' && name === activeUser) {
+    //linkBtn[i].setAttribute('href', '#post-tweet');
+    //linkBtn[i].addEventListener('click', function(e){
+    //  e.preventDefault();
+      //postTweetDiv.setAttribute('class', 'show');
+    //});
+  //};
+  //if(att === 'button' && name != activeUser){
+    //linkBtn[i].setAttribute('href', '#follow-user');
+    //console.log(linkName);
+    //linkBtn[i].addEventListener('click', function(e){
+      //e.preventDefault();
+    //  followUserDiv.setAttribute('class', 'show');
+    //});
+  //};
 };
-
-
 
 /*Create a new tweet object and push it into the allTweets array*/
 /*Active User's Timeline - Used for Issue #3*/

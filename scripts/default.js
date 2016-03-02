@@ -63,12 +63,8 @@
     this.message = message;
   };
 
-  console.log(allTweets);
-
 /*Populate the user's REALNAME, USERNAME, #FOLLOWING and #FOLLOWERS <span> elments on DOM load*/
 /*Active User's Timeline - Used for Issue #3*/
-  console.log(allUsers);
-
   var realNameText = getRealName(activeUser);
   var realName = document.getElementById('activeuser-realname');
   realName.textContent = realNameText;
@@ -100,6 +96,31 @@ myForm.addEventListener('submit', function(event){
   updateTweetCount(activeUser);
 
 }, false);
+
+/*Shows either the 'follow-user' DIV (Issue #2) or 'post-tweet' DIV (Issue #3)*/
+var linkBtn = document.getElementsByTagName('a');
+var postTweetDiv = document.getElementById('post-tweet');
+var followUserDiv = document.getElementById('follow-user');
+for(var i = 0; i < linkBtn.length; i++){
+  var att = linkBtn[i].getAttribute('role');
+  var name = linkBtn[i].getAttribute('name');
+  if(att === 'button' && name === activeUser) {
+    linkBtn[i].setAttribute('href', '#post-tweet');
+    linkBtn[i].addEventListener('click', function(e){
+      e.preventDefault();
+      postTweetDiv.setAttribute('class', 'show');
+    });
+  };
+  if(att === 'button' && name != activeUser){
+    linkBtn[i].setAttribute('href', '#follow-user');
+    linkBtn[i].addEventListener('click', function(e){
+      e.preventDefault();
+      followUserDiv.setAttribute('class', 'show');
+    });
+  };
+};
+
+
 
 /*Create a new tweet object and push it into the allTweets array*/
 /*Active User's Timeline - Used for Issue #3*/
@@ -175,8 +196,6 @@ function displayTweet(username, tweetMessage) {
   var parentNode = document.getElementById('activeuser-all-tweets');
   parentNode.appendChild(newDiv3);
 };
-
-
 
 /*Generate and append the elements needed to post a new tweet*/
 /*Tweitter Timeline - Used for Issue #1*/
@@ -348,25 +367,4 @@ function getRealName(username) {
       return allUsers[i].realname;
     }
   }
-};
-
-
-var linkBtn = document.getElementsByTagName('a');
-var postTweetDiv = document.getElementById('post-tweet');
-var followUserDiv = document.getElementById('follow-user');
-for(var i = 0; i < linkBtn.length; i++){
-  var att = linkBtn[i].getAttribute('role');
-  var name = linkBtn[i].getAttribute('name');
-  if(att === 'button' && name === activeUser)
-  {
-    linkBtn[i].setAttribute('href', '#post-tweet');
-    linkBtn[i].onclick = function() {
-      postTweetDiv.setAttribute('class', 'show');}
-  }
-  else if(att === 'button' && name != activeUser)
-  {
-    linkBtn[i].setAttribute('href', '#follow-user');
-    linkBtn[i].onclick = function() {
-      followUserDiv.setAttribute('class', 'show');}
-  };
 };

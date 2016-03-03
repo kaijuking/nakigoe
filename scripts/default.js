@@ -99,41 +99,27 @@ myForm.addEventListener('submit', function(event){
 
 /*Shows either the 'follow-user' DIV (Issue #2) or 'post-tweet' DIV (Issue #3)*/
 var linkBtn = document.getElementsByTagName('a');
-console.log(linkBtn);
 var postTweetDiv = document.getElementById('post-tweet');
 var followUserDiv = document.getElementById('follow-user');
+
 for(var i = 0; i < linkBtn.length; i++){
-  //var att = linkBtn[i].getAttribute('role');
-  var name = linkBtn[i].getAttribute('name');
-  console.log(name);
-
-  linkBtn[i].addEventListener('click', function() {
-    if(name[i] != null){
-      console.log('mememe');
-    } else {
-      console.log(name[i]);
-    }
+  linkBtn[i].addEventListener('click', function(event) {
+    var theEvent = event.target.parentNode.name;
+    console.log(theEvent);
+    var myEvent = event.target.parentNode;
+    console.log(myEvent);
+    if(theEvent != null && theEvent != activeUser) {
+      inactiveUser = theEvent;
+      followUserDiv.setAttribute('class', 'show');
+      postTweetDiv.setAttribute('class', 'hidden');
+      myEvent.setAttribute('href', '#follow-user');
+    };
+    if(theEvent != null && theEvent === activeUser) {
+      followUserDiv.setAttribute('class', 'hidden');
+      postTweetDiv.setAttribute('class', 'show');
+      myEvent.setAttribute('href', '#post-tweet');
+    };
   });
-
-
-
-
-
-  //if(att === 'button' && name === activeUser) {
-    //linkBtn[i].setAttribute('href', '#post-tweet');
-    //linkBtn[i].addEventListener('click', function(e){
-    //  e.preventDefault();
-      //postTweetDiv.setAttribute('class', 'show');
-    //});
-  //};
-  //if(att === 'button' && name != activeUser){
-    //linkBtn[i].setAttribute('href', '#follow-user');
-    //console.log(linkName);
-    //linkBtn[i].addEventListener('click', function(e){
-      //e.preventDefault();
-    //  followUserDiv.setAttribute('class', 'show');
-    //});
-  //};
 };
 
 /*Create a new tweet object and push it into the allTweets array*/
@@ -224,7 +210,6 @@ function displayDefaultTweet() {
     newLink.setAttribute('href', '#');
     newLink.setAttribute('name', getUserName(username));
     newLink.setAttribute('class', 'timeline');
-    newLink.setAttribute('role', 'button');
     var newImg = document.createElement('img');
     newImg.setAttribute('class', 'media-object img-thumbnail');
     newImg.setAttribute('src', getProfileImageUrl(username));

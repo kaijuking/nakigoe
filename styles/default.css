@@ -1,197 +1,23 @@
-/*THIS SECTION IS FOR THE TOP HEADER IMAGE*/
-/*NORMAL TAGS*/
-body {
-  margin: 0px;
+.container {
+  margin-bottom: 5px;
 }
 
-h1, h2 {
-  margin: 0px;
-  padding: 0px;
-}
-
-ul {
-  list-style-type: none;
-}
-
-/*CLASSES*/
-.hr-width-50 {
-  width: 50%;
-  height: 1px;
-  background-color: black;
-}
-
-.hr-width-75 {
-  width: 75%;
-  height: 1px;
-  background-color: black;
-}
-
-.tweet-container {
-  width: 75%;
-}
-
-.navigation {
-  display: inline-block;
-  padding: 2px;
-}
-
-.navbar-a {
-  color: white;
-}
-
-.navbar-a:link {
-  text-decoration: none;
-}
-
-.navbar-a:hover {
-  color: blue;
-}
-
-/*IDs*/
-#hero {
-  background-image: url('../images/yokohama_fuji.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 500px;
-  position: relative;
-  text-align: center;
-  z-index: 0;
-}
-
-#hero-twitter-timeline {
-  background-color: rgb(89,209,249);
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 200px;
-  position: relative;
-  text-align: center;
-  z-index: 0;
-}
-
-#overlay {
-  background-image: url('../images/godzilla 2000_transparent.gif');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: inherit;
-  z-index: 1;
-}
-
-#overlay2 {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  z-index: 3;
-}
-
-#navbar {
-  background-color: rgba(10,10,10,0.00);
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  text-align: left;
-  z-index: 4;
-}
-
-#hero-text {
-  color: white;
-  margin-top: 200px;
-}
-
-#hero-twitter-timeline-text {
-  color: white;
-  margin-top: 75px;
-}
-
-/*Uncomment if not using bootstrap*/
-/*#main {
-  padding: 0px;
-  margin: 0px;
-  margin-top: 25px;
-}
-
-/*THIS SECTION IS FOR THE USER INFO SECTION*/
-#main {
-  z-index: 1;
-  position: relative;
-}
-
-#createTweet {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  margin-top: 20px;
-  margin-right: 50px;
-}
-
-.profile-pic {
-  width: 225px;
-  height: 225px;
-  z-index: 2;
-  position: absolute;
-  top: -125px;
-  left: 20px;
+.profile-image {
+  width: 150px;
 }
 
 .user-info {
-  width: 300px;
-  margin-left: 250px;
-  margin-top: 10px
-}
-
-.realname {
-  padding: 5px;
-}
-
-.username {
-  padding: 5px;
-}
-
-.tweet-realname {
-  margin-right: 15px;
-}
-
-.following, .followers {
-  padding: 5px;
-}
-
-.numFollowing, .numFollowers {
-  margin-right: 5px;
-  padding: 5px;
-}
-
-.row-tweet {
-  margin-bottom: 10px;
-}
-
-.tweet-retweet {
   margin-left: 10px;
-  margin-right: 15px;
 }
 
-/*----*/
-/*THIS IS FOR THE POST TWEET DIV*/
-#container-post-tweet {
-  margin-top: 65px;
+.tweet-realname, .tweet-username, .tweet-retweet, .tweet-favorite {
+  margin-right: 5px;
 }
 
-#submit-button {
-  color: white;
-  background-color: rgb(89,209,249);
+.num-followers, .num-following {
+  margin-right: 5px;
 }
 
-#twitter-timeline, #follow-user, #post-tweet {
-  margin-bottom: 50px;
-}
-
-/*--------------------------------------------------------------------------------*/
-/*THIS IS THE CSS FOR THE TWEET BOX THAT APPEARS ON THE TIMELINE & USER'S PROFILE*/
-.media-object {
-  width: 100px;
+.header-image {
+  
 }

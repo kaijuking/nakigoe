@@ -3,103 +3,53 @@
   <head>
     <title>OCCS Project #1</title>
     <meta charset="utf-8">
-    <link rel='stylesheet' href='styles/default.css' type='test/css'>
-    <link rel='stylesheet' href='styles/font-awesome.min.css' type='text/css'>
+    <link rel='stylesheet' href='default.css'>
     <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   </head>
 
   <body>
-    <!--Isuse #1: USER CAN VIEW OTHER USER'S TIMELINE-->
-    <div id='twitter-timeline' class='show'>
-      <a name='timeline'></a>
-      <div class='container' id='hero-twitter-timeline'>
-        <div class='cointainer' id='overlay'>
-        </div>
-        <div class='container' id='overlay2'>
-          <h1 id='hero-twitter-timeline-text'>Welcome! ようこそ！<h1>
-        </div>
-      </div><!--END OF DIV: HERO-->
-      <div class='container-fluid' id='default-tweets'>
-      </div><!--END OF CONTAINER DIV: 'default-tweets'-->
-    </div>
-
-    <!--Issue #2: USER CAN FOLLOW ANOTHER USER-->
-    <div id='follow-user' class='hidden'>
-      <div class='container' id='hero'>
-        <div class='container' id='navbar'>
-          <ul class='navigation'>
-            <li class='navigation'><a href='#timeline' class='navbar-a' id='public-timeline'>Home</a></li>
-          </ul>
-        </div>
-        <!--<div class='cointainer' id='overlay'>
-        </div>
-        <div class='container' id='overlay2'>
-          Place any text here to show over header image.
-          <h1 id='hero-text'>Welcome! ようこそ！<h1>
-        </div>-->
-      </div><!--END OF DIV: HERO-->
-
-      <div class='container' id='main'>
-        <div class='row'>
-          <img src='images/osakaflu.jpg' alt='' class='img-thumbnail profile-pic'>
-          <div class='user-info'>
-            <p><span class='realname' id='inactiveuser-realname'></span><span class='username' id='inactiveuser-username'></span></p>
-            <p><span class='numFollowing' id='inactiveuser-numFollowing'></span><span class='numFollowers' id='inactiveuser-numFollowers'></span></p>
+    <div class='container' id='post-tweet'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class="panel panel-info">
+            <div class='panel-heading'><a href='#' id='home-button'><i class="fa fa-twitter fa-2x"></i></a></div>
+            <div class="panel-body">
+              <form id='form-createTweet' action='' method='post'>
+                <div class='form-group'>
+                  <input type='text' class='form-control' id='newTweet' name='newTweet' maxlength='140' placeholder='type tweet message here'>
+                </div>
+                <button type='submit' class='btn btn-primary' id="timeline-post-tweet-button" value="PostTweet">Post Tweet</button>
+              </form>
+            </div>
           </div>
-        </div><!--END OF ROW DIV-->
-      </div><!--END OF CONTAINER DIV: MAIN-->
-
-      <div class='container-fluid' id='all-tweets'>
-      </div><!--END OF CONTAINER DIV-->
-    </div>
-
-    <!--ISSUE #3: USER CAN POST TO THEIR OWN TIIMELINE-->
-    <div id='post-tweet' class='hidden'>
-      <div class='container' id='hero'>
-        <div class='container' id='navbar'>
-          <ul class='navigation'>
-            <li class='navigation'><a href='#timeline' class='navbar-a' id='public-timeline'>Home</a></li>
-          </ul>
         </div>
-        <!--<div class='cointainer' id='overlay'>
-        </div>
-        <div class='container' id='overlay2'>
-          Place any text here to show over header image.
-          <h1 id='hero-text'>Welcome! ようこそ！<h1>
-        </div>-->
-      </div><!--END OF DIV: HERO-->
+      </div>
+    </div><!--END OF CONTAINER: Post Tweet-->
 
-      <div class='container' id='main'>
-        <div class='row'>
-          <img src='images/osakaflu.jpg' alt='' class='img-thumbnail profile-pic'>
-          <div class='user-info'>
-            <p><span class='realname' id='activeuser-realname'></span><span class='username' id='activeuser-username'></span></p>
-            <p><span class='numFollowing' id='activeuser-numFollowing'></span><span class='numFollowers' id='activeuser-numFollowers'></span></p>
-          </div>
-        </div><!--END OF ROW DIV-->
-      </div><!--END OF CONTAINER DIV: MAIN-->
+    <div class='container' id='twitter-timeline'>
+    </div><!--END OF CONTAINER: Used to house all tweets on Twitter Timeline-->
 
-      <div class='container-fluid' id='container-post-tweet'>
-        <div class='row'>
-          <div class="col-md-10 col-md-offset-1">
-            <form id='form-createTweet' action='' method='post'>
-              <div class='form-group'>
-                <input type='text' class='form-control' id='newTweet' name='newTweet' maxlength='140' placeholder='type tweet message here'>
+    <div class='container hidden' id='inactiveuser-timeline'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='container'>
+            <img class="img-responsive img-thumbnail header-image" id=inactive-hero src='images/godzilla header.png' alt="...">
+            <img class="media-object img-thumbnail img-responsive profile-image pull-left" id='inactiveuser-profilepic' alt="...">
+              <div class='user-info pull-left'>
+                <p><span class='tweet-realname' id='inactiveuser-realname'>REALNAME</span><span class='tweet-username' id='inactiveuser-username'>@USERNAME</span><p>
+                <p><span class='num-following' id='inactiveuser-numFollowing'>## FOLLOWING</span><span class='num-followers' id='inactiveuser-numFollowers'>## FOLLOWERS</span><p>
+                <button type='submit' class='btn btn-primary' id="activeuser-post-tweet-button" value="PostTweet">Post Tweet</button>
               </div>
-              <button type='submit' class='btn btn-default' id="submit-button" value="PostTweet">Post Tweet</button>
-            </form>
           </div>
         </div>
-        <hr class='hr-width-75'>
-      </div><!--END OF DIV: POST TWEET FORM-->
-
-      <div class='container-fluid' id='activeuser-all-tweets'>
-        <div class='row row-tweet'>
-          <div class="media col-md-10 col-md-offset-1">
+      </div><!--User Info (profile pic, username, realame, # of followers and following)-->
+      <div class='container'>
+        <div class='row'>
+          <div class='col-md-12'>
             <div class="media-left media-top">
               <a href="#">
-                <img class="media-object img-thumbnail" src="images/osakaflu.jpg" alt="...">
+                <img class="media-object img-thumbnail img-responsive profile-image" id='inactiveuser-profilepic' alt="...">
               </a>
             </div>
             <div class="media-body">
@@ -108,14 +58,73 @@
                 <span class='tweet-username'>@USERNAME</span>
                 <span class='tweet-retweet'><i class="fa fa-retweet"></i></span>
                 <span class='tweet-favorite'><i class="fa fa-heart-o"></i><span></h4>
-              <p>This is a template of what a tweet will look like</p>
+                <p>This is a template of what a tweet will look like</p>
             </div>
           </div>
-        </div><!--END OF ROW DIV-->
-      </div><!--END OF CONTAINER DIV-->
-    </div>
+        </div>
+      </div>
+    </div><!--END OF CONTAINER: Inactive User-->
 
-    <script src='scripts/default.js'></script>
+    <div class='container hidden' id='activeuser-timeline'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class='container'>
+            <img class="img-responsive img-thumbnail header-image" src="images/yokohama_fuji.jpg" alt="...">
+            <img class="media-object img-thumbnail img-responsive profile-image pull-left" src="images/osakaflu.jpg" alt="...">
+              <div class='user-info pull-left'>
+                <p><span class='tweet-realname'>REALNAME</span><span class='tweet-username'>@USERNAME</span><p>
+                <p><span class='num-following'>## FOLLOWING</span><span class='num-followers'>## FOLLOWERS</span><p>
+                <button type='submit' class='btn btn-primary' id="activeuser-post-tweet-button" value="PostTweet">Post Tweet</button>
+              </div>
+          </div>
+        </div>
+      </div><!--User Info (profile pic, username, realame, # of followers and following)-->
+    </div><!--END OF CONTAINER: Active User-->
+
+
+    <!--<div class='container hidden' id='activeuser-timeline'>
+      <div class='row'>
+        <div class='col-md-12'>
+            <img class="img-responsive img-thumbnail header-image" src="images/yokohama_fuji.jpg" alt="...">
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <img class="media-object img-thumbnail img-responsive profile-image pull-left" src="images/osakaflu.jpg" alt="...">
+                <div class='user-info pull-left'>
+                  <p><span class='tweet-realname'>REALNAME</span><span class='tweet-username'>@USERNAME</span><p>
+                  <p><span class='num-following'>## FOLLOWING</span><span class='num-followers'>## FOLLOWERS</span><p>
+                  <button type='submit' class='btn btn-primary' id="activeuser-post-tweet-button" value="PostTweet">Post Tweet</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='container-fluid'>
+        <div class='row'>
+          <div class='col-md-12'>
+            <div class="media-left media-top">
+              <a href="#">
+                <img class="media-object img-thumbnail img-responsive profile-image" src="images/osakaflu.jpg" alt="...">
+              </a>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">
+                <span class='tweet-realname'>REALNAME</span>
+                <span class='tweet-username'>@USERNAME</span>
+                <span class='tweet-retweet'><i class="fa fa-retweet"></i></span>
+                <span class='tweet-favorite'><i class="fa fa-heart-o"></i><span></h4>
+                <p>This is a template of what a tweet will look like</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>END OF CONTAINER: Active User-->
+
+    </div>
+    <script src='default.js'></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </body>
 </html>

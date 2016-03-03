@@ -1,5 +1,6 @@
 'use-strict';
 
+//background-image: url('../images/yokohama_fuji.jpg');
   /*SETUP DEFAULT VALUES ON DOCUMENT LOAD*/
   var allTweets = [
     {
@@ -35,7 +36,9 @@
       followers:['godzilla', 'kingkong'],
       following: ['godzilla'],
       tweetCount: 2,
-      profileImage: 'images/osakaflu.jpg'
+      profileImage: 'images/osakaflu.jpg',
+      headerImage: 'images/yokohama_fuji.jpg',
+      activeUser: true
     },
     {
       username: 'godzilla',
@@ -43,7 +46,9 @@
       followers:['kaijuking', 'kingkong'],
       following: ['kaijuking', 'kingkong'],
       tweetCount: 2,
-      profileImage: 'images/godzilla.jpg'
+      profileImage: 'images/godzilla profile.jpg',
+      headerImage: 'images/godzilla header.png',
+      activeUser: false
     },
     {
       username: 'kingkong',
@@ -51,7 +56,9 @@
       followers: ['godzilla'],
       following: ['kaijuking', 'godzilla'],
       tweetCount: 2,
-      profileImage: 'images/kingkong.jpg'
+      profileImage: 'images/kingkong.jpg',
+      headerImage: 'images/kongheader.jpg',
+      activeUser: false
     }
   ];
 
@@ -63,86 +70,92 @@
     this.message = message;
   };
 
+
+/*Post A Tweet*/
 document.addEventListener('DOMContentLoaded', function(event){
   console.log('DOM has fully loaded and parsed.');
-  displayTimelineTweets();
+  displayTimeLineTweets();
   configureTimelineTweets();
-  setupActiveUserTimeline();
+  //setupActiveUserTimeline();
+  //displayUserTweets(activeUser);
 });
 
+var homeButton = document.getElementById('home-button');
+homeButton.addEventListener('click', function(event) {
+  document.location.reload(true);
+});
 
 /*Twitter Timeline - The following functions are used for Issue #1*/
 /*Generate and append the elements needed to post a new tweet*/
-function displayTimelineTweets() {
+function displayTimeLineTweets() {
   for(var i = 0; i < allTweets.length; i++) {
     var username = allTweets[i].username;
 
     /*Create the element to hold the user's profile picture*/
-    var newDiv = document.createElement('div');
-    newDiv.setAttribute('class', 'media-left media-top');
-    var newLink = document.createElement('a');
-    newLink.setAttribute('href', '#');
-    newLink.setAttribute('name', getUserName(username));
-    newLink.setAttribute('class', 'timeline');
-    var newImg = document.createElement('img');
-    newImg.setAttribute('class', 'media-object img-thumbnail');
-    newImg.setAttribute('src', getProfileImageUrl(username));
-    newLink.appendChild(newImg);
-    newDiv.appendChild(newLink);
+    var newImage = document.createElement('img');
+    newImage.setAttribute('class', 'media-object img-thumbnail img-responsive profile-image');
+    newImage.setAttribute('src', getProfileImageUrl(username));
+
+    var newImageLink = document.createElement('a');
+    newImageLink.setAttribute('href', '#');
+    newImageLink.setAttribute('name', getUserName(username));
+    newImageLink.appendChild(newImage);
+
+    var newImageMediaDiv = document.createElement('div');
+    newImageMediaDiv.setAttribute('class', 'media-left media-top');
+    newImageMediaDiv.appendChild(newImageLink);
+
+    var newColumnDiv = document.createElement('div'); //this will need to be appended to newRowDiv
+    newColumnDiv.setAttribute('class', 'col-md-12');
+    newColumnDiv.appendChild(newImageMediaDiv);
 
     /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
-    var newDiv1 = document.createElement('div');
-    newDiv1.setAttribute('class', 'media-body');
-
-    var newH4_span  = document.createElement('h4');
-    newH4_span.setAttribute('class', 'media-heading');
-
-    var newSpan1 = document.createElement('span');
-    newSpan1.setAttribute('class', 'tweet-realname');
-    var userName = document.createTextNode(getRealName(username));
-    newSpan1.appendChild(userName);
-
-    var newSpan2 = document.createElement('span');
-    newSpan2.setAttribute('class', 'tweet-username');
-    var tweetUserName = document.createTextNode('@' + getUserName(username));
-    newSpan2.appendChild(tweetUserName);
-
-    var newSpan3 = document.createElement('span');
-    newSpan3.setAttribute('class', 'tweet-retweet');
-    var retweetIcon = document.createElement('i');
-    retweetIcon.setAttribute('class', 'fa fa-retweet');
-    newSpan3.appendChild(retweetIcon);
-
-    var newSpan4 = document.createElement('span');
-    newSpan4.setAttribute('class', 'tweet-favorite');
-    var favoriteIcon = document.createElement('i');
+    var favoriteIcon = document.createElement('i'); //this needs to be appended to spanFavoriteIcon
     favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-    newSpan4.appendChild(favoriteIcon);
+    var spanFavoriteIcon = document.createElement('span');
+    spanFavoriteIcon.setAttribute('class', 'tweet-favorite');
+    spanFavoriteIcon.appendChild(favoriteIcon);
 
-    newH4_span.appendChild(newSpan1);
-    newH4_span.appendChild(newSpan2);
-    newH4_span.appendChild(newSpan3);
-    newH4_span.appendChild(newSpan4);
-    var newH4_message = document.createElement('h4');
-    var message = document.createTextNode(allTweets[i].message);
-    newH4_message.appendChild(message);
-    newDiv1.appendChild(newH4_span);
-    newDiv1.appendChild(newH4_message);
+    var retweetIcon = document.createElement('i'); //this needs to be appended to spanRetweetIcon
+    retweetIcon.setAttribute('class', 'fa fa-retweet');
+    var spanRetweetIcon = document.createElement('span');
+    spanRetweetIcon.setAttribute('class', 'tweet-retweet');
+    spanRetweetIcon.appendChild(retweetIcon);
 
-    /*Create the element to hold the DIVs containing the user's image, realname, username and tweet message*/
-    var newDiv2 = document.createElement('div');
-    newDiv2.setAttribute('class', 'media col-md-10 col-md-offset-1');
-    newDiv2.appendChild(newDiv);
-    newDiv2.appendChild(newDiv1);
+    var spanTweetRealName = document.createElement('span');
+    spanTweetRealName.setAttribute('class', 'tweet-realname');
+    var realName = document.createTextNode(getRealName(username));
+    spanTweetRealName.appendChild(realName);
 
-    /*Create the ROW div needed to hold the new tweet*/
-    var newDiv3 = document.createElement('div');
-    newDiv3.setAttribute('class', 'row row-tweet');
-    newDiv3.appendChild(newDiv2);
+    var spanTweetUserName = document.createElement('span');
+    spanTweetUserName.setAttribute('class', 'tweet-username');
+    var userName = document.createTextNode(getUserName(username));
+    spanTweetUserName.appendChild(userName);
 
-    /*Append the ROW div, which holds the new tweet, to the parent element*/
-    var parentNode = document.getElementById('default-tweets');
-    parentNode.appendChild(newDiv3);
+    var newMediaHeading = document.createElement('h4'); //this needs to be be appended to newMediaBodyDiv
+    newMediaHeading.setAttribute('class', 'media-heading');
+    newMediaHeading.appendChild(spanTweetUserName);
+    newMediaHeading.appendChild(spanTweetRealName);
+    newMediaHeading.appendChild(spanRetweetIcon);
+    newMediaHeading.appendChild(spanFavoriteIcon);
+
+    var newMediaBodyDiv = document.createElement('div'); //this needs to be appended to newRowDiv
+    newMediaBodyDiv.setAttribute('class', 'media-body');
+    newMediaBodyDiv.appendChild(newMediaHeading);
+    var theTweetMessage = document.createTextNode(allTweets[i].message);
+    var messageParagraph = document.createElement('p');
+    messageParagraph.appendChild(theTweetMessage);
+    newMediaBodyDiv.appendChild(messageParagraph);
+
+    newColumnDiv.appendChild(newMediaBodyDiv);
+    var newRowDiv = document.createElement('div'); //this will need to be appended to parentNode
+    newRowDiv.setAttribute('class', 'row');
+    newRowDiv.appendChild(newColumnDiv);
+
+
+    var parentNode = document.getElementById('twitter-timeline');
+    parentNode.appendChild(newRowDiv);
+
   };
 };
 
@@ -150,35 +163,33 @@ function displayTimelineTweets() {
 function configureTimelineTweets(){
   /*Shows either the 'follow-user' DIV (Issue #2) or 'post-tweet' DIV (Issue #3)*/
   var linkBtn = document.getElementsByTagName('a');
-  var postTweetDiv = document.getElementById('post-tweet');
-  var followUserDiv = document.getElementById('follow-user');
+  var inactiveUserDiv = document.getElementById('inactiveuser-timeline');
+  var activeUserDiv = document.getElementById('activeuser-timeline');
+  //var twitterTimelineDiv = document.getElementById('twitter-timeline');
 
   for(var i = 0; i < linkBtn.length; i++){
     linkBtn[i].addEventListener('click', function(event) {
       var theEvent = event.target.parentNode.name;
-      console.log(theEvent);
+      //console.log(theEvent);
       var myEvent = event.target.parentNode;
-      console.log(myEvent);
+      //console.log(myEvent);
       if(theEvent != null && theEvent != activeUser) {
         inactiveUser = theEvent;
-        followUserDiv.setAttribute('class', 'show');
-        postTweetDiv.setAttribute('class', 'hidden');
+        //console.log(activeUser);
+        //console.log(theEvent);
+        inactiveUserDiv.setAttribute('class', 'show');
+        activeUserDiv.setAttribute('class', 'hidden');
         myEvent.setAttribute('href', '#follow-user');
         setupInactiveUserTimeline(inactiveUser);
+        //displayUserTweets(inactiveUser);
       };
       if(theEvent != null && theEvent === activeUser) {
-        followUserDiv.setAttribute('class', 'hidden');
-        postTweetDiv.setAttribute('class', 'show');
+        inactiveUserDiv.setAttribute('class', 'hidden');
+        activeUserDiv.setAttribute('class', 'show');
         myEvent.setAttribute('href', '#post-tweet');
       };
     });
   };
-};
-
-
-/*The following is used for Issue #2*/
-function displayInactiveUserTweets(username){
-
 };
 
 function setupInactiveUserTimeline(username){
@@ -197,119 +208,26 @@ function setupInactiveUserTimeline(username){
   var followingCount = getTotalFollowing(username);
   var numFollowing = document.getElementById('inactiveuser-numFollowing')
   numFollowing.textContent = followingCount + " Following";
+
+  var profileImageURL = getProfileImageUrl(username);
+  var profileImage = document.getElementById('inactiveuser-profilepic');
+  profileImage.setAttribute('src', profileImageURL);
+
+  var headerImageURL = getHeaderImageUrl(username);
+  var headerImage = document.getElementById('inactive-hero');
+  headerImage.style.backgroundImage = "url('" + headerImageURL + "')";
+  console.log("realname = " + realNameText);
+  console.log("username = " + userNameText);
+  console.log("numFollowers = " + followerCount);
+  console.log("numFollowing = " + followingCount);
+  console.log("profile image url = " + profileImageURL);
+  console.log("header image url = " + headerImageURL);
 };
 
 
 
-/*Active User's Timeline - The following functions are used for Issue #3*/
-/*Populate the user's REALNAME, USERNAME, #FOLLOWING and #FOLLOWERS <span> elments on DOM load*/
-function setupActiveUserTimeline(){
-  var realNameText = getRealName(activeUser);
-  var realName = document.getElementById('activeuser-realname');
-  realName.textContent = realNameText;
 
-  var userNameText = '@' + getUserName(activeUser);
-  var userName = document.getElementById('activeuser-username');
-  userName.textContent = userNameText;
-
-  var followerCount = getTotalFollowers(activeUser);
-  var numFollowers = document.getElementById('activeuser-numFollowers')
-  numFollowers.textContent = followerCount + " Followers";
-
-  var followingCount = getTotalFollowing(activeUser);
-  var numFollowing = document.getElementById('activeuser-numFollowing')
-  numFollowing.textContent = followingCount + " Following";
-};
-
-/*GET 'Post Tweet' BUTTON's 'submit' EVENT ON FORM*/
-var myForm = document.getElementById('form-createTweet');
-myForm.addEventListener('submit', function(event){
-  event.preventDefault();
-
-  var message = document.getElementById('newTweet');
-  var tweetMessage = message.value;
-
-  createTweet(activeUser, tweetMessage);
-  displayTweet(activeUser, tweetMessage);
-  updateTweetCount(activeUser);
-
-}, false);
-
-/*Create a new tweet object and push it into the allTweets array*/
-function createTweet(username, tweetMessage) {
-  var newTweet = new tweet(username, tweetMessage);
-  allTweets.push(newTweet);
-};
-
-/*Generate and append the elements needed to post a new tweet*/
-function displayTweet(username, tweetMessage) {
-  /*Create the element to hold the user's profile picture*/
-  var newDiv = document.createElement('div');
-  newDiv.setAttribute('class', 'media-left media-top');
-  var newLink = document.createElement('a');
-  var newImg = document.createElement('img');
-  newImg.setAttribute('class', 'media-object img-thumbnail');
-  newImg.setAttribute('src', getProfileImageUrl(username));
-  newLink.appendChild(newImg);
-  newDiv.appendChild(newLink);
-
-  /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
-  var newDiv1 = document.createElement('div');
-  newDiv1.setAttribute('class', 'media-body');
-
-  var newH4_span  = document.createElement('h4');
-  newH4_span.setAttribute('class', 'media-heading');
-
-  var newSpan1 = document.createElement('span');
-  newSpan1.setAttribute('class', 'tweet-realname');
-  var userName = document.createTextNode(getRealName(username));
-  newSpan1.appendChild(userName);
-
-  var newSpan2 = document.createElement('span');
-  newSpan2.setAttribute('class', 'tweet-username');
-  var tweetUserName = document.createTextNode('@' + getUserName(username));
-  newSpan2.appendChild(tweetUserName);
-
-  var newSpan3 = document.createElement('span');
-  newSpan3.setAttribute('class', 'tweet-retweet');
-  var retweetIcon = document.createElement('i');
-  retweetIcon.setAttribute('class', 'fa fa-retweet');
-  newSpan3.appendChild(retweetIcon);
-
-  var newSpan4 = document.createElement('span');
-  newSpan4.setAttribute('class', 'tweet-favorite');
-  var favoriteIcon = document.createElement('i');
-  favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-  newSpan4.appendChild(favoriteIcon);
-
-  newH4_span.appendChild(newSpan1);
-  newH4_span.appendChild(newSpan2);
-  newH4_span.appendChild(newSpan3);
-  newH4_span.appendChild(newSpan4);
-  var newH4_message = document.createElement('h4');
-  var message = document.createTextNode(tweetMessage);
-  newH4_message.appendChild(message);
-  newDiv1.appendChild(newH4_span);
-  newDiv1.appendChild(newH4_message);
-
-  /*Create the element to hold the DIVs containing the user's image, realname, username and tweet message*/
-  var newDiv2 = document.createElement('div');
-  newDiv2.setAttribute('class', 'media col-md-10 col-md-offset-1');
-  newDiv2.appendChild(newDiv);
-  newDiv2.appendChild(newDiv1);
-
-  /*Create the ROW div needed to hold the new tweet*/
-  var newDiv3 = document.createElement('div');
-  newDiv3.setAttribute('class', 'row row-tweet');
-  newDiv3.appendChild(newDiv2);
-
-  /*Append the ROW div, which holds the new tweet, to the parent element*/
-  var parentNode = document.getElementById('activeuser-all-tweets');
-  parentNode.appendChild(newDiv3);
-};
-
-
-
+/*--------------------------------------------------------------------------*/
 /*Return all the user's Tweets based upon the user's username*/
 function getAllTweets(username) {
   for(var i = 0; i < allTweets.length; i++) {
@@ -391,6 +309,14 @@ function getProfileImageUrl(username) {
   };
 };
 
+function getHeaderImageUrl(username) {
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === username) {
+      return allUsers[i].headerImage;
+    };
+  };
+};
+
 function getUserName(username) {
   for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
@@ -405,4 +331,20 @@ function getRealName(username) {
       return allUsers[i].realname;
     }
   }
+};
+
+function displayUserTweets(username) {
+  console.log(username)
+  if(username === activeUser){
+    pNode = 'activeuser';
+  }
+  else {
+    pNode = 'inactiveuser';
+  }
+  for( var i = 0; i < allTweets.length; i++) {
+    if(username === allTweets[i].username) {
+      console.log(allTweets[i].message);
+      displayTweet(username, allTweets[i].message, pNode);
+    };
+  };
 };

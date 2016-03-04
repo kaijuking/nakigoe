@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en-us'>
   <head>
-    <title>OCCS Project #1</title>
+    <title>Nakigoe</title>
     <meta charset="utf-8">
     <link rel='stylesheet' href='styles/default.css'>
     <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -27,10 +27,10 @@
       </div>
     </div><!--END OF CONTAINER: Post Tweet-->
 
-    <div class='container' id='twitter-timeline'>
+    <div class='container show' id='twitter-timeline'>
     </div><!--END OF CONTAINER: Used to house all tweets on Twitter Timeline-->
 
-    <div class='container hidden' id='inactiveuser-timeline'>
+    <div class='container hidden' id='user-timeline'>
       <div class='row'>
         <div class='col-md-12'>
           <div class='container'>
@@ -39,7 +39,8 @@
               <div class='user-info pull-left'>
                 <p><span class='tweet-realname' id='inactiveuser-realname'>REALNAME</span><span class='tweet-username' id='inactiveuser-username'>@USERNAME</span><p>
                 <p><span class='num-following' id='inactiveuser-numFollowing'>## FOLLOWING</span><span class='num-followers' id='inactiveuser-numFollowers'>## FOLLOWERS</span><p>
-                <button type='submit' class='btn btn-primary' id="activeuser-post-tweet-button" value="PostTweet">Post Tweet</button>
+                <button type='submit' class='btn btn-primary show' id="post-button" value="PostTweet">Post Tweet</button>
+                <button type='button' class='btn btn-default show' id="follow-button" value="FollowUser" placeholder='adfasd'>Follow</button>
               </div>
           </div>
         </div>

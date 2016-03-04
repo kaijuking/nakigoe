@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function(event){
   console.log('DOM has fully loaded and parsed.');
   displayTimeLineTweets();
   configureTimelineTweets();
-  //setupActiveUserTimeline();
+  setupActiveUserTimeline();
   //displayUserTweets(activeUser);
 });
 
@@ -84,6 +84,137 @@ var homeButton = document.getElementById('home-button');
 homeButton.addEventListener('click', function(event) {
   document.location.reload(true);
 });
+
+/*GET 'Post Tweet' BUTTON's 'submit' EVENT ON FORM*/
+var myForm = document.getElementById('form-createTweet');
+myForm.addEventListener('submit', function(event){
+  event.preventDefault();
+  var message = document.getElementById('newTweet');
+  var tweetMessage = message.value;
+
+  createTweet(activeUser, tweetMessage);
+  displayTweet(activeUser, tweetMessage, 'activeuser');
+  //updateTweetCount(activeUser);
+
+}, false);
+
+var modalTweet = document.getElementById('modalTweet');
+modalTweet.addEventListener('submit', function(event) {
+
+  console.log('hhehehehe');
+
+  var message = document.getElementById('modal-newTweet');
+  var tweetMessage = message.value;
+
+  createTweet(activeUser, tweetMessage);
+  displayTweet(activeUser, tweetMessage, 'activeuser');
+
+});
+
+
+/*Active User's Timeline - The following functions are used for Issue #3*/
+/*Populate the user's REALNAME, USERNAME, #FOLLOWING and #FOLLOWERS <span> elments on DOM load*/
+function setupActiveUserTimeline(){
+  var realNameText = getRealName(activeUser);
+  console.log(realNameText);
+  var realName = document.getElementById('activeuser-realname');
+  realName.textContent = realNameText;
+
+  var userNameText = '@' + getUserName(activeUser);
+  var userName = document.getElementById('activeuser-username');
+  userName.textContent = userNameText;
+
+  var followerCount = getTotalFollowers(activeUser);
+  var numFollowers = document.getElementById('activeuser-numFollowers')
+  numFollowers.textContent = followerCount + " Followers";
+
+  var followingCount = getTotalFollowing(activeUser);
+  var numFollowing = document.getElementById('activeuser-numFollowing')
+  numFollowing.textContent = followingCount + " Following";
+};
+
+/*Create a new tweet object and push it into the allTweets array*/
+function createTweet(username, tweetMessage) {
+  var newTweet = new tweet(username, tweetMessage);
+  allTweets.push(newTweet);
+  console.log(allTweets);
+};
+
+/*Generate and append the elements needed to post a new tweet*/
+function displayTweet(username, tweetMessage, pNode) {
+
+  /*Create the element to hold the user's profile picture*/
+  var newImage = document.createElement('img');
+  newImage.setAttribute('class', 'media-object img-thumbnail img-responsive profile-image');
+  newImage.setAttribute('src', getProfileImageUrl(username));
+
+  var newImageLink = document.createElement('a');
+  newImageLink.setAttribute('href', '#');
+  newImageLink.setAttribute('name', getUserName(username));
+  newImageLink.appendChild(newImage);
+
+  var newImageMediaDiv = document.createElement('div');
+  newImageMediaDiv.setAttribute('class', 'media-left media-top');
+  newImageMediaDiv.appendChild(newImageLink);
+
+  var newColumnDiv = document.createElement('div'); //this will need to be appended to newRowDiv
+  newColumnDiv.setAttribute('class', 'col-md-12');
+  newColumnDiv.appendChild(newImageMediaDiv);
+
+  /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
+  var favoriteIcon = document.createElement('i'); //this needs to be appended to spanFavoriteIcon
+  favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+  var spanFavoriteIcon = document.createElement('span');
+  spanFavoriteIcon.setAttribute('class', 'tweet-favorite');
+  spanFavoriteIcon.appendChild(favoriteIcon);
+
+  var retweetIcon = document.createElement('i'); //this needs to be appended to spanRetweetIcon
+  retweetIcon.setAttribute('class', 'fa fa-retweet');
+  var spanRetweetIcon = document.createElement('span');
+  spanRetweetIcon.setAttribute('class', 'tweet-retweet');
+  spanRetweetIcon.appendChild(retweetIcon);
+
+  var spanTweetRealName = document.createElement('span');
+  spanTweetRealName.setAttribute('class', 'tweet-realname');
+  var realName = document.createTextNode(getRealName(username));
+  spanTweetRealName.appendChild(realName);
+
+  var spanTweetUserName = document.createElement('span');
+  spanTweetUserName.setAttribute('class', 'tweet-username');
+  var userName = document.createTextNode(getUserName(username));
+  spanTweetUserName.appendChild(userName);
+
+  var newMediaHeading = document.createElement('h4'); //this needs to be be appended to newMediaBodyDiv
+  newMediaHeading.setAttribute('class', 'media-heading');
+  newMediaHeading.appendChild(spanTweetUserName);
+  newMediaHeading.appendChild(spanTweetRealName);
+  newMediaHeading.appendChild(spanRetweetIcon);
+  newMediaHeading.appendChild(spanFavoriteIcon);
+
+  var newMediaBodyDiv = document.createElement('div'); //this needs to be appended to newRowDiv
+  newMediaBodyDiv.setAttribute('class', 'media-body');
+  newMediaBodyDiv.appendChild(newMediaHeading);
+  var theTweetMessage = document.createTextNode(tweetMessage);
+  var messageParagraph = document.createElement('p');
+  messageParagraph.appendChild(theTweetMessage);
+  newMediaBodyDiv.appendChild(messageParagraph);
+
+  newColumnDiv.appendChild(newMediaBodyDiv);
+  var newRowDiv = document.createElement('div'); //this will need to be appended to parentNode
+  newRowDiv.setAttribute('class', 'row');
+  newRowDiv.appendChild(newColumnDiv);
+
+  if(pNode == 'activeuser') {
+    /*Append the ROW div, which holds the new tweet, to the parent element*/
+    var parentNode = document.getElementById(pNode + '-all-tweets');
+    parentNode.appendChild(newRowDiv);
+  }
+  if(pNode == 'inactiveuser') {
+    var parentNode = document.getElementById(pNode + '-all-tweets');
+    parentNode.appendChild(newRowDiv);
+  }
+
+};
 
 /*Twitter Timeline - The following functions are used for Issue #1*/
 /*Generate and append the elements needed to post a new tweet*/
@@ -215,6 +346,7 @@ function setupInactiveUserTimeline(username){
 
   var headerImageURL = getHeaderImageUrl(username);
   var headerImage = document.getElementById('inactive-hero');
+  headerImage.setAttribute('src', headerImageURL);
   headerImage.style.backgroundImage = "url('" + headerImageURL + "')";
   console.log("realname = " + realNameText);
   console.log("username = " + userNameText);
@@ -224,7 +356,21 @@ function setupInactiveUserTimeline(username){
   console.log("header image url = " + headerImageURL);
 };
 
-
+function displayUserTweets(username) {
+  console.log(username)
+  if(username === activeUser){
+    pNode = 'activeuser';
+  }
+  else {
+    pNode = 'inactiveuser';
+  }
+  for( var i = 0; i < allTweets.length; i++) {
+    if(username === allTweets[i].username) {
+      console.log(allTweets[i].message);
+      displayTweet(username, allTweets[i].message, pNode);
+    };
+  };
+};
 
 
 /*--------------------------------------------------------------------------*/
@@ -312,6 +458,7 @@ function getProfileImageUrl(username) {
 function getHeaderImageUrl(username) {
   for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
+      console.log(allUsers[i].headerImage);
       return allUsers[i].headerImage;
     };
   };

@@ -12,6 +12,6 @@ Date: 3/2/2016
 Nakigoe v2
 Re-worked the layout of my project which now includes a login page.
 To access the site you can use anyone of the following usernames/passwords.
-#1: Username = kaijuking, Password = kaijuking
-#2: Username = godzilla, Password = godzilla
-#3: Username = kingkong, Password = kingkong
+- Username = kaijuking, Password = kaijuking
+- Username = godzilla, Password = godzilla
+- Username = kingkong, Password = kingkong

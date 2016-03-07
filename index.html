@@ -7,63 +7,148 @@
     <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   </head>
-
   <body>
-    <div class='container' id='post-tweet'>
-      <div class='row'>
-        <div class='col-md-12'>
-          <div class="panel panel-info">
-            <div class='panel-heading'><button type='button' id='home-button'><i class="fa fa-twitter fa-2x"></i></button></div>
-            <div class="panel-body">
-              <form id='form-createTweet' action='' method='post'>
-                <div class='form-group'>
-                  <input type='text' class='form-control' id='new-message' name='newTweet' maxlength='140' placeholder='type tweet message here'>
+    <div class='container'>
+
+      <div class="jumbotron" id='hero'>
+        <div class='container' id='hero-overlay'>
+          <div class="container" id='hero-text-overlay'>
+            <h2 id='hero-text'>Welcome to Nakigoe!<h2>
+            <h2>ようこそ！鳴き声へ！</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class='container-fluid show' id='roar-login-page'>
+        <div class='row'>
+          <div class='col-md-4 .col-xs-12' id='login-div'>
+            <form action='' method='post'>
+              <div class="form-group">
+                <label for="user-username">Username</label>
+                <input type="text" class="form-control" id="user-username" placeholder="Username">
+              </div>
+              <div class="form-group">
+                <label for="user-password">Password</label>
+                <input type="password" class="form-control" id="user-password" placeholder="Password">
+              </div>
+              <button type="button" class="btn btn-default" id='roar-login-button'>Login</button>
+              <div class="alert alert-warning alert-dismissible hide" role="alert" id='login-warning-alert'>
+                <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                <strong>Warning!</strong> Username and/or Password was incorrect. Please try again.
+              </div>
+            </form>
+          </div>
+          <div class="clearfix visible-xs-block"></div>
+          <div class='col-md-8 .col-xs-6' id='random-roar'>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">Roar of the day!</h3>
+              </div>
+              <div class="panel-body">
+                <div class="media">
+                  <div class="media-left">
+                    <a href="#">
+                      <img class="media-object profile-pic" id='random-roar-profile-pic' alt="...">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">
+                      <span class='realname' id='random-roar-realname'></span>
+                      <span class='username' id='random-roar-username'></span></h4>
+                    <h4 class="media-heading"><span class='roar-message' id='random-roar-message'></span></h4>
+                  </div>
                 </div>
-                <button type='submit' class='btn btn-primary' id="timeline-post-tweet-button" value="PostTweet">Post Tweet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='container-fluid hide' id='roar-timeline'>
+        <div class='row'>
+          <!--START: Active User's Panel Info-->
+          <div class='col-md-4' id='activeuser-panel-info'>
+            <ul class="list-group">
+              <li class='list-group-item' id='activeuser-panel-header'>
+                <img class="activeuser img-thumbnail profile-pic" id='activeuser-panel-profile-pic' src="images/osakaflu.jpg" alt="...">
+              </li>
+              <li class="list-group-item">
+                <h4 class="media-heading">
+                  <span class='activeuser-realname' id='activeuser-panel-realname'></span>
+                  <span class='activeuser-username' id='activeuser-panel-username'></span></h4>
+              </li>
+            </ul>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" id='numFollowers'>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <div class="list-group" id='activeuser-followers'>
+                    <!--THIS IS WHERE THE USER'S LIST OF FOLLOWERS WILL GO-->
+                  </div>
+                </div>
+              </div>
+              </div>
+              <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" id='numFollowing'>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                  <div class="list-group" id='activeuser-following'>
+                    <!--THIS IS WHERE THE USER'S LIST OF FOLLOWINGS WILL GO-->
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <!--END: Active User's Panel Info-->
+          <!--START: Tabs displaying 'all', 'activeuser' and 'inactiveuser' roars-->
+          <div class='col-md-8' id='all-activeuser-inactiveuser'>
+            <!--START: Post Roar panel-->
+            <div class="panel-body">
+              <form id='form-createRoar' action='' method='post'>
+                <div class='form-group'>
+                  <input type='text' class='form-control' id='new-message' name='newRoar' maxlength='140' placeholder='type roar message here'>
+                </div>
+                <button type='submit' class='btn btn-primary' id="timeline-post-roar-button" value="PostRoar">Post Roar</button>
               </form>
             </div>
-          </div>
-        </div>
-      </div>
-    </div><!--END OF CONTAINER: Post Tweet-->
+            <!--END: Post Roar panel-->
+            <div>
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active" id='tab-all-roars'><a href="#all-roars" aria-controls="home" role="tab" data-toggle="tab">World Wide Roars!</a></li>
+                <li role="presentation" id='tab-activeuser-timeline'><a href="#activeuser-timeline" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+                <li role="presentation" class='hidden' id='tab-inactiveuser-timeline'><a href="#inactiveuser-timeline" aria-controls="messages" role="tab" data-toggle="tab">Friends</a></li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
 
-    <div class='container show' id='twitter-timeline'>
-      <!--<button type='button' class='btn btn-primary' id='test-button'>Test Button</button>-->
+                <div role="tabpanel" class="tab-pane active" id="all-roars">
+                </div>
 
-    </div><!--END OF CONTAINER: Used to house all tweets on Twitter Timeline-->
+                <div role="tabpanel" class="tab-pane" id="activeuser-timeline">
+                </div>
 
-    <div class='container hidden' id='user-timeline'>
-      <div class='row'>
-        <div class='col-md-12'>
-          <div class='container'>
-            <img class="img-responsive img-thumbnail header-image" id='hero' src='' alt="...">
-            <img class="media-object img-thumbnail img-responsive profile-image pull-left" id='profilepic' alt="...">
-            <div class='user-info pull-left'>
-              <p><span class='realname' id='realname'>REALNAME</span><span class='username' id='username'>@USERNAME</span><p>
-              <p><span class='following' id='numFollowing'>## FOLLOWING</span><span class='followers' id='numFollowers'>## FOLLOWERS</span><p>
-              <button type='submit' class='btn btn-primary show' id="post-button" value="PostTweet">Post Tweet</button>
-              <button type='button' class='btn btn-default show' id="follow-button" value="FollowUser" placeholder='adfasd'>Follow</button>
+                <div role="tabpanel" class="tab-pane hidden" id="inactiveuser-timeline">
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div><!--User Info (profile pic, username, realame, # of followers and following)-->
-      <div class='container' id='user-all-tweets'>
-        <hr>
       </div>
-    </div><!--END OF CONTAINER: All Users-->
-
-
-    <div class='container show' id='test-div'>
     </div>
-
-
-
-
-
-
-
     <script src='js/default.js'></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </body>

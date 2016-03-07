@@ -1,536 +1,213 @@
 'use-strict';
 
-//background-image: url('../images/yokohama_fuji.jpg');
-  /*SETUP DEFAULT VALUES ON DOCUMENT LOAD*/
-  var allTweets = [
-    {
-      username: 'kaijuking',
-      message: '怪獣だ。海の中から。ゴジラ来た。'
-    },
-    {
-      username: 'godzilla',
-      message: '俺は怪獣王だ！'
-    },
-    {
-      username: 'kingkong',
-      message: 'I like climbing tall buildings. But man, watch out for those planes!'
-    },
-    {
-      username: 'godzilla',
-      message: 'Things seem to be getting rather rough for #Gamera these days!'
-    },
-    {
-      username: 'kingkong',
-      message: 'godzilla - Just wait till we meet on the big screen again!'
-    },
-    {
-      username: 'kaijuking',
-      message: 'Cannot wait to get a new job!'
-    }
-  ];
+/*SETUP DEFAULT VALUES ON DOCUMENT LOAD*/
+var allRoars = [
+  {
+    username: 'kaijuking',
+    message: '怪獣だ。海の中から。ゴジラ来た。',
+    timestamp: 1
+  },
+  {
+    username: 'godzilla',
+    message: '俺は怪獣王だ！',
+    timestamp: 2
+  },
+  {
+    username: 'kingkong',
+    message: 'I like climbing tall buildings. But man, watch out for those planes!',
+    timestamp: 3
+  },
+  {
+    username: 'godzilla',
+    message: 'Things seem to be getting rather rough for #Gamera these days!',
+    timestamp: 4
+  },
+  {
+    username: 'kingkong',
+    message: 'godzilla - Just wait till we meet on the big screen again!',
+    timestamp: 5
+  },
+  {
+    username: 'kaijuking',
+    message: 'Cannot wait to get a new job!',
+    timestamp: 6
+  }
+];
 
-  var allUsers = [
-    {
-      username: 'kaijuking',
-      realname: 'Michael Field',
-      followers:['godzilla', 'kingkong'],
-      following: ['godzilla'],
-      tweetCount: 2,
-      profileImage: 'images/osakaflu.jpg',
-      headerImage: 'images/yokohama_fuji.jpg',
-      isActiveUser: true
-    },
-    {
-      username: 'godzilla',
-      realname: '怪獣王',
-      followers:['kaijuking', 'kingkong'],
-      following: ['kaijuking', 'kingkong'],
-      tweetCount: 2,
-      profileImage: 'images/godzilla profile.jpg',
-      headerImage: 'images/godzilla header.png',
-      isActiveUser: false
-    },
-    {
-      username: 'kingkong',
-      realname: 'King Kong',
-      followers: ['godzilla'],
-      following: ['kaijuking', 'godzilla'],
-      tweetCount: 2,
-      profileImage: 'images/kingkong.jpg',
-      headerImage: 'images/kongheader.jpg',
-      isActiveUser: false
-    }
-  ];
+var allUsers = [
+  {
+    username: 'kaijuking',
+    realname: 'Michael Field',
+    followers:['godzilla', 'kingkong'],
+    following: ['godzilla'],
+    roarCount: 2,
+    profileImage: 'images/osakaflu.jpg',
+    headerImage: 'url(\'images/yokohama_fuji.jpg\')',
+    isActiveUser: false,
+    password: 'kaijuking'
+  },
+  {
+    username: 'godzilla',
+    realname: 'ゴジラ',
+    followers:['kaijuking', 'kingkong'],
+    following: ['kaijuking', 'kingkong'],
+    roarCount: 2,
+    profileImage: 'images/godzilla profile.jpg',
+    headerImage: 'url(\'images/godzilla header.png\')',
+    isActiveUser: false,
+    password: 'godzilla'
+  },
+  {
+    username: 'kingkong',
+    realname: 'King Kong',
+    followers: ['godzilla'],
+    following: ['kaijuking', 'godzilla'],
+    roarCount: 2,
+    profileImage: 'images/kingkong.jpg',
+    headerImage: 'url(\'images/kongheader.jpg\')',
+    isActiveUser: false,
+    password: 'kingkong'
+  }
+];
 
-var activeUser = getActiveUser();
+var activeUser = '';
 //var inactiveUser = '';
 
-  var tweet = function(username, message) {
-    this.username = username;
-    this.message = message;
-  };
+var roar = function(username, message) {
+  this.username = username;
+  this.message = message;
+};
 
 /*Setup process*/
 document.addEventListener('DOMContentLoaded', function(event){
   console.log('DOM has fully loaded and parsed.');
-  displayTimeLineTweets();
-  configureTimelineTweets();
-  console.log('Active User = ' + getActiveUser());
+  randomRoar();
 });
 
-var homeButton = document.getElementById('home-button');
-homeButton.addEventListener('click', function(event) {
-  document.location.reload(true);
-  // event.preventDefault();
-  //
-  // var timeline = document.getElementById('twitter-timeline');
-  // var timelineState = timeline.getAttribute('class');
-  //
-  // var user = document.getElementById('user-timeline');
-  // var userState = user.getAttribute('class');
-  //
-  // if(userState === 'container show'){
-  //   user.setAttribute('class', 'container hidden');
-  //   timeline.setAttribute('class', 'container show');
-  //
-  // };
-  //
-  // displayTimeLineTweets();
-  // configureTimelineTweets();
+var loginButton = document.getElementById('roar-login-button');
+loginButton.addEventListener('click', function(event) {
 
+  var username = document.getElementById('user-username');
+  var usernameValue = username.value;
+
+  var password = document.getElementById('user-password');
+  var passwordValue = password.value;
+
+  console.log('the username is: ' + usernameValue);
+  console.log('the password is: ' + passwordValue);
+
+  if(usernameValue != null && passwordValue != null) {
+    for(var i = 0; i < allUsers.length; i++) {
+      if(allUsers[i].username === usernameValue && allUsers[i].password === passwordValue) {
+
+        setActiveUser(usernameValue);
+        activeUser = getActiveUser();
+        setupActiveUserPanel(usernameValue);
+        setupActiveUserFollowers(usernameValue);
+        setupActiveUserFollowing(usernameValue);
+        displayAllRoars();
+        setupActiveUserTimeline(usernameValue);
+
+        var test = document.getElementById('all-roars');
+        var nodeListLength = test.getElementsByClassName('panel panel-info').length;
+        console.log('the all roar node list length is: '+ nodeListLength);
+
+        var loginPage = document.getElementById('roar-login-page');
+        var theTimeline = document.getElementById('roar-timeline');
+
+        loginPage.setAttribute('class', 'container-fluid hidden');
+        theTimeline.setAttribute('class', 'container-fluid show');
+
+      } else {
+        var warning = document.getElementById('login-warning-alert');
+        warning.setAttribute('class', 'alert alert-warning alert-dismissible show');
+      };
+    };
+  };
 });
 
-/*GET 'Post Tweet' BUTTON's 'submit' EVENT ON FORM*/
-//var myForm = document.getElementById('form-createTweet');
-var postBtn = document.getElementById('timeline-post-tweet-button');
-postBtn.addEventListener('click', function(event){
+
+/*GET 'Post Roar' BUTTON's 'submit' EVENT ON FORM*/
+var myForm = document.getElementById('form-createRoar');
+myForm.addEventListener('submit', function(event){
   event.preventDefault();
-  var message = document.getElementById('new-message');
-  var tweetMessage = message.value;
+  console.log('post roar button clicked');
+  console.log(getActiveUser());
 
-  var visible = document.getElementById('user-timeline');
-  var state = visible.getAttribute('class');
-  console.log(state);
-  var node = '';
-  user = getActiveUser();
+  var number = event.timeStamp;
+  console.log('Date/Timestamp = ' + number);
 
-  if(state == 'container hidden'){
-    node = 'twitter-timeline';
-    createTweet(user, tweetMessage);
-    displaySingleTweet(user, tweetMessage, node);
-    configureTimelineTweets();
-  }
-  if(state == 'container show'){
-    node = 'user-all-tweets';
-    createTweet(user, tweetMessage);
-    displaySingleTweet(user, tweetMessage, node);
-    //configureTimelineTweets();
-  }
+  // setupInactiveUserTimeline('kingkong');
+  var inactiveuserTab = document.getElementById('tab-inactiveuser-timeline');
+  inactiveuserTab.setAttribute('class', 'show');
+  var inactiveuserTimeline = document.getElementById('inactiveuser-timeline');
+  inactiveuserTimeline.setAttribute('class', 'tab-pane show');
+
+
+
+  // sortRoars();
+  // var message = document.getElementById('newTweet');
+  // var tweetMessage = message.value;
+
+  // createRoar(activeUser, tweetMessage);
+  // displayTweet(activeUser, tweetMessage, 'activeuser');
+  // updateRoarCount(activeUser);
 
 }, false);
 
-
-var followButton = document.getElementById('follow-button');
-followButton.addEventListener('click', function(event) {
-  event.preventDefault();
-  var b = getAllFollowing('kaijuking');
-  console.log(b.length);
-
-  followButton.removeChild(followButton.firstChild);
-  var text = document.createTextNode('Following');
-  followButton.appendChild(text);
-  followButton.setAttribute('class', 'btn btn-info show');
-});
-
-
 /*Create a new tweet object and push it into the allTweets array*/
-function createTweet(username, tweetMessage) {
+function createRoar(username, tweetMessage) {
   var newTweet = new tweet(username, tweetMessage);
-  allTweets.push(newTweet);
-  console.log(allTweets);
+  allRoars.push(newTweet);
 };
 
-/*Generate and append the elements needed to post a new tweet*/
-function displaySingleTweet(username, tweetMessage, node){
-  console.log(node);
 
-  /*Create the element to hold the user's profile picture*/
-  var newImage = document.createElement('img');
-  newImage.setAttribute('class', 'media-object img-thumbnail img-responsive profile-image');
-  newImage.setAttribute('src', getProfileImageUrl(username));
+/*-----------------------------------------------------------------*/
+function randomRoar() {
+  var length = allRoars.length;
+  console.log('allRoars length is: ' + length);
 
-  var newImageLink = document.createElement('a');
-  newImageLink.setAttribute('href', '#');
-  newImageLink.setAttribute('name', getUserName(username));
-  newImageLink.appendChild(newImage);
+  if(length != null) {
+    var random = Math.floor((Math.random() * (length-1)) + 1);
+    console.log('random number is: ' + random);
+    console.log(allRoars[random].message);
+    var theMessage = allRoars[random].message;
+    var roar = document.getElementById('random-roar-message');
+    var roarMessage = document.createTextNode(theMessage);
+    roar.appendChild(roarMessage);
+    var theUsername = allRoars[random].username;
 
-  var newImageMediaDiv = document.createElement('div');
-  newImageMediaDiv.setAttribute('class', 'media-left media-top');
-  newImageMediaDiv.appendChild(newImageLink);
+    for(var i = 0; i < allUsers.length; i++) {
+      if(allUsers[i].username === theUsername) {
+        var realname = document.getElementById('random-roar-realname');
+        var rName = document.createTextNode(allUsers[i].username);
+        realname.appendChild(rName);
 
-  var newColumnDiv = document.createElement('div'); //this will need to be appended to newRowDiv
-  newColumnDiv.setAttribute('class', 'col-md-12');
-  newColumnDiv.appendChild(newImageMediaDiv);
-
-  /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
-  var favoriteIcon = document.createElement('i'); //this needs to be appended to spanFavoriteIcon
-  favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-  var spanFavoriteIcon = document.createElement('span');
-  spanFavoriteIcon.setAttribute('class', 'favorite');
-  spanFavoriteIcon.appendChild(favoriteIcon);
-
-  var retweetIcon = document.createElement('i'); //this needs to be appended to spanRetweetIcon
-  retweetIcon.setAttribute('class', 'fa fa-retweet');
-  var spanRetweetIcon = document.createElement('span');
-  spanRetweetIcon.setAttribute('class', 'retweet');
-  spanRetweetIcon.appendChild(retweetIcon);
-
-  var spanTweetRealName = document.createElement('span');
-  spanTweetRealName.setAttribute('class', 'realname');
-  var realName = document.createTextNode(getRealName(username));
-  spanTweetRealName.appendChild(realName);
-
-  var spanTweetUserName = document.createElement('span');
-  spanTweetUserName.setAttribute('class', 'username');
-  var userName = document.createTextNode('@' + getUserName(username));
-  spanTweetUserName.appendChild(userName);
-
-  var newMediaHeading = document.createElement('h4'); //this needs to be be appended to newMediaBodyDiv
-  newMediaHeading.setAttribute('class', 'media-heading');
-  newMediaHeading.appendChild(spanTweetUserName);
-  newMediaHeading.appendChild(spanTweetRealName);
-  newMediaHeading.appendChild(spanRetweetIcon);
-  newMediaHeading.appendChild(spanFavoriteIcon);
-
-  var newMediaBodyDiv = document.createElement('div'); //this needs to be appended to newRowDiv
-  newMediaBodyDiv.setAttribute('class', 'media-body');
-  newMediaBodyDiv.appendChild(newMediaHeading);
-  var theTweetMessage = document.createTextNode(tweetMessage);
-  var messageParagraph = document.createElement('p');
-  messageParagraph.appendChild(theTweetMessage);
-  newMediaBodyDiv.appendChild(messageParagraph);
-
-  newColumnDiv.appendChild(newMediaBodyDiv);
-  var newRowDiv = document.createElement('div'); //this will need to be appended to parentNode
-  newRowDiv.setAttribute('class', 'row');
-  newRowDiv.appendChild(newColumnDiv);
-
-  var parentNode = document.getElementById(node); //('user-all-tweets');
-  parentNode.appendChild(newRowDiv);
-
-};
-
-/*Twitter Timeline - The following functions are used for Issue #1*/
-/*Generate and append the elements needed to post a new tweet*/
-function displayTimeLineTweets() {
-  console.log('tweet array length is: ' + allTweets.length);
-  for(var i = 0; i < allTweets.length; i++) {
-    var username = allTweets[i].username;
-
-    /*Create the element to hold the user's profile picture*/
-    var newImage = document.createElement('img');
-    newImage.setAttribute('class', 'media-object img-thumbnail img-responsive profile-image');
-    newImage.setAttribute('src', getProfileImageUrl(username));
-
-    var newImageLink = document.createElement('a');
-    newImageLink.setAttribute('href', '#');
-    newImageLink.setAttribute('name', getUserName(username));
-    newImageLink.appendChild(newImage);
-
-    var newImageMediaDiv = document.createElement('div');
-    newImageMediaDiv.setAttribute('class', 'media-left media-top');
-    newImageMediaDiv.appendChild(newImageLink);
-
-    var newColumnDiv = document.createElement('div'); //this will need to be appended to newRowDiv
-    newColumnDiv.setAttribute('class', 'col-md-12');
-    newColumnDiv.appendChild(newImageMediaDiv);
-
-    /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
-    var favoriteIcon = document.createElement('i'); //this needs to be appended to spanFavoriteIcon
-    favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-    var spanFavoriteIcon = document.createElement('span');
-    spanFavoriteIcon.setAttribute('class', 'favorite');
-    spanFavoriteIcon.appendChild(favoriteIcon);
-
-    var retweetIcon = document.createElement('i'); //this needs to be appended to spanRetweetIcon
-    retweetIcon.setAttribute('class', 'fa fa-retweet');
-    var spanRetweetIcon = document.createElement('span');
-    spanRetweetIcon.setAttribute('class', 'retweet');
-    spanRetweetIcon.appendChild(retweetIcon);
-
-    var spanTweetRealName = document.createElement('span');
-    spanTweetRealName.setAttribute('class', 'realname');
-    var realName = document.createTextNode(getRealName(username));
-    spanTweetRealName.appendChild(realName);
-
-    var spanTweetUserName = document.createElement('span');
-    spanTweetUserName.setAttribute('class', 'username');
-    var userName = document.createTextNode('@' + getUserName(username));
-    spanTweetUserName.appendChild(userName);
-
-    var newMediaHeading = document.createElement('h4'); //this needs to be be appended to newMediaBodyDiv
-    newMediaHeading.setAttribute('class', 'media-heading');
-    newMediaHeading.appendChild(spanTweetUserName);
-    newMediaHeading.appendChild(spanTweetRealName);
-    newMediaHeading.appendChild(spanRetweetIcon);
-    newMediaHeading.appendChild(spanFavoriteIcon);
-
-    var newMediaBodyDiv = document.createElement('div'); //this needs to be appended to newRowDiv
-    newMediaBodyDiv.setAttribute('class', 'media-body');
-    newMediaBodyDiv.appendChild(newMediaHeading);
-    var theTweetMessage = document.createTextNode(allTweets[i].message);
-    var messageParagraph = document.createElement('p');
-    messageParagraph.appendChild(theTweetMessage);
-    newMediaBodyDiv.appendChild(messageParagraph);
-
-    newColumnDiv.appendChild(newMediaBodyDiv);
-    var newRowDiv = document.createElement('div'); //this will need to be appended to parentNode
-    newRowDiv.setAttribute('class', 'row');
-    newRowDiv.appendChild(newColumnDiv);
-
-
-    var parentNode = document.getElementById('twitter-timeline');
-    parentNode.appendChild(newRowDiv);
-
-  };
-};
-
-/*Configure the behavior of the links in the default tweets*/
-function configureTimelineTweets(){
-  /*Shows either the 'follow-user' DIV (Issue #2) or 'post-tweet' DIV (Issue #3)*/
-  var linkBtn = document.getElementsByTagName('a');
-
-  for(var i = 0; i < linkBtn.length; i++){
-    linkBtn[i].addEventListener('click', function(event) {
-      var targetUserName = event.target.parentNode.name;
-      console.log('The target user is: ' + targetUserName);
-      var userTimeline = document.getElementById('user-timeline');
-      var twitterTimeline = document.getElementById('twitter-timeline');
-      var me = event.target.id;
-      console.log('the event is: ' + me);
-      if(targetUserName != null){
-        console.log('targetUserName is not null');
-        displayAllUserTweets(targetUserName);
-        setupUserTimeline(targetUserName);
-        toggleTweetFollowButton(targetUserName);
-        twitterTimeline.setAttribute('class', 'container hidden');
-        userTimeline.setAttribute('class', 'container show');
-        console.log(getAllFollowers(targetUserName));
+        var profilePic = document.getElementById('random-roar-profile-pic');
+        var pictureURL = allUsers[i].profileImage;
+        profilePic.setAttribute('src', pictureURL);
       };
-    });
-  };
-};
-
-function setupUserTimeline(username){
-  var realNameText = getRealName(username);
-  var realName = document.getElementById('realname');
-  realName.textContent = realNameText;
-
-  var userNameText = '@' + getUserName(username);
-  var userName = document.getElementById('username');
-  userName.textContent = userNameText;
-
-  var followerCount = getTotalFollowers(username);
-  var numFollowers = document.getElementById('numFollowers')
-  numFollowers.textContent = followerCount + " Followers";
-
-  var followingCount = getTotalFollowing(username);
-  var numFollowing = document.getElementById('numFollowing')
-  numFollowing.textContent = followingCount + " Following";
-
-  var profileImageURL = getProfileImageUrl(username);
-  var profileImage = document.getElementById('profilepic');
-  profileImage.setAttribute('src', profileImageURL);
-
-  var headerImageURL = getHeaderImageUrl(username);
-  var headerImage = document.getElementById('hero');
-  headerImage.setAttribute('src', headerImageURL);
-  headerImage.style.backgroundImage = "url('" + headerImageURL + "')";
-  console.log("realname = " + realNameText);
-  console.log("username = " + userNameText);
-  console.log("numFollowers = " + followerCount);
-  console.log("numFollowing = " + followingCount);
-  console.log("profile image url = " + profileImageURL);
-  console.log("header image url = " + headerImageURL);
-};
-
-/*Generate and append the elements needed to post a new tweet*/
-function displayAllUserTweets(username) {
-  for( var i = 0; i < allTweets.length; i++) {
-    if(username === allTweets[i].username) {
-      var newImage = document.createElement('img');
-      newImage.setAttribute('class', 'media-object img-thumbnail img-responsive profile-image');
-      newImage.setAttribute('src', getProfileImageUrl(username));
-
-      var newImageLink = document.createElement('a');
-      newImageLink.setAttribute('href', '#');
-      newImageLink.setAttribute('name', getUserName(username));
-      newImageLink.appendChild(newImage);
-
-      var newImageMediaDiv = document.createElement('div');
-      newImageMediaDiv.setAttribute('class', 'media-left media-top');
-      newImageMediaDiv.appendChild(newImageLink);
-
-      var newColumnDiv = document.createElement('div'); //this will need to be appended to newRowDiv
-      newColumnDiv.setAttribute('class', 'col-md-12');
-      newColumnDiv.appendChild(newImageMediaDiv);
-
-      /*Create the elements to hold the user's realname, username, retweet/favorite icons and the tweet message*/
-      var favoriteIcon = document.createElement('i'); //this needs to be appended to spanFavoriteIcon
-      favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-      var spanFavoriteIcon = document.createElement('span');
-      spanFavoriteIcon.setAttribute('class', 'favorite');
-      spanFavoriteIcon.appendChild(favoriteIcon);
-
-      var retweetIcon = document.createElement('i'); //this needs to be appended to spanRetweetIcon
-      retweetIcon.setAttribute('class', 'fa fa-retweet');
-      var spanRetweetIcon = document.createElement('span');
-      spanRetweetIcon.setAttribute('class', 'retweet');
-      spanRetweetIcon.appendChild(retweetIcon);
-
-      var spanTweetRealName = document.createElement('span');
-      spanTweetRealName.setAttribute('class', 'realname');
-      var realName = document.createTextNode(getRealName(username));
-      spanTweetRealName.appendChild(realName);
-
-      var spanTweetUserName = document.createElement('span');
-      spanTweetUserName.setAttribute('class', 'username');
-      var userName = document.createTextNode('@' + getUserName(username));
-      spanTweetUserName.appendChild(userName);
-
-      var newMediaHeading = document.createElement('h4'); //this needs to be be appended to newMediaBodyDiv
-      newMediaHeading.setAttribute('class', 'media-heading');
-      newMediaHeading.appendChild(spanTweetUserName);
-      newMediaHeading.appendChild(spanTweetRealName);
-      newMediaHeading.appendChild(spanRetweetIcon);
-      newMediaHeading.appendChild(spanFavoriteIcon);
-
-      var newMediaBodyDiv = document.createElement('div'); //this needs to be appended to newRowDiv
-      newMediaBodyDiv.setAttribute('class', 'media-body');
-      newMediaBodyDiv.appendChild(newMediaHeading);
-      var theTweetMessage = document.createTextNode(allTweets[i].message);
-      var messageParagraph = document.createElement('p');
-      messageParagraph.appendChild(theTweetMessage);
-      newMediaBodyDiv.appendChild(messageParagraph);
-
-      newColumnDiv.appendChild(newMediaBodyDiv);
-      var newRowDiv = document.createElement('div'); //this will need to be appended to parentNode
-      newRowDiv.setAttribute('class', 'row');
-      newRowDiv.appendChild(newColumnDiv);
-
-      var parentNode = document.getElementById('user-all-tweets');
-      parentNode.appendChild(newRowDiv);
     };
+
+    var username = document.getElementById('random-roar-username');
+    var uName = document.createTextNode('@' + theUsername);
+    username.appendChild(uName);
   };
 };
 
-/*--------------------------------------------------------------------------*/
-/*Return all the user's Tweets based upon the user's username*/
-function toggleTweetFollowButton(username){
-  var btnPost = document.getElementById('post-button');
-  var btnFollow = document.getElementById('follow-button');
-  //var followingState = isFollowing(username);
+function getActiveUser() {
   for(var i = 0; i < allUsers.length; i++) {
-    var active = getActiveUser();
-    if(username === active) {
-      btnPost.setAttribute('class', 'btn btn-primary hide');
-      btnFollow.setAttribute('class', 'btn btn-primary hide');
-    } else if (username != active && isFollowing(username)) { //followingState == true) {
-      btnPost.setAttribute('class', 'btn btn-primary hide');
-      btnFollow.setAttribute('class', 'btn btn-primary hide');
-    } else {
-      btnPost.setAttribute('class', 'btn btn-primary hide');
-      btnFollow.setAttribute('class', 'btn btn-primary show');
+    if(allUsers[i].isActiveUser == true){
+      return allUsers[i].username;
     };
   };
 };
 
-function getAllTweets(username) {
-  for(var i = 0; i < allTweets.length; i++) {
-    if(allTweets[i].username === username) {
-      return allTweets[i].message;
-      //console.log(allTweets[i].message);
-    }
-  }
-}
-
-/*Return all the user's followers based upon the user's username*/
-function getAllFollowers(username) {
+function setActiveUser(username) {
   for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === username) {
-      return allUsers[i].followers;
-      console.log(allUsers[i].followers);
-    };
-  };
-};
-
-/*Return all the people the user is following based upon the user's username*/
-function getAllFollowing(username) {
-  for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === username) {
-      return allUsers[i].following;
-      console.log(username + ' is following: ' + allUsers[i].following);
-    };
-  };
-};
-
-function isFollowing(username){
-  var isAFollower = false;
-  for(var i = 0; i < allUsers.length; i++){
     if(allUsers[i].username === username){
-      for(var n = 0; n < allUsers[i].followers.length; n++){
-        console.log(allUsers[i].followers[n]);
-        if(allUsers[i].followers[n] === activeUser){
-          isAFollower = true;
-        } else {
-          continue;
-        };
-      };
-    };
-  };
-  console.log(isAFollower);
-  return isAFollower;
-};
-
-/*Add a new 'follower' to the user*/
-function addFollower(username, newFollower) {
-  for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === username) {
-      allUsers[i].followers.push(newFollower);
-    };
-  };
-};
-
-/*Add a new 'following' to the user*/
-function addFollowing(username, newFollowing) {
-  for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === username) {
-      allUsers[i].following.push(newFollowing);
-    };
-  };
-};
-
-/*Update the user's tweet count. Tweet count property is in the "allUsers" array*/
-function updateTweetCount(username) {
-  for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === username) {
-      allUsers[i].tweetCount++;
-    };
-  };
-};
-
-function getTotalFollowers(username) {
-  for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === username) {
-      return allUsers[i].followers.length;
-    };
-  };
-};
-
-function getTotalFollowing(username) {
-  for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].username === username) {
-      return allUsers[i].following.length;
+      allUsers[i].isActiveUser = true;
+      console.log(username + ' is now the active user');
     };
   };
 };
@@ -568,113 +245,547 @@ function getRealName(username) {
   }
 };
 
-function getActiveUser() {
+function updateRoarCount(username) {
   for(var i = 0; i < allUsers.length; i++) {
-    if(allUsers[i].isActiveUser == true){
-      return allUsers[i].username;
+    if(allUsers[i].username === username) {
+      allUsers[i].roarCount++;
     };
   };
 };
 
+function getTotalFollowers(username) {
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === username) {
+      return allUsers[i].followers.length;
+    };
+  };
+};
 
+function getTotalFollowing(username) {
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === username) {
+      return allUsers[i].following.length;
+    };
+  };
+};
 
-var tstBtn = document.getElementById('test-button');
-tstBtn.addEventListener('click', function(event) {
-  event.preventDefault();
-  var username = 'kaijuking';
+function setupActiveUserPanel(username) {
+  var headerImage = document.getElementById('activeuser-panel-header');
+  var headerURL = getHeaderImageUrl(username);
+  console.log('user header image url is: ' + headerURL);
+  headerImage.style.backgroundImage = headerURL;
 
-  var userTweets = document.createElement('div');
-  userTweets.setAttribute('class', 'container');
-  userTweets.setAttribute('id', username + '-all-tweets');
+  var profileImage = document.getElementById('activeuser-panel-profile-pic');
+  console.log('user profile image url is: ' + getProfileImageUrl(username));
+  var profileURL = getProfileImageUrl(username);
+  profileImage.setAttribute('src', profileURL);
 
-  var followButton = document.createElement('button');
-  followButton.setAttribute('type', 'button');
-  followButton.setAttribute('class', 'btn btn-default show');
-  followButton.setAttribute('id', 'follow-button');
-  followButton.setAttribute('value', 'FollowUser');
-  var buttonText2 = document.createTextNode('Follow User');
-  followButton.appendChild(buttonText2);
-
-  var tweetButton = document.createElement('button');
-  tweetButton.setAttribute('type', 'submit');
-  tweetButton.setAttribute('class', 'btn btn-primary show');
-  tweetButton.setAttribute('id', 'post-button');
-  tweetButton.setAttribute('value', 'PostTweet');
-  var buttonText1 = document.createTextNode('Post Tweet');
-  tweetButton.appendChild(buttonText1);
-
-  var following = document.createElement('span');
-  following.setAttribute('class', 'following');
-  following.setAttribute('id', username + '-following');
-  var followingCount = document.createTextNode(getTotalFollowing(username) + ' Following');
-  following.appendChild(followingCount);
-  var followers = document.createElement('span');
-  followers.setAttribute('class', 'followers');
-  followers.setAttribute('id', username + '-followers');
-  var followerCount = document.createTextNode(getTotalFollowers(username) + ' Followers');
-  followers.appendChild(followerCount);
-
-  var followInfo = document.createElement('p');
-  followInfo.appendChild(following);
-  followInfo.appendChild(followers);
-
-  var realName = document.createElement('span');
-  realName.setAttribute('class', 'realname');
-  realName.setAttribute('id', username + '-realname');
+  var realName = document.getElementById('activeuser-panel-realname');
+  var userName = document.getElementById('activeuser-panel-username');
   var realText = document.createTextNode(getRealName(username));
+  var userText = document.createTextNode('@' + username);
   realName.appendChild(realText);
-  var userName = document.createElement('span');
-  userName.setAttribute('class', 'username');
-  userName.setAttribute('id', username + '-username');
-  var userText = document.createTextNode('@' + getUserName(username));
   userName.appendChild(userText);
+};
 
-  var nameInfo = document.createElement('p');
-  nameInfo.appendChild(realName);
-  nameInfo.appendChild(userName);
+function setupActiveUserFollowers(username) {
+  var numFollowers = 0;
+  var theFollowers = [];
 
-  var userInfo = document.createElement('div');
-  userInfo.setAttribute('class', 'pull-left user-info');
-  userInfo.appendChild(nameInfo);
-  userInfo.appendChild(followInfo);
-  userInfo.appendChild(tweetButton);
-  userInfo.appendChild(followButton);
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === username) {
+      numFollowers = allUsers[i].followers.length;
+      console.log('The followers of ' + username + ' are: ' + allUsers[i].followers);
+      theFollowers = allUsers[i].followers;
+    };
+  };
+  console.log(username + ' has ' + numFollowers + ' followers');
+  console.log(theFollowers);
+
+  var test = document.getElementById('activeuser-followers');
+  var nodelistLength = test.getElementsByTagName('a').length;
+  console.log('the nodelist length is: ' + nodelistLength);
+
+  var lgFollowers = document.getElementById('numFollowers');
+  var totalFollowers = document.createTextNode(getTotalFollowers(username) + ' Followers');
+  lgFollowers.appendChild(totalFollowers);
+
+  var lgFollowing = document.getElementById('numFollowing');
+  var totalFollowing = document.createTextNode(getTotalFollowing(username) + ' Following');
+  lgFollowing.appendChild(totalFollowing);
+
+  var difference = numFollowers - nodelistLength;
+  if(numFollowers != nodelistLength){
+    for(var i = 0; i < difference; i++) {
+      var aElement = document.createElement('a');
+      aElement.setAttribute('href', '#');
+      aElement.setAttribute('class', 'list-group-item');
+      aElement.setAttribute('data-id', theFollowers[i]);
+      var aText = document.createTextNode(theFollowers[i]);
+      aElement.appendChild(aText);
+      var parent = document.getElementById('activeuser-followers');
+      parent.appendChild(aElement);
+    };
+  };
+
+};
+
+function setupActiveUserFollowing(username) {
+  var numFollowing = 0;
+  var theFollowing = [];
+
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === username) {
+      numFollowing = allUsers[i].following.length;
+      console.log('Those following ' + username + ' are: ' + allUsers[i].following);
+      theFollowing = allUsers[i].following;
+    };
+  };
+
+  console.log(username + ' is following ' + numFollowing + ' users');
+  console.log(theFollowing);
+
+  var test = document.getElementById('activeuser-following');
+  var nodelistLength = test.getElementsByTagName('a').length;
+  console.log('the nodelist length is: ' + nodelistLength);
+
+  var difference = numFollowing - nodelistLength;
+  if(numFollowing != nodelistLength){
+    for(var i = 0; i < difference; i++) {
+      var aElement = document.createElement('a');
+      aElement.setAttribute('href', '#');
+      aElement.setAttribute('class', 'list-group-item');
+      aElement.setAttribute('data-id', theFollowing[i]);
+      var aText = document.createTextNode(theFollowing[i]);
+      aElement.appendChild(aText);
+      var parent = document.getElementById('activeuser-following');
+      parent.appendChild(aElement);
+    };
+  };
+};
+
+function setupActiveUserTimeline(username) {
+  var numRoars = 0;
+  var tmpArray = [];
+
+  for(var i = 0; i < allRoars.length; i++) {
+    if(allRoars[i].username === username) {
+      tmpArray.push(allRoars[i].message);
+      numRoars++;
+    };
+  };
+
+  console.log('the tmpArray has this many roars: ' + tmpArray.length);
+  console.log(tmpArray);
+  console.log(numRoars);
+
+  var test = document.getElementById('activeuser-timeline');
+  var nodeListLength = test.getElementsByClassName('panel panel-info').length;
+  console.log('the active user has this many roar nodes: '+ nodeListLength);
+
+  var theRealName = getRealName(username);
+  console.log('The real name is: ' + theRealName);
+  var theUserName = getUserName(username);
+  console.log('The user name is: ' + theUserName);
+  var profileImageURL = getProfileImageUrl(username);
+  console.log('The profile image URL is: ' + profileImageURL);
+  var headerImageURL = getHeaderImageUrl(username);
+  console.log('The header image URL is: ' + headerImageURL);
+  var difference = numRoars - nodeListLength;
+
+  var pImage = document.createElement('img');
+  pImage.setAttribute('class', 'img-thumbnail profile-pic');
+  pImage.setAttribute('src', profileImageURL);
+  pImage.setAttribute('alt', '...');
+
+  var listGroupHeader = document.createElement('li');
+  listGroupHeader.setAttribute('class', 'list-group-item');
+  listGroupHeader.setAttribute('id', 'user-timeline-header-image');
+  listGroupHeader.style.backgroundImage = headerImageURL;
+  listGroupHeader.appendChild(pImage);
+
+  var lgSpanRealName = document.createElement('span');
+  lgSpanRealName.setAttribute('class', 'realname');
+  var textNode1 = document.createTextNode(theRealName);
+  lgSpanRealName.appendChild(textNode1);
+
+  var lgSpanUserName = document.createElement('span');
+  lgSpanUserName.setAttribute('class', 'username');
+  var textNode2 = document.createTextNode('@' + theUserName);
+  lgSpanUserName.appendChild(textNode2);
+
+  var h4Header = document.createElement('h4');
+  h4Header.setAttribute('class', 'media-heading');
+  h4Header.appendChild(lgSpanRealName);
+  h4Header.appendChild(lgSpanUserName);
+
+  var liInfo = document.createElement('li');
+  liInfo.setAttribute('class', 'list-group-item');
+  liInfo.appendChild(h4Header);
+
+  var ulHeader = document.createElement('ul');
+  ulHeader.setAttribute('class', 'list-group');
+  ulHeader.appendChild(listGroupHeader);
+  ulHeader.appendChild(liInfo);
+
+  var parent = document.getElementById('activeuser-timeline');
+  parent.appendChild(ulHeader);
 
 
-  var profileImage = document.createElement('img');
-  profileImage.setAttribute('class', 'img-responsive img-thumbnail pull-left profile-image');
-  profileImage.setAttribute('id', username + '-profile-image');
-  profileImage.setAttribute('src', getProfileImageUrl(username));
-  profileImage.setAttribute('alt', '');
+  if(difference != 0) {
+    for(var i = nodeListLength; i < numRoars; i++) {
 
-  var headerImage = document.createElement('img');
-  headerImage.setAttribute('class', 'img-responsive img-thumbnail header-image');
-  headerImage.setAttribute('id', username + '-hero');
-  headerImage.setAttribute('src', getHeaderImageUrl(username));
-  headerImage.setAttribute('alt', '');
+      var profileImage = document.createElement('img');
+      profileImage.setAttribute('class', 'media-object profile-pic');
+      profileImage.setAttribute('data-id', 'profile-pic');
+      profileImage.setAttribute('src', profileImageURL);
+      profileImage.setAttribute('alt', '...');
 
-  var hero = document.createElement('div');
-  hero.setAttribute('class', 'container hero');
-  hero.appendChild(headerImage);
-  hero.appendChild(profileImage);
-  hero.appendChild(userInfo);
+      var aLink = document.createElement('a');
+      aLink.setAttribute('href', '#');
+      aLink.setAttribute('data-id', theUserName);
+      aLink.appendChild(profileImage);
 
-  var column = document.createElement('div');
-  column.setAttribute('class', 'col-md-12');
-  column.appendChild(hero);
+      var mediaImage = document.createElement('div');
+      mediaImage.setAttribute('class', 'media-left');
+      mediaImage.appendChild(aLink);
 
-  var row = document.createElement('div');
-  row.setAttribute('class', 'row');
-  row.appendChild(column);
+      var spanRealName = document.createElement('span');
+      spanRealName.setAttribute('class', 'realname');
+      spanRealName.setAttribute('data-id', 'realname');
+      var textRealName = document.createTextNode(theRealName);
+      spanRealName.appendChild(textRealName);
 
-  var user = document.createElement('div');
-  user.setAttribute('class', 'container show');
-  user.setAttribute('id', username + '-timeline');
-  user.setAttribute('name', 'user-timeline');
-  user.appendChild(row);
+      var spanUserName = document.createElement('span');
+      spanUserName.setAttribute('class', 'username');
+      spanUserName.setAttribute('data-id', 'username');
+      var textUserName = document.createTextNode('@' + theUserName);
+      spanUserName.appendChild(textUserName);
 
-  var parentNode = document.getElementById('test-div');
-  parentNode.appendChild(user);
-  parentNode.appendChild(userTweets);
+      var spanReRoar = document.createElement('span');
+      spanReRoar.setAttribute('class', 're-roar');
+      spanReRoar.setAttribute('data-id', 're-roar');
+      var reRoarIcon = document.createElement('i');
+      reRoarIcon.setAttribute('class', 'fa fa-retweet');
+      spanReRoar.appendChild(reRoarIcon);
 
-})
+      var spanFavorite = document.createElement('span');
+      spanFavorite.setAttribute('class', 'favorite');
+      spanFavorite.setAttribute('data-id', 'favorite');
+      var favoriteIcon = document.createElement('i');
+      favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+      spanFavorite.appendChild(favoriteIcon);
+
+      var mediaHeading1 = document.createElement('h4');
+      mediaHeading1.setAttribute('class', 'media-heading');
+      mediaHeading1.appendChild(spanRealName);
+      mediaHeading1.appendChild(spanUserName);
+      mediaHeading1.appendChild(spanReRoar);
+      mediaHeading1.appendChild(spanFavorite);
+
+      var spanRoarMessage = document.createElement('span');
+      spanRoarMessage.setAttribute('class', 'roar-message');
+      spanRoarMessage.setAttribute('data-id', 'roar-message');
+      var textRoarMessage = document.createTextNode(tmpArray[i]);
+      spanRoarMessage.appendChild(textRoarMessage);
+
+      var mediaHeading2 = document.createElement('h4');
+      mediaHeading2.setAttribute('class', 'media-heading');
+      mediaHeading2.appendChild(spanRoarMessage);
+
+      var mediaBody = document.createElement('div');
+      mediaBody.setAttribute('class', 'media-body');
+      mediaBody.appendChild(mediaHeading1);
+      mediaBody.appendChild(mediaHeading2);
+
+      var divMedia = document.createElement('div');
+      divMedia.setAttribute('class', 'media');
+      divMedia.appendChild(mediaImage);
+      divMedia.appendChild(mediaBody);
+
+      var panelBody = document.createElement('div');
+      panelBody.setAttribute('class', 'panel-body');
+      panelBody.appendChild(divMedia);
+
+      var panel = document.createElement('div');
+      panel.setAttribute('class', 'panel panel-info');
+      panel.appendChild(panelBody);
+
+      var parent = document.getElementById('activeuser-timeline');
+      parent.appendChild(panel);
+    };
+  };
+};
+
+function setupInactiveUserTimeline(username) {
+  var numRoars = 0;
+  var tmpArray = [];
+
+  for(var i = 0; i < allRoars.length; i++) {
+    if(allRoars[i].username === username) {
+      tmpArray.push(allRoars[i].message);
+      numRoars++;
+    };
+  };
+
+  console.log('the tmpArray has this many roars: ' + tmpArray.length);
+  console.log(tmpArray);
+  console.log(numRoars);
+
+  var test = document.getElementById('inactiveuser-timeline');
+  var nodeListLength = test.getElementsByClassName('panel panel-info').length;
+  console.log('the inactive user has this many roar nodes: '+ nodeListLength);
+
+  var theRealName = getRealName(username);
+  console.log('The real name is: ' + theRealName);
+  var theUserName = getUserName(username);
+  console.log('The user name is: ' + theUserName);
+  var profileImageURL = getProfileImageUrl(username);
+  console.log('The profile image URL is: ' + profileImageURL);
+  var headerImageURL = getHeaderImageUrl(username);
+  console.log('The header image URL is: ' + headerImageURL);
+  var difference = numRoars - nodeListLength;
+
+  var pImage = document.createElement('img');
+  pImage.setAttribute('class', 'img-thumbnail profile-pic');
+  pImage.setAttribute('src', profileImageURL);
+  pImage.setAttribute('alt', '...');
+
+  var listGroupHeader = document.createElement('li');
+  listGroupHeader.setAttribute('class', 'list-group-item');
+  listGroupHeader.setAttribute('id', 'user-timeline-header-image');
+  listGroupHeader.style.backgroundImage = headerImageURL;
+  listGroupHeader.appendChild(pImage);
+
+  var lgSpanRealName = document.createElement('span');
+  lgSpanRealName.setAttribute('class', 'realname');
+  var textNode1 = document.createTextNode(theRealName);
+  lgSpanRealName.appendChild(textNode1);
+
+  var lgSpanUserName = document.createElement('span');
+  lgSpanUserName.setAttribute('class', 'username');
+  var textNode2 = document.createTextNode('@' + theUserName);
+  lgSpanUserName.appendChild(textNode2);
+
+  var h4Header = document.createElement('h4');
+  h4Header.setAttribute('class', 'media-heading');
+  h4Header.appendChild(lgSpanRealName);
+  h4Header.appendChild(lgSpanUserName);
+
+  var liInfo = document.createElement('li');
+  liInfo.setAttribute('class', 'list-group-item');
+  liInfo.appendChild(h4Header);
+
+  var ulHeader = document.createElement('ul');
+  ulHeader.setAttribute('class', 'list-group');
+  ulHeader.appendChild(listGroupHeader);
+  ulHeader.appendChild(liInfo);
+
+  var parent = document.getElementById('inactiveuser-timeline');
+  parent.appendChild(ulHeader);
+
+
+  if(difference != 0) {
+    for(var i = nodeListLength; i < numRoars; i++) {
+
+      var profileImage = document.createElement('img');
+      profileImage.setAttribute('class', 'media-object profile-pic');
+      profileImage.setAttribute('data-id', 'profile-pic');
+      profileImage.setAttribute('src', profileImageURL);
+      profileImage.setAttribute('alt', '...');
+
+      var aLink = document.createElement('a');
+      aLink.setAttribute('href', '#');
+      aLink.setAttribute('data-id', theUserName);
+      aLink.appendChild(profileImage);
+
+      var mediaImage = document.createElement('div');
+      mediaImage.setAttribute('class', 'media-left');
+      mediaImage.appendChild(aLink);
+
+      var spanRealName = document.createElement('span');
+      spanRealName.setAttribute('class', 'realname');
+      spanRealName.setAttribute('data-id', 'realname');
+      var textRealName = document.createTextNode(theRealName);
+      spanRealName.appendChild(textRealName);
+
+      var spanUserName = document.createElement('span');
+      spanUserName.setAttribute('class', 'username');
+      spanUserName.setAttribute('data-id', 'username');
+      var textUserName = document.createTextNode('@' + theUserName);
+      spanUserName.appendChild(textUserName);
+
+      var spanReRoar = document.createElement('span');
+      spanReRoar.setAttribute('class', 're-roar');
+      spanReRoar.setAttribute('data-id', 're-roar');
+      var reRoarIcon = document.createElement('i');
+      reRoarIcon.setAttribute('class', 'fa fa-retweet');
+      spanReRoar.appendChild(reRoarIcon);
+
+      var spanFavorite = document.createElement('span');
+      spanFavorite.setAttribute('class', 'favorite');
+      spanFavorite.setAttribute('data-id', 'favorite');
+      var favoriteIcon = document.createElement('i');
+      favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+      spanFavorite.appendChild(favoriteIcon);
+
+      var mediaHeading1 = document.createElement('h4');
+      mediaHeading1.setAttribute('class', 'media-heading');
+      mediaHeading1.appendChild(spanRealName);
+      mediaHeading1.appendChild(spanUserName);
+      mediaHeading1.appendChild(spanReRoar);
+      mediaHeading1.appendChild(spanFavorite);
+
+      var spanRoarMessage = document.createElement('span');
+      spanRoarMessage.setAttribute('class', 'roar-message');
+      spanRoarMessage.setAttribute('data-id', 'roar-message');
+      var textRoarMessage = document.createTextNode(tmpArray[i]);
+      spanRoarMessage.appendChild(textRoarMessage);
+
+      var mediaHeading2 = document.createElement('h4');
+      mediaHeading2.setAttribute('class', 'media-heading');
+      mediaHeading2.appendChild(spanRoarMessage);
+
+      var mediaBody = document.createElement('div');
+      mediaBody.setAttribute('class', 'media-body');
+      mediaBody.appendChild(mediaHeading1);
+      mediaBody.appendChild(mediaHeading2);
+
+      var divMedia = document.createElement('div');
+      divMedia.setAttribute('class', 'media');
+      divMedia.appendChild(mediaImage);
+      divMedia.appendChild(mediaBody);
+
+      var panelBody = document.createElement('div');
+      panelBody.setAttribute('class', 'panel-body');
+      panelBody.appendChild(divMedia);
+
+      var panel = document.createElement('div');
+      panel.setAttribute('class', 'panel panel-info');
+      panel.appendChild(panelBody);
+
+      var parent = document.getElementById('inactiveuser-timeline');
+      parent.appendChild(panel);
+    };
+  };
+};
+
+function displayAllRoars(){
+  var length = allRoars.length;
+
+  var test = document.getElementById('all-roars');
+  var nodeListLength = test.getElementsByClassName('panel panel-info').length;
+  console.log('the all roar node list length is: '+ nodeListLength);
+
+  var difference = length - nodeListLength;
+  if(difference != 0) {
+    for(var i = nodeListLength; i < length; i++) {
+
+      var theRealName = getRealName(allRoars[i].username);
+      var theUserName = getUserName(allRoars[i].username);
+      var profileImageURL = getProfileImageUrl(allRoars[i].username);
+
+      var profileImage = document.createElement('img');
+      profileImage.setAttribute('class', 'media-object profile-pic');
+      profileImage.setAttribute('data-id', 'profile-pic');
+      profileImage.setAttribute('src', profileImageURL);
+      profileImage.setAttribute('alt', '...');
+
+      var aLink = document.createElement('a');
+      aLink.setAttribute('href', '#');
+      aLink.setAttribute('data-id', theUserName);
+      aLink.appendChild(profileImage);
+
+      var mediaImage = document.createElement('div');
+      mediaImage.setAttribute('class', 'media-left');
+      mediaImage.appendChild(aLink);
+
+      var spanRealName = document.createElement('span');
+      spanRealName.setAttribute('class', 'realname');
+      spanRealName.setAttribute('data-id', 'realname');
+      var textRealName = document.createTextNode(theRealName);
+      spanRealName.appendChild(textRealName);
+
+      var spanUserName = document.createElement('span');
+      spanUserName.setAttribute('class', 'username');
+      spanUserName.setAttribute('data-id', 'username');
+      var textUserName = document.createTextNode('@' + theUserName);
+      spanUserName.appendChild(textUserName);
+
+      var spanReRoar = document.createElement('span');
+      spanReRoar.setAttribute('class', 're-roar');
+      spanReRoar.setAttribute('data-id', 're-roar');
+      var reRoarIcon = document.createElement('i');
+      reRoarIcon.setAttribute('class', 'fa fa-retweet');
+      spanReRoar.appendChild(reRoarIcon);
+
+      var spanFavorite = document.createElement('span');
+      spanFavorite.setAttribute('class', 'favorite');
+      spanFavorite.setAttribute('data-id', 'favorite');
+      var favoriteIcon = document.createElement('i');
+      favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+      spanFavorite.appendChild(favoriteIcon);
+
+      var mediaHeading1 = document.createElement('h4');
+      mediaHeading1.setAttribute('class', 'media-heading');
+      mediaHeading1.appendChild(spanRealName);
+      mediaHeading1.appendChild(spanUserName);
+      mediaHeading1.appendChild(spanReRoar);
+      mediaHeading1.appendChild(spanFavorite);
+
+      var spanRoarMessage = document.createElement('span');
+      spanRoarMessage.setAttribute('class', 'roar-message');
+      spanRoarMessage.setAttribute('data-id', 'roar-message');
+      var textRoarMessage = document.createTextNode(allRoars[i].message);
+      spanRoarMessage.appendChild(textRoarMessage);
+
+      var mediaHeading2 = document.createElement('h4');
+      mediaHeading2.setAttribute('class', 'media-heading');
+      mediaHeading2.appendChild(spanRoarMessage);
+
+      var mediaBody = document.createElement('div');
+      mediaBody.setAttribute('class', 'media-body');
+      mediaBody.appendChild(mediaHeading1);
+      mediaBody.appendChild(mediaHeading2);
+
+      var divMedia = document.createElement('div');
+      divMedia.setAttribute('class', 'media');
+      divMedia.appendChild(mediaImage);
+      divMedia.appendChild(mediaBody);
+
+      var panelBody = document.createElement('div');
+      panelBody.setAttribute('class', 'panel-body');
+      panelBody.appendChild(divMedia);
+
+      var panel = document.createElement('div');
+      panel.setAttribute('class', 'panel panel-info');
+      panel.appendChild(panelBody);
+
+      var parent = document.getElementById('all-roars');
+      parent.appendChild(panel);
+    };
+  };
+};
+
+function sortRoars(){
+//   var tmpArray = [];
+//   for(var i = 0; i < allRoars.length; i++){
+//     if(allRoars[i].username === 'kaijuking'){
+//       tmpArray = allRoars[i];
+//     }
+//   };
+//   console.log('tmpArray before sort: ' + tmpArray);
+//
+//   tmpArray.sort(function(a,b){
+//     if(a.timestamp > b.timestamp) {
+//       return 1;
+//     }
+//     if(a.timestamp < b.timestamp) {
+//       return 01;
+//     }
+//     return 0;
+//   });
+//
+//     console.log('tmpArray after sort: ' + tmpArray);
+//
+};

@@ -7,3 +7,11 @@ Date: 2/25/2016, I have done the following:
 - Created three mockups with each mockup related to a single, individual story.
 - Created a new repository on GIT entitled "OCCS-Project-1".
 - Created three "issues" one for each story and uploaded a screenshot of the mockup related to each story.
+- 
+
+<h1>Nakigoe v2</h1>
+Re-worked the layout of my project which now includes a login page.
+To access the site you can use anyone of the following usernames/passwords.
+#1: Username = kaijuking, Password = kaijuking
+#2: Username = godzilla, Password = godzilla
+#3: Username = kingkong, Password = kingkong

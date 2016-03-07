@@ -3,7 +3,7 @@
   <head>
     <title>Nakigoe</title>
     <meta charset="utf-8">
-    <link rel='stylesheet' href='styles/default.css'>
+    <link rel='stylesheet' href='css/default.css'>
     <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   </head>
@@ -13,11 +13,11 @@
       <div class='row'>
         <div class='col-md-12'>
           <div class="panel panel-info">
-            <div class='panel-heading'><a href='#' id='home-button'><i class="fa fa-twitter fa-2x"></i></a></div>
+            <div class='panel-heading'><button type='button' id='home-button'><i class="fa fa-twitter fa-2x"></i></button></div>
             <div class="panel-body">
               <form id='form-createTweet' action='' method='post'>
                 <div class='form-group'>
-                  <input type='text' class='form-control' id='newTweet' name='newTweet' maxlength='140' placeholder='type tweet message here'>
+                  <input type='text' class='form-control' id='new-message' name='newTweet' maxlength='140' placeholder='type tweet message here'>
                 </div>
                 <button type='submit' class='btn btn-primary' id="timeline-post-tweet-button" value="PostTweet">Post Tweet</button>
               </form>
@@ -28,85 +28,41 @@
     </div><!--END OF CONTAINER: Post Tweet-->
 
     <div class='container show' id='twitter-timeline'>
+      <!--<button type='button' class='btn btn-primary' id='test-button'>Test Button</button>-->
+
     </div><!--END OF CONTAINER: Used to house all tweets on Twitter Timeline-->
 
     <div class='container hidden' id='user-timeline'>
       <div class='row'>
         <div class='col-md-12'>
           <div class='container'>
-            <img class="img-responsive img-thumbnail header-image" id=inactive-hero src='images/kongheader.jpg' alt="...">
-            <img class="media-object img-thumbnail img-responsive profile-image pull-left" id='inactiveuser-profilepic' alt="...">
-              <div class='user-info pull-left'>
-                <p><span class='tweet-realname' id='inactiveuser-realname'>REALNAME</span><span class='tweet-username' id='inactiveuser-username'>@USERNAME</span><p>
-                <p><span class='num-following' id='inactiveuser-numFollowing'>## FOLLOWING</span><span class='num-followers' id='inactiveuser-numFollowers'>## FOLLOWERS</span><p>
-                <button type='submit' class='btn btn-primary show' id="post-button" value="PostTweet">Post Tweet</button>
-                <button type='button' class='btn btn-default show' id="follow-button" value="FollowUser" placeholder='adfasd'>Follow</button>
-              </div>
+            <img class="img-responsive img-thumbnail header-image" id='hero' src='' alt="...">
+            <img class="media-object img-thumbnail img-responsive profile-image pull-left" id='profilepic' alt="...">
+            <div class='user-info pull-left'>
+              <p><span class='realname' id='realname'>REALNAME</span><span class='username' id='username'>@USERNAME</span><p>
+              <p><span class='following' id='numFollowing'>## FOLLOWING</span><span class='followers' id='numFollowers'>## FOLLOWERS</span><p>
+              <button type='submit' class='btn btn-primary show' id="post-button" value="PostTweet">Post Tweet</button>
+              <button type='button' class='btn btn-default show' id="follow-button" value="FollowUser" placeholder='adfasd'>Follow</button>
+            </div>
           </div>
         </div>
       </div><!--User Info (profile pic, username, realame, # of followers and following)-->
-      <div class='container' id='inactiveuser-all-tweets'>
-        <!--<div class='row'>
-          <div class='col-md-12'>
-            <div class="media-left media-top">
-              <a href="#">
-                <img class="media-object img-thumbnail img-responsive profile-image" id='inactiveuser-profilepic' alt="...">
-              </a>
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">
-                <span class='tweet-realname'>REALNAME</span>
-                <span class='tweet-username'>@USERNAME</span>
-                <span class='tweet-retweet'><i class="fa fa-retweet"></i></span>
-                <span class='tweet-favorite'><i class="fa fa-heart-o"></i><span></h4>
-                <p>This is a template of what a tweet will look like</p>
-            </div>
-          </div>
-        </div>-->
+      <div class='container' id='user-all-tweets'>
+        <hr>
       </div>
-    </div><!--END OF CONTAINER: Inactive User-->
+    </div><!--END OF CONTAINER: All Users-->
 
-    <div class='container hidden' id='activeuser-timeline'>
-      <div class='row'>
-        <div class='col-md-12'>
-          <div class='container'>
-            <img class="img-responsive img-thumbnail header-image" src="images/yokohama_fuji.jpg" alt="...">
-            <img class="media-object img-thumbnail img-responsive profile-image pull-left" src="images/osakaflu.jpg" alt="...">
-              <div class='user-info pull-left'>
-                <p><span class='tweet-realname' id='activeuser-realname'>REALNAME</span><span class='tweet-username' id='activeuser-username'>@USERNAME</span><p>
-                <p><span class='num-following' id='activeuser-numFollowers'>## FOLLOWING</span><span class='num-followers' id='activeuser-numFollowing'>## FOLLOWERS</span><p>
-                <!--<button type='button' class='btn btn-primary' id="activeuser-post-tweet-button" data-toggle='modal' data-target='#myModal'>Post Tweet</button>-->
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Create Tweet</button>
-              </div>
-          </div>
-        </div>
-        <form id='modalTweet'>
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Post A Tweet To Your Timeline!</h4>
-              </div>
-              <div class="modal-body">
-                <input type='text' class='form-control' id='modal-newTweet' name='newTweet' maxlength='140' placeholder='type tweet message here'>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" id='newTweet' data-dismiss="modal">Post Tweet</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-      </div><!--User Info (profile pic, username, realame, # of followers and following)-->
-      <div class='container' id='activeuser-all-tweets'>
-      </div>
-    </div><!--END OF CONTAINER: Active User-->
 
-    <script src='scripts/default.js'></script>
+    <div class='container show' id='test-div'>
+    </div>
+
+
+
+
+
+
+
+    <script src='js/default.js'></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

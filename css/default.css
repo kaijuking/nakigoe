@@ -1,0 +1,19 @@
+.container {
+  margin-bottom: 5px;
+}
+
+.profile-image {
+  width: 125px;
+}
+
+.realname, .username, .retweet, .favorite {
+  margin-right: 10px;
+}
+
+.followers, .following {
+  margin-right: 5px;
+}
+
+.fa-retweet, .fa-heart-o {
+  margin-left: 10px;
+}

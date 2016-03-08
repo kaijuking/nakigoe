@@ -5,42 +5,42 @@ var allRoars = [
   {
     username: 'kaijuking',
     message: '怪獣だ。海の中から。ゴジラ来た。',
-    timestamp: 1
+    timestamp: 1457458167016
   },
   {
     username: 'godzilla',
     message: '俺は怪獣王だ！',
-    timestamp: 2
+    timestamp: 1457458183889
   },
   {
     username: 'kingkong',
     message: 'I like climbing tall buildings. But man, watch out for those planes!',
-    timestamp: 3
+    timestamp: 1457458195218
   },
   {
     username: 'godzilla',
     message: 'Things seem to be getting rather rough for #Gamera these days!',
-    timestamp: 4
+    timestamp: 1457458204971
   },
   {
     username: 'kingkong',
     message: 'godzilla - Just wait till we meet on the big screen again!',
-    timestamp: 5
+    timestamp: 1457458215012
   },
   {
     username: 'kaijuking',
     message: 'Cannot wait to get a new job!',
-    timestamp: 6
+    timestamp: 1457458294422
   },
   {
     username: 'gamera',
     message: 'Go see my new movie! Coming soon! 2016!',
-    timestamp: 7
+    timestamp: 1457458304231
   },
   {
     username: 'mothra',
     message: 'I am going on vacation. Infant Island here I come!',
-    timestamp: 7
+    timestamp: 1457458316081
   }
 ];
 
@@ -103,7 +103,7 @@ var allUsers = [
 ];
 
 var activeUser = '';
-//var inactiveUser = '';
+
 
 var roar = function(username, message, timestamp) {
   this.username = username;
@@ -136,8 +136,8 @@ loginButton.addEventListener('click', function(event) {
         setActiveUser(usernameValue);
         activeUser = getActiveUser();
         setupActiveUserPanel(usernameValue);
-        setupActiveUserFollowers(usernameValue);
-        setupActiveUserFollowing(usernameValue);
+        setupFollowers(usernameValue);
+        setupFollowing(usernameValue);
         displayAllRoars();
         setupActiveUserTimeline(usernameValue);
 
@@ -191,9 +191,12 @@ function createRoar(username, roarMessage, timestamp) {
 
 
 //Savig for later use when it comes to displaying inactive user's timeline
-// setupInactiveUserTimeline('kingkong');
-// var inactiveuserTab = document.getElementById('tab-inactiveuser-timeline');
-// inactiveuserTab.setAttribute('class', 'show');
+// create an array of activeUser's "following" roars
+// create an array of actieUser's roars
+// combine both arrays into one arrays
+// sort combined array by date/timestamp   (fyi - date/time stamp: Date.now())
+// make the tweet element
+// display the tweet element
 
 
 /*-----------------------------------------------------------------*/
@@ -322,7 +325,7 @@ function setupActiveUserPanel(username) {
   userName.appendChild(userText);
 };
 
-function setupActiveUserFollowers(username) {
+function setupFollowers(username) {
   var numFollowers = 0;
   var theFollowers = [];
 
@@ -351,39 +354,12 @@ function setupActiveUserFollowers(username) {
   var difference = numFollowers - nodelistLength;
   if(numFollowers != nodelistLength){
     for(var i = 0; i < difference; i++) {
-      var profileImg = document.createElement('img');
-      profileImg.setAttribute('class', 'profile-pic');
-      profileImg.setAttribute('src', getProfileImageUrl(theFollowers[i]));
-      profileImg.setAttribute('alt', '...');
-
-      var imgDiv = document.createElement('div');
-      imgDiv.setAttribute('class', 'media-left');
-      imgDiv.appendChild(profileImg);
-
-      var bodyDiv = document.createElement('div');
-      bodyDiv.setAttribute('class', 'media-body');
-      var textUsername = document.createTextNode(theFollowers[i]);
-      bodyDiv.appendChild(textUsername);
-
-      var mediaDiv = document.createElement('div');
-      mediaDiv.setAttribute('class', 'media');
-      mediaDiv.appendChild(imgDiv);
-      mediaDiv.appendChild(bodyDiv);
-
-      var aElement = document.createElement('a');
-      aElement.setAttribute('href', '#');
-      aElement.setAttribute('class', 'list-group-item');
-      aElement.setAttribute('data-id', theFollowers[i]);
-      aElement.appendChild(mediaDiv);
-
-      var parent = document.getElementById('activeuser-followers');
-      parent.appendChild(aElement);
+      setupFriends(theFollowers[i], 'activeuser-followers');
     };
   };
-
 };
 
-function setupActiveUserFollowing(username) {
+function setupFollowing(username) {
   var numFollowing = 0;
   var theFollowing = [];
 
@@ -405,33 +381,7 @@ function setupActiveUserFollowing(username) {
   var difference = numFollowing - nodelistLength;
   if(numFollowing != nodelistLength) {
     for(var i = 0; i < difference; i++) {
-      var profileImg = document.createElement('img');
-      profileImg.setAttribute('class', 'profile-pic');
-      profileImg.setAttribute('src', getProfileImageUrl(theFollowing[i]));
-      profileImg.setAttribute('alt', '...');
-
-      var imgDiv = document.createElement('div');
-      imgDiv.setAttribute('class', 'media-left');
-      imgDiv.appendChild(profileImg);
-
-      var bodyDiv = document.createElement('div');
-      bodyDiv.setAttribute('class', 'media-body');
-      var textUsername = document.createTextNode(theFollowing[i]);
-      bodyDiv.appendChild(textUsername);
-
-      var mediaDiv = document.createElement('div');
-      mediaDiv.setAttribute('class', 'media');
-      mediaDiv.appendChild(imgDiv);
-      mediaDiv.appendChild(bodyDiv);
-
-      var aElement = document.createElement('a');
-      aElement.setAttribute('href', '#');
-      aElement.setAttribute('class', 'list-group-item');
-      aElement.setAttribute('data-id', theFollowing[i]);
-      aElement.appendChild(mediaDiv);
-
-      var parent = document.getElementById('activeuser-following');
-      parent.appendChild(aElement);
+      setupFriends(theFollowing[i], 'activeuser-following');
     };
   };
 };
@@ -465,126 +415,17 @@ function setupActiveUserTimeline(username) {
   console.log('The header image URL is: ' + headerImageURL);
   var difference = numRoars - nodeListLength;
 
-  var pImage = document.createElement('img');
-  pImage.setAttribute('class', 'img-thumbnail profile-pic');
-  pImage.setAttribute('src', profileImageURL);
-  pImage.setAttribute('alt', '...');
+  setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 'activeuser-timeline');
 
-  var listGroupHeader = document.createElement('li');
-  listGroupHeader.setAttribute('class', 'list-group-item');
-  listGroupHeader.setAttribute('id', 'user-timeline-header-image');
-  listGroupHeader.style.backgroundImage = headerImageURL;
-  listGroupHeader.appendChild(pImage);
-
-  var lgSpanRealName = document.createElement('span');
-  lgSpanRealName.setAttribute('class', 'realname');
-  var textNode1 = document.createTextNode(theRealName);
-  lgSpanRealName.appendChild(textNode1);
-
-  var lgSpanUserName = document.createElement('span');
-  lgSpanUserName.setAttribute('class', 'username');
-  var textNode2 = document.createTextNode('@' + theUserName);
-  lgSpanUserName.appendChild(textNode2);
-
-  var h4Header = document.createElement('h4');
-  h4Header.setAttribute('class', 'media-heading');
-  h4Header.appendChild(lgSpanRealName);
-  h4Header.appendChild(lgSpanUserName);
-
-  var liInfo = document.createElement('li');
-  liInfo.setAttribute('class', 'list-group-item');
-  liInfo.appendChild(h4Header);
-
-  var ulHeader = document.createElement('ul');
-  ulHeader.setAttribute('class', 'list-group');
-  ulHeader.appendChild(listGroupHeader);
-  ulHeader.appendChild(liInfo);
-
-  var parent = document.getElementById('activeuser-timeline');
-  parent.appendChild(ulHeader);
-
+  var test = document.getElementById('activeuser-timeline');
+  var nodeListLength = test.getElementsByClassName('panel panel-info').length;
+  console.log('the active user has this many roar nodes: '+ nodeListLength);
+  var difference = numRoars - nodeListLength;
 
   if(difference != 0) {
     for(var i = nodeListLength; i < numRoars; i++) {
-
-      var profileImage = document.createElement('img');
-      profileImage.setAttribute('class', 'media-object profile-pic');
-      profileImage.setAttribute('data-id', 'profile-pic');
-      profileImage.setAttribute('src', profileImageURL);
-      profileImage.setAttribute('alt', '...');
-
-      var aLink = document.createElement('a');
-      aLink.setAttribute('href', '#');
-      aLink.setAttribute('data-id', theUserName);
-      aLink.appendChild(profileImage);
-
-      var mediaImage = document.createElement('div');
-      mediaImage.setAttribute('class', 'media-left');
-      mediaImage.appendChild(aLink);
-
-      var spanRealName = document.createElement('span');
-      spanRealName.setAttribute('class', 'realname');
-      spanRealName.setAttribute('data-id', 'realname');
-      var textRealName = document.createTextNode(theRealName);
-      spanRealName.appendChild(textRealName);
-
-      var spanUserName = document.createElement('span');
-      spanUserName.setAttribute('class', 'username');
-      spanUserName.setAttribute('data-id', 'username');
-      var textUserName = document.createTextNode('@' + theUserName);
-      spanUserName.appendChild(textUserName);
-
-      var spanReRoar = document.createElement('span');
-      spanReRoar.setAttribute('class', 're-roar');
-      spanReRoar.setAttribute('data-id', 're-roar');
-      var reRoarIcon = document.createElement('i');
-      reRoarIcon.setAttribute('class', 'fa fa-retweet');
-      spanReRoar.appendChild(reRoarIcon);
-
-      var spanFavorite = document.createElement('span');
-      spanFavorite.setAttribute('class', 'favorite');
-      spanFavorite.setAttribute('data-id', 'favorite');
-      var favoriteIcon = document.createElement('i');
-      favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-      spanFavorite.appendChild(favoriteIcon);
-
-      var mediaHeading1 = document.createElement('h4');
-      mediaHeading1.setAttribute('class', 'media-heading');
-      mediaHeading1.appendChild(spanRealName);
-      mediaHeading1.appendChild(spanUserName);
-      mediaHeading1.appendChild(spanReRoar);
-      mediaHeading1.appendChild(spanFavorite);
-
-      var spanRoarMessage = document.createElement('span');
-      spanRoarMessage.setAttribute('class', 'roar-message');
-      spanRoarMessage.setAttribute('data-id', 'roar-message');
-      var textRoarMessage = document.createTextNode(tmpArray[i]);
-      spanRoarMessage.appendChild(textRoarMessage);
-
-      var mediaHeading2 = document.createElement('h4');
-      mediaHeading2.setAttribute('class', 'media-heading');
-      mediaHeading2.appendChild(spanRoarMessage);
-
-      var mediaBody = document.createElement('div');
-      mediaBody.setAttribute('class', 'media-body');
-      mediaBody.appendChild(mediaHeading1);
-      mediaBody.appendChild(mediaHeading2);
-
-      var divMedia = document.createElement('div');
-      divMedia.setAttribute('class', 'media');
-      divMedia.appendChild(mediaImage);
-      divMedia.appendChild(mediaBody);
-
-      var panelBody = document.createElement('div');
-      panelBody.setAttribute('class', 'panel-body');
-      panelBody.appendChild(divMedia);
-
-      var panel = document.createElement('div');
-      panel.setAttribute('class', 'panel panel-info');
-      panel.appendChild(panelBody);
-
-      var parent = document.getElementById('activeuser-timeline');
-      parent.appendChild(panel);
+      var roarMessage = tmpArray[i];
+      setupRoars(theUserName, theRealName, profileImageURL, roarMessage, 'activeuser-timeline');
     };
   };
 };
@@ -618,126 +459,127 @@ function setupInactiveUserTimeline(username) {
   console.log('The header image URL is: ' + headerImageURL);
   var difference = numRoars - nodeListLength;
 
-  var pImage = document.createElement('img');
-  pImage.setAttribute('class', 'img-thumbnail profile-pic');
-  pImage.setAttribute('src', profileImageURL);
-  pImage.setAttribute('alt', '...');
+  setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 'inactiveuser-timeline');
 
-  var listGroupHeader = document.createElement('li');
-  listGroupHeader.setAttribute('class', 'list-group-item');
-  listGroupHeader.setAttribute('id', 'user-timeline-header-image');
-  listGroupHeader.style.backgroundImage = headerImageURL;
-  listGroupHeader.appendChild(pImage);
-
-  var lgSpanRealName = document.createElement('span');
-  lgSpanRealName.setAttribute('class', 'realname');
-  var textNode1 = document.createTextNode(theRealName);
-  lgSpanRealName.appendChild(textNode1);
-
-  var lgSpanUserName = document.createElement('span');
-  lgSpanUserName.setAttribute('class', 'username');
-  var textNode2 = document.createTextNode('@' + theUserName);
-  lgSpanUserName.appendChild(textNode2);
-
-  var h4Header = document.createElement('h4');
-  h4Header.setAttribute('class', 'media-heading');
-  h4Header.appendChild(lgSpanRealName);
-  h4Header.appendChild(lgSpanUserName);
-
-  var liInfo = document.createElement('li');
-  liInfo.setAttribute('class', 'list-group-item');
-  liInfo.appendChild(h4Header);
-
-  var ulHeader = document.createElement('ul');
-  ulHeader.setAttribute('class', 'list-group');
-  ulHeader.appendChild(listGroupHeader);
-  ulHeader.appendChild(liInfo);
-
-  var parent = document.getElementById('inactiveuser-timeline');
-  parent.appendChild(ulHeader);
-
+  // var pImage = document.createElement('img');
+  // pImage.setAttribute('class', 'img-thumbnail profile-pic');
+  // pImage.setAttribute('src', profileImageURL);
+  // pImage.setAttribute('alt', '...');
+  //
+  // var listGroupHeader = document.createElement('li');
+  // listGroupHeader.setAttribute('class', 'list-group-item');
+  // listGroupHeader.setAttribute('id', 'user-timeline-header-image');
+  // listGroupHeader.style.backgroundImage = headerImageURL;
+  // listGroupHeader.appendChild(pImage);
+  //
+  // var lgSpanRealName = document.createElement('span');
+  // lgSpanRealName.setAttribute('class', 'realname');
+  // var textNode1 = document.createTextNode(theRealName);
+  // lgSpanRealName.appendChild(textNode1);
+  //
+  // var lgSpanUserName = document.createElement('span');
+  // lgSpanUserName.setAttribute('class', 'username');
+  // var textNode2 = document.createTextNode('@' + theUserName);
+  // lgSpanUserName.appendChild(textNode2);
+  //
+  // var h4Header = document.createElement('h4');
+  // h4Header.setAttribute('class', 'media-heading');
+  // h4Header.appendChild(lgSpanRealName);
+  // h4Header.appendChild(lgSpanUserName);
+  //
+  // var liInfo = document.createElement('li');
+  // liInfo.setAttribute('class', 'list-group-item');
+  // liInfo.appendChild(h4Header);
+  //
+  // var ulHeader = document.createElement('ul');
+  // ulHeader.setAttribute('class', 'list-group');
+  // ulHeader.appendChild(listGroupHeader);
+  // ulHeader.appendChild(liInfo);
+  //
+  // var parent = document.getElementById('inactiveuser-timeline');
+  // parent.appendChild(ulHeader);
 
   if(difference != 0) {
     for(var i = nodeListLength; i < numRoars; i++) {
-
-      var profileImage = document.createElement('img');
-      profileImage.setAttribute('class', 'media-object profile-pic');
-      profileImage.setAttribute('data-id', 'profile-pic');
-      profileImage.setAttribute('src', profileImageURL);
-      profileImage.setAttribute('alt', '...');
-
-      var aLink = document.createElement('a');
-      aLink.setAttribute('href', '#');
-      aLink.setAttribute('data-id', theUserName);
-      aLink.appendChild(profileImage);
-
-      var mediaImage = document.createElement('div');
-      mediaImage.setAttribute('class', 'media-left');
-      mediaImage.appendChild(aLink);
-
-      var spanRealName = document.createElement('span');
-      spanRealName.setAttribute('class', 'realname');
-      spanRealName.setAttribute('data-id', 'realname');
-      var textRealName = document.createTextNode(theRealName);
-      spanRealName.appendChild(textRealName);
-
-      var spanUserName = document.createElement('span');
-      spanUserName.setAttribute('class', 'username');
-      spanUserName.setAttribute('data-id', 'username');
-      var textUserName = document.createTextNode('@' + theUserName);
-      spanUserName.appendChild(textUserName);
-
-      var spanReRoar = document.createElement('span');
-      spanReRoar.setAttribute('class', 're-roar');
-      spanReRoar.setAttribute('data-id', 're-roar');
-      var reRoarIcon = document.createElement('i');
-      reRoarIcon.setAttribute('class', 'fa fa-retweet');
-      spanReRoar.appendChild(reRoarIcon);
-
-      var spanFavorite = document.createElement('span');
-      spanFavorite.setAttribute('class', 'favorite');
-      spanFavorite.setAttribute('data-id', 'favorite');
-      var favoriteIcon = document.createElement('i');
-      favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-      spanFavorite.appendChild(favoriteIcon);
-
-      var mediaHeading1 = document.createElement('h4');
-      mediaHeading1.setAttribute('class', 'media-heading');
-      mediaHeading1.appendChild(spanRealName);
-      mediaHeading1.appendChild(spanUserName);
-      mediaHeading1.appendChild(spanReRoar);
-      mediaHeading1.appendChild(spanFavorite);
-
-      var spanRoarMessage = document.createElement('span');
-      spanRoarMessage.setAttribute('class', 'roar-message');
-      spanRoarMessage.setAttribute('data-id', 'roar-message');
-      var textRoarMessage = document.createTextNode(tmpArray[i]);
-      spanRoarMessage.appendChild(textRoarMessage);
-
-      var mediaHeading2 = document.createElement('h4');
-      mediaHeading2.setAttribute('class', 'media-heading');
-      mediaHeading2.appendChild(spanRoarMessage);
-
-      var mediaBody = document.createElement('div');
-      mediaBody.setAttribute('class', 'media-body');
-      mediaBody.appendChild(mediaHeading1);
-      mediaBody.appendChild(mediaHeading2);
-
-      var divMedia = document.createElement('div');
-      divMedia.setAttribute('class', 'media');
-      divMedia.appendChild(mediaImage);
-      divMedia.appendChild(mediaBody);
-
-      var panelBody = document.createElement('div');
-      panelBody.setAttribute('class', 'panel-body');
-      panelBody.appendChild(divMedia);
-
-      var panel = document.createElement('div');
-      panel.setAttribute('class', 'panel panel-info');
-      panel.appendChild(panelBody);
-
-      var parent = document.getElementById('inactiveuser-timeline');
-      parent.appendChild(panel);
+      setupRoars(theUserName, theRealName, profileImageURL, roarMessage, 'inactiveuser-timeline');
+      // var profileImage = document.createElement('img');
+      // profileImage.setAttribute('class', 'media-object profile-pic');
+      // profileImage.setAttribute('data-id', 'profile-pic');
+      // profileImage.setAttribute('src', profileImageURL);
+      // profileImage.setAttribute('alt', '...');
+      //
+      // var aLink = document.createElement('a');
+      // aLink.setAttribute('href', '#');
+      // aLink.setAttribute('data-id', theUserName);
+      // aLink.appendChild(profileImage);
+      //
+      // var mediaImage = document.createElement('div');
+      // mediaImage.setAttribute('class', 'media-left');
+      // mediaImage.appendChild(aLink);
+      //
+      // var spanRealName = document.createElement('span');
+      // spanRealName.setAttribute('class', 'realname');
+      // spanRealName.setAttribute('data-id', 'realname');
+      // var textRealName = document.createTextNode(theRealName);
+      // spanRealName.appendChild(textRealName);
+      //
+      // var spanUserName = document.createElement('span');
+      // spanUserName.setAttribute('class', 'username');
+      // spanUserName.setAttribute('data-id', 'username');
+      // var textUserName = document.createTextNode('@' + theUserName);
+      // spanUserName.appendChild(textUserName);
+      //
+      // var spanReRoar = document.createElement('span');
+      // spanReRoar.setAttribute('class', 're-roar');
+      // spanReRoar.setAttribute('data-id', 're-roar');
+      // var reRoarIcon = document.createElement('i');
+      // reRoarIcon.setAttribute('class', 'fa fa-retweet');
+      // spanReRoar.appendChild(reRoarIcon);
+      //
+      // var spanFavorite = document.createElement('span');
+      // spanFavorite.setAttribute('class', 'favorite');
+      // spanFavorite.setAttribute('data-id', 'favorite');
+      // var favoriteIcon = document.createElement('i');
+      // favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+      // spanFavorite.appendChild(favoriteIcon);
+      //
+      // var mediaHeading1 = document.createElement('h4');
+      // mediaHeading1.setAttribute('class', 'media-heading');
+      // mediaHeading1.appendChild(spanRealName);
+      // mediaHeading1.appendChild(spanUserName);
+      // mediaHeading1.appendChild(spanReRoar);
+      // mediaHeading1.appendChild(spanFavorite);
+      //
+      // var spanRoarMessage = document.createElement('span');
+      // spanRoarMessage.setAttribute('class', 'roar-message');
+      // spanRoarMessage.setAttribute('data-id', 'roar-message');
+      // var textRoarMessage = document.createTextNode(tmpArray[i]);
+      // spanRoarMessage.appendChild(textRoarMessage);
+      //
+      // var mediaHeading2 = document.createElement('h4');
+      // mediaHeading2.setAttribute('class', 'media-heading');
+      // mediaHeading2.appendChild(spanRoarMessage);
+      //
+      // var mediaBody = document.createElement('div');
+      // mediaBody.setAttribute('class', 'media-body');
+      // mediaBody.appendChild(mediaHeading1);
+      // mediaBody.appendChild(mediaHeading2);
+      //
+      // var divMedia = document.createElement('div');
+      // divMedia.setAttribute('class', 'media');
+      // divMedia.appendChild(mediaImage);
+      // divMedia.appendChild(mediaBody);
+      //
+      // var panelBody = document.createElement('div');
+      // panelBody.setAttribute('class', 'panel-body');
+      // panelBody.appendChild(divMedia);
+      //
+      // var panel = document.createElement('div');
+      // panel.setAttribute('class', 'panel panel-info');
+      // panel.appendChild(panelBody);
+      //
+      // var parent = document.getElementById('inactiveuser-timeline');
+      // parent.appendChild(panel);
     };
   };
 };
@@ -949,4 +791,155 @@ function sortRoars(){
 //
 //     console.log('tmpArray after sort: ' + tmpArray);
 //
+};
+
+function setupFriends(username, location) {
+  var profileImg = document.createElement('img');
+  profileImg.setAttribute('class', 'profile-pic');
+  profileImg.setAttribute('src', getProfileImageUrl(username));
+  profileImg.setAttribute('alt', '...');
+
+  var imgDiv = document.createElement('div');
+  imgDiv.setAttribute('class', 'media-left');
+  imgDiv.appendChild(profileImg);
+
+  var bodyDiv = document.createElement('div');
+  bodyDiv.setAttribute('class', 'media-body');
+  var textUsername = document.createTextNode(username);
+  bodyDiv.appendChild(textUsername);
+
+  var mediaDiv = document.createElement('div');
+  mediaDiv.setAttribute('class', 'media');
+  mediaDiv.appendChild(imgDiv);
+  mediaDiv.appendChild(bodyDiv);
+
+  var aElement = document.createElement('a');
+  aElement.setAttribute('href', '#');
+  aElement.setAttribute('class', 'list-group-item');
+  aElement.setAttribute('data-id', username);
+  aElement.appendChild(mediaDiv);
+
+  var parent = document.getElementById(location);
+  parent.appendChild(aElement);
+};
+
+function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, location) {
+  var pImage = document.createElement('img');
+  pImage.setAttribute('class', 'img-thumbnail profile-pic');
+  pImage.setAttribute('src', profileImageURL);
+  pImage.setAttribute('alt', '...');
+
+  var listGroupHeader = document.createElement('li');
+  listGroupHeader.setAttribute('class', 'list-group-item');
+  listGroupHeader.setAttribute('id', 'user-timeline-header-image');
+  listGroupHeader.style.backgroundImage = headerImageURL;
+  listGroupHeader.appendChild(pImage);
+
+  var lgSpanRealName = document.createElement('span');
+  lgSpanRealName.setAttribute('class', 'realname');
+  var textNode1 = document.createTextNode(theRealName);
+  lgSpanRealName.appendChild(textNode1);
+
+  var lgSpanUserName = document.createElement('span');
+  lgSpanUserName.setAttribute('class', 'username');
+  var textNode2 = document.createTextNode('@' + theUserName);
+  lgSpanUserName.appendChild(textNode2);
+
+  var h4Header = document.createElement('h4');
+  h4Header.setAttribute('class', 'media-heading');
+  h4Header.appendChild(lgSpanRealName);
+  h4Header.appendChild(lgSpanUserName);
+
+  var liInfo = document.createElement('li');
+  liInfo.setAttribute('class', 'list-group-item');
+  liInfo.appendChild(h4Header);
+
+  var ulHeader = document.createElement('ul');
+  ulHeader.setAttribute('class', 'list-group');
+  ulHeader.appendChild(listGroupHeader);
+  ulHeader.appendChild(liInfo);
+
+  var parent = document.getElementById(location);
+  parent.appendChild(ulHeader);
+};
+
+function setupRoars(theUserName, theRealName, profileImageURL, roarMessage, location) {
+  var profileImage = document.createElement('img');
+  profileImage.setAttribute('class', 'media-object profile-pic');
+  profileImage.setAttribute('data-id', 'profile-pic');
+  profileImage.setAttribute('src', profileImageURL);
+  profileImage.setAttribute('alt', '...');
+
+  var aLink = document.createElement('a');
+  aLink.setAttribute('href', '#');
+  aLink.setAttribute('data-id', theUserName);
+  aLink.appendChild(profileImage);
+
+  var mediaImage = document.createElement('div');
+  mediaImage.setAttribute('class', 'media-left');
+  mediaImage.appendChild(aLink);
+
+  var spanRealName = document.createElement('span');
+  spanRealName.setAttribute('class', 'realname');
+  spanRealName.setAttribute('data-id', 'realname');
+  var textRealName = document.createTextNode(theRealName);
+  spanRealName.appendChild(textRealName);
+
+  var spanUserName = document.createElement('span');
+  spanUserName.setAttribute('class', 'username');
+  spanUserName.setAttribute('data-id', 'username');
+  var textUserName = document.createTextNode('@' + theUserName);
+  spanUserName.appendChild(textUserName);
+
+  var spanReRoar = document.createElement('span');
+  spanReRoar.setAttribute('class', 're-roar');
+  spanReRoar.setAttribute('data-id', 're-roar');
+  var reRoarIcon = document.createElement('i');
+  reRoarIcon.setAttribute('class', 'fa fa-retweet');
+  spanReRoar.appendChild(reRoarIcon);
+
+  var spanFavorite = document.createElement('span');
+  spanFavorite.setAttribute('class', 'favorite');
+  spanFavorite.setAttribute('data-id', 'favorite');
+  var favoriteIcon = document.createElement('i');
+  favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+  spanFavorite.appendChild(favoriteIcon);
+
+  var mediaHeading1 = document.createElement('h4');
+  mediaHeading1.setAttribute('class', 'media-heading');
+  mediaHeading1.appendChild(spanRealName);
+  mediaHeading1.appendChild(spanUserName);
+  mediaHeading1.appendChild(spanReRoar);
+  mediaHeading1.appendChild(spanFavorite);
+
+  var spanRoarMessage = document.createElement('span');
+  spanRoarMessage.setAttribute('class', 'roar-message');
+  spanRoarMessage.setAttribute('data-id', 'roar-message');
+  var textRoarMessage = document.createTextNode(roarMessage);
+  spanRoarMessage.appendChild(textRoarMessage);
+
+  var mediaHeading2 = document.createElement('h4');
+  mediaHeading2.setAttribute('class', 'media-heading');
+  mediaHeading2.appendChild(spanRoarMessage);
+
+  var mediaBody = document.createElement('div');
+  mediaBody.setAttribute('class', 'media-body');
+  mediaBody.appendChild(mediaHeading1);
+  mediaBody.appendChild(mediaHeading2);
+
+  var divMedia = document.createElement('div');
+  divMedia.setAttribute('class', 'media');
+  divMedia.appendChild(mediaImage);
+  divMedia.appendChild(mediaBody);
+
+  var panelBody = document.createElement('div');
+  panelBody.setAttribute('class', 'panel-body');
+  panelBody.appendChild(divMedia);
+
+  var panel = document.createElement('div');
+  panel.setAttribute('class', 'panel panel-info');
+  panel.appendChild(panelBody);
+
+  var parent = document.getElementById(location);
+  parent.appendChild(panel);
 };

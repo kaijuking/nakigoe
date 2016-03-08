@@ -86,7 +86,7 @@
                   </a>
                 </h4>
               </div>
-              <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
                   <div class="list-group" id='activeuser-followers'>
                     <!--THIS IS WHERE THE USER'S LIST OF FOLLOWERS WILL GO-->
@@ -112,18 +112,20 @@
             </div>
           </div>
           <!--END: Active User's Panel Info-->
+
           <!--START: Tabs displaying 'all', 'activeuser' and 'inactiveuser' roars-->
           <div class='col-md-8' id='all-activeuser-inactiveuser'>
             <!--START: Post Roar panel-->
             <div class="panel-body">
               <form id='form-createRoar' action='' method='post'>
                 <div class='form-group'>
-                  <input type='text' class='form-control' id='new-message' name='newRoar' maxlength='140' placeholder='type roar message here'>
+                  <input type='text' class='form-control' id='new-roar-message' name='newRoar' maxlength='140' placeholder='type roar message here'>
                 </div>
                 <button type='submit' class='btn btn-primary' id="timeline-post-roar-button" value="PostRoar">Post Roar</button>
               </form>
             </div>
             <!--END: Post Roar panel-->
+
             <div>
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
@@ -134,14 +136,11 @@
               <!-- Tab panes -->
               <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane active" id="all-roars">
-                </div>
+                <div role="tabpanel" class="tab-pane active" id="all-roars"></div>
 
-                <div role="tabpanel" class="tab-pane" id="activeuser-timeline">
-                </div>
+                <div role="tabpanel" class="tab-pane" id="activeuser-timeline"></div>
 
-                <div role="tabpanel" class="tab-pane hidden" id="inactiveuser-timeline">
-                </div>
+                <div role="tabpanel" class="tab-pane" id="inactiveuser-timeline"></div>
               </div>
             </div>
           </div>

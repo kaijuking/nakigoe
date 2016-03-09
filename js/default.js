@@ -189,8 +189,6 @@ loginButton.addEventListener('click', function(event) {
       };
     };
   };
-
-  myLinks();
 });
 
 
@@ -221,8 +219,6 @@ myForm.addEventListener('submit', function(event){
   console.log(allRoars);
   console.log(allUsers);
 
-  myLinks();
-
 }, false);
 
 /*Create a new tweet object and push it into the allTweets array*/
@@ -231,7 +227,6 @@ function createRoar(username, roarMessage, timestamp) {
   allRoars.push(newRoar);
 };
 
-
 //Saving for later use when it comes to displaying inactive user's timeline
 // create an array of activeUser's "following" roars
 // create an array of actieUser's roars
@@ -239,6 +234,55 @@ function createRoar(username, roarMessage, timestamp) {
 // sort combined array by date/timestamp   (fyi - date/time stamp: Date.now())
 // make the tweet element
 // display the tweet element
+
+
+//Used for when the activeuser clicks on another user's profile image to view that user's profile page
+document.addEventListener('click', function(event) {
+  console.log(event.target);
+
+  var myLinks = document.getElementsByTagName('a');
+  console.log('the length of myLinks is: ' + myLinks.length);
+
+  for(var i = 0; i < myLinks.length; i++) {
+    myLinks[i].addEventListener('click', function(event) {
+      event.preventDefault();
+      console.log(event.target.parentNode);
+      var dataID = event.target.parentNode.getAttribute('data-id');
+      console.log('the data-id is: ' + dataID);
+      if(dataID != null && dataID === activeUser) {
+        $('#tab-activeuser-timeline a[href="#activeuser-timeline"]').tab('show');
+      }
+      if(dataID != null && dataID != activeUser) {
+        timelinePrep();
+        setupInactiveUserTimeline(dataID);
+        var friend = document.getElementById('tab-inactiveuser-timeline');
+        friend.setAttribute('class', 'show');
+        $('#tab-inactiveuser-timeline a[href="#inactiveuser-timeline"]').tab('show');
+      }
+    });
+  };
+
+  var dataID = event.target.getAttribute('data-id');
+
+  if(dataID != null){
+    var stringArray = dataID.split('-',2);
+    console.log(stringArray);
+    if(stringArray[0] === 'follow'){
+      // console.log('you are not following user: ' + stringArray[1]);
+      event.target.textContent = 'following';
+      event.target.setAttribute('data-id', 'following-' + stringArray[1]);
+      console.log('you are now following user: ' + stringArray[1]);
+      setupFriends(stringArray[1], 'activeuser-following');
+      updateFollowing(activeUser, stringArray[1]);
+    }
+    if(stringArray[0] === 'following'){
+      event.target.textContent = 'follow';
+      event.target.setAttribute('data-id', 'follow-' + stringArray[1]);
+      console.log('you are following user: ' + stringArray[1]);
+      removeFollowing(activeUser, stringArray[1]);
+    }
+  };
+});
 
 
 /*-----------------------------------------------------------------*/
@@ -332,6 +376,37 @@ function updateRoarCount(username) {
   };
 };
 
+function updateFollowing(username, following) {
+  for(var i = 0; i < allUsers.length; i++){
+    if(allUsers[i].username === username) {
+      allUsers[i].following.push(following);
+      console.log(allUsers[i]);
+    };
+  };
+};
+
+function removeFollowing(username, following) {
+  var parent = document.getElementById('activeuser-following');
+  console.log(parent);
+  var children = parent.getElementsByTagName('a');
+  console.log(children);
+  for(var i = 0; i < children.length; i++){
+    console.log(children[i]);
+    var child = children[i].getAttribute('data-id');
+    console.log('the child data-id is: ' + child);
+    if(child === following){
+      parent.removeChild(children[i]);
+    };
+  };
+
+  for(var i = 0; i < allUsers.length; i++){
+    if(allUsers[i].username === username){
+      allUsers[i].following.pop(following);
+      console.log(allUsers[i]);
+    };
+  };
+};
+
 function getTotalFollowers(username) {
   for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
@@ -344,6 +419,19 @@ function getTotalFollowing(username) {
   for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       return allUsers[i].following.length;
+    };
+  };
+};
+
+function isFollowing(username, theFollowing) {
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === username) {
+      var test = allUsers[i];
+      for(var y = 0; y < test.following.length; y++) {
+        if(test.following[y] === theFollowing) {
+          return true;
+        };
+      };
     };
   };
 };
@@ -462,10 +550,11 @@ function setupActiveUserTimeline(username) {
   var test = document.getElementById('activeuser-timeline');
   var nodeListLength = test.getElementsByClassName('panel panel-info').length;
   console.log('the active user has this many roar nodes: '+ nodeListLength);
+  var tmpLength = tmpArray.length;
   var difference = numRoars - nodeListLength;
 
   if(difference != 0) {
-    for(var i = nodeListLength; i < numRoars; i++) {
+    for(var i = tmpLength - 1; i >= nodeListLength; i--) {
       var roarMessage = tmpArray[i];
       setupRoars(theUserName, theRealName, profileImageURL, roarMessage, 'activeuser-timeline');
     };
@@ -539,7 +628,7 @@ function displayAllRoars(){
 
   var difference = length - nodeListLength;
   if(difference != 0) {
-    for(var i = nodeListLength; i < length; i++) {
+    for(var i = length - 1; i >= nodeListLength; i--) {
 
       var theRealName = getRealName(allRoars[i].username);
       var theUserName = getUserName(allRoars[i].username);
@@ -662,6 +751,16 @@ function setupFriends(username, location) {
 };
 
 function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, location) {
+
+  console.log('the active user is: ' + activeUser);
+  var activeFollowing = [];
+  for(var i = 0; i < allUsers.length; i++) {
+    if(allUsers[i].username === activeUser) {
+      activeFollowing = allUsers[i].following;
+    };
+  };
+  console.log('The activeUser is following these people: ' + activeFollowing);
+
   var pImage = document.createElement('img');
   pImage.setAttribute('class', 'img-thumbnail profile-pic');
   pImage.setAttribute('src', profileImageURL);
@@ -685,8 +784,44 @@ function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 
 
   var h4Header = document.createElement('h4');
   h4Header.setAttribute('class', 'media-heading');
-  h4Header.appendChild(lgSpanRealName);
-  h4Header.appendChild(lgSpanUserName);
+
+  var following = isFollowing(activeUser, theUserName);
+
+  if(theUserName === activeUser){
+    h4Header.appendChild(lgSpanRealName);
+    h4Header.appendChild(lgSpanUserName);
+  };
+
+  if(theUserName != activeUser){
+    for(var i = 0; i < activeFollowing.length; i++) {
+      console.log('the active following user is: ' + activeFollowing[i]);
+      console.log('theUserName is: ' + theUserName);
+
+      if(activeFollowing[i] === theUserName) {
+        var btnFollowing = document.createElement('button');
+        btnFollowing.setAttribute('type', 'button');
+        btnFollowing.setAttribute('data-id', 'following-' + theUserName);
+        var btnText = document.createTextNode('Following');
+        btnFollowing.appendChild(btnText);
+
+        h4Header.appendChild(lgSpanRealName);
+        h4Header.appendChild(lgSpanUserName);
+        h4Header.appendChild(btnFollowing);
+      };
+
+      if(activeFollowing[i] != theUserName && following != true) {
+        var btnFollow = document.createElement('button');
+        btnFollow.setAttribute('type', 'button');
+        btnFollow.setAttribute('data-id', 'follow-' + theUserName);
+        var btnText = document.createTextNode('Follow');
+        btnFollow.appendChild(btnText);
+
+        h4Header.appendChild(lgSpanRealName);
+        h4Header.appendChild(lgSpanUserName);
+        h4Header.appendChild(btnFollow);
+      };
+    };
+  };
 
   var liInfo = document.createElement('li');
   liInfo.setAttribute('class', 'list-group-item');
@@ -880,29 +1015,6 @@ function generateRoar(theUserName, theRealName, profileImageURL, theMessage, loc
   parentActiveUser.appendChild(panel);
 
   return true;
-};
-
-function myLinks() {
-  var myLinks = document.getElementsByTagName('a');
-  console.log('the length of myLinks is: ' + myLinks.length);
-  for(var i = 0; i < myLinks.length; i++) {
-    myLinks[i].addEventListener('click', function(event) {
-      event.preventDefault();
-      console.log(event.target.parentNode);
-      var dataID = event.target.parentNode.getAttribute('data-id');
-      console.log('the data-id is: ' + dataID);
-      if(dataID != null && dataID === activeUser) {
-        $('#tab-activeuser-timeline a[href="#activeuser-timeline"]').tab('show');
-      }
-      if(dataID != null && dataID != activeUser) {
-        timelinePrep();
-        setupInactiveUserTimeline(dataID);
-        var friend = document.getElementById('tab-inactiveuser-timeline');
-        friend.setAttribute('class', 'show');
-        $('#tab-inactiveuser-timeline a[href="#inactiveuser-timeline"]').tab('show');
-      }
-    });
-  };
 };
 
 function timelinePrep() {

@@ -207,7 +207,10 @@ myForm.addEventListener('submit', function(event){
 
   createRoar(activeUser, roarMessage, time);
   for(var i = 0; i < location.length; i++) {
-    postRoar(activeUser, roarMessage, location[i]);
+    var isDone = postRoar(activeUser, roarMessage, location[i]);
+    if(isDone == true) {
+      continue;
+    };
   };
   updateRoarCount(activeUser);
 
@@ -217,6 +220,8 @@ myForm.addEventListener('submit', function(event){
   console.log('the new roar message is: ' + roarMessage);
   console.log(allRoars);
   console.log(allUsers);
+
+  myLinks();
 
 }, false);
 
@@ -520,92 +525,9 @@ function postRoar(username, message, location) {
   var theUserName = username;
   var theRealName = getRealName(username);
   var profileImageURL = getProfileImageUrl(username);
-  // var tabLocation = 'all-roars';
-  // var userLocation = 'activeuser-timeline';
+  var theLocation = location;
 
-  generateRoar(theUserName, theRealName, profileImageURL, theMessage, location);
-
-  // var profileImage = document.createElement('img');
-  // profileImage.setAttribute('class', 'media-object profile-pic');
-  // profileImage.setAttribute('data-id', 'profile-pic');
-  // profileImage.setAttribute('src', profileImageURL);
-  // profileImage.setAttribute('alt', '...');
-  //
-  // var aLink = document.createElement('a');
-  // aLink.setAttribute('href', '#');
-  // aLink.setAttribute('data-id', username);
-  // aLink.appendChild(profileImage);
-  //
-  // var mediaImage = document.createElement('div');
-  // mediaImage.setAttribute('class', 'media-left');
-  // mediaImage.appendChild(aLink);
-  //
-  // var spanRealName = document.createElement('span');
-  // spanRealName.setAttribute('class', 'realname');
-  // spanRealName.setAttribute('data-id', 'realname');
-  // var textRealName = document.createTextNode(theRealName);
-  // spanRealName.appendChild(textRealName);
-  //
-  // var spanUserName = document.createElement('span');
-  // spanUserName.setAttribute('class', 'username');
-  // spanUserName.setAttribute('data-id', 'username');
-  // var textUserName = document.createTextNode('@' + username);
-  // spanUserName.appendChild(textUserName);
-  //
-  // var spanReRoar = document.createElement('span');
-  // spanReRoar.setAttribute('class', 're-roar');
-  // spanReRoar.setAttribute('data-id', 're-roar');
-  // var reRoarIcon = document.createElement('i');
-  // reRoarIcon.setAttribute('class', 'fa fa-retweet');
-  // spanReRoar.appendChild(reRoarIcon);
-  //
-  // var spanFavorite = document.createElement('span');
-  // spanFavorite.setAttribute('class', 'favorite');
-  // spanFavorite.setAttribute('data-id', 'favorite');
-  // var favoriteIcon = document.createElement('i');
-  // favoriteIcon.setAttribute('class', 'fa fa-heart-o');
-  // spanFavorite.appendChild(favoriteIcon);
-  //
-  // var mediaHeading1 = document.createElement('h4');
-  // mediaHeading1.setAttribute('class', 'media-heading');
-  // mediaHeading1.appendChild(spanRealName);
-  // mediaHeading1.appendChild(spanUserName);
-  // mediaHeading1.appendChild(spanReRoar);
-  // mediaHeading1.appendChild(spanFavorite);
-  //
-  // var spanRoarMessage = document.createElement('span');
-  // spanRoarMessage.setAttribute('class', 'roar-message');
-  // spanRoarMessage.setAttribute('data-id', 'roar-message');
-  // var textRoarMessage = document.createTextNode(message);
-  // spanRoarMessage.appendChild(textRoarMessage);
-  //
-  // var mediaHeading2 = document.createElement('h4');
-  // mediaHeading2.setAttribute('class', 'media-heading');
-  // mediaHeading2.appendChild(spanRoarMessage);
-  //
-  // var mediaBody = document.createElement('div');
-  // mediaBody.setAttribute('class', 'media-body');
-  // mediaBody.appendChild(mediaHeading1);
-  // mediaBody.appendChild(mediaHeading2);
-  //
-  // var divMedia = document.createElement('div');
-  // divMedia.setAttribute('class', 'media');
-  // divMedia.appendChild(mediaImage);
-  // divMedia.appendChild(mediaBody);
-  //
-  // var panelBody = document.createElement('div');
-  // panelBody.setAttribute('class', 'panel-body');
-  // panelBody.appendChild(divMedia);
-  //
-  // var panel = document.createElement('div');
-  // panel.setAttribute('class', 'panel panel-info');
-  // panel.appendChild(panelBody);
-  //
-  // var parentActiveUser = document.getElementById('activeuser-timeline');
-  // parentActiveUser.appendChild(panel);
-  //
-  // var parentAllRoars = document.getElementById('all-roars');
-  // parentAllRoars.appendChild(panel);
+  generateRoar(theUserName, theRealName, profileImageURL, theMessage, theLocation);
 };
 
 function displayAllRoars(){
@@ -871,20 +793,32 @@ function setupRoars(theUserName, theRealName, profileImageURL, roarMessage, loca
 };
 
 function generateRoar(theUserName, theRealName, profileImageURL, theMessage, location) {
+  console.log('the location in the generateRoar function is: ' + location);
   var profileImage = document.createElement('img');
   profileImage.setAttribute('class', 'media-object profile-pic');
   profileImage.setAttribute('data-id', theUserName);
   profileImage.setAttribute('src', profileImageURL);
   profileImage.setAttribute('alt', '...');
 
-  var aLink = document.createElement('a');
-  aLink.setAttribute('href', '#');
-  aLink.setAttribute('data-id', theUserName);
-  aLink.appendChild(profileImage);
-
   var mediaImage = document.createElement('div');
   mediaImage.setAttribute('class', 'media-left');
-  mediaImage.appendChild(aLink);
+
+  if(location === 'all-roars') {
+    var aLink = document.createElement('a');
+    aLink.setAttribute('href', '#');
+    aLink.setAttribute('data-id', theUserName);
+    aLink.appendChild(profileImage);
+
+    mediaImage.appendChild(aLink);
+  };
+
+  if(location === 'activeuser-timeline') {
+    var imageDiv = document.createElement('div');
+    imageDiv.setAttribute('data-id', theUserName);
+    imageDiv.appendChild(profileImage);
+
+    mediaImage.appendChild(imageDiv);
+  };
 
   var spanRealName = document.createElement('span');
   spanRealName.setAttribute('class', 'realname');
@@ -944,6 +878,8 @@ function generateRoar(theUserName, theRealName, profileImageURL, theMessage, loc
 
   var parentActiveUser = document.getElementById(location);
   parentActiveUser.appendChild(panel);
+
+  return true;
 };
 
 function myLinks() {

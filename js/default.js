@@ -158,8 +158,8 @@ loginButton.addEventListener('click', function(event) {
   var password = document.getElementById('user-password');
   var passwordValue = password.value;
 
-  console.log('the username is: ' + usernameValue);
-  console.log('the password is: ' + passwordValue);
+  // console.log('the username is: ' + usernameValue);
+  // console.log('the password is: ' + passwordValue);
 
   if(usernameValue != null && passwordValue != null) {
     for(var i = 0; i < allUsers.length; i++) {
@@ -175,7 +175,7 @@ loginButton.addEventListener('click', function(event) {
 
         var test = document.getElementById('all-roars');
         var nodeListLength = test.getElementsByClassName('panel panel-info').length;
-        console.log('the all roar node list length is: '+ nodeListLength);
+        // console.log('the all roar node list length is: '+ nodeListLength);
 
         var loginPage = document.getElementById('roar-login-page');
         var theTimeline = document.getElementById('roar-timeline');
@@ -238,17 +238,17 @@ function createRoar(username, roarMessage, timestamp) {
 
 //Used for when the activeuser clicks on another user's profile image to view that user's profile page
 document.addEventListener('click', function(event) {
-  console.log(event.target);
+  // console.log(event.target);
 
   var myLinks = document.getElementsByTagName('a');
-  console.log('the length of myLinks is: ' + myLinks.length);
+  // console.log('the length of myLinks is: ' + myLinks.length);
 
   for(var i = 0; i < myLinks.length; i++) {
     myLinks[i].addEventListener('click', function(event) {
       event.preventDefault();
-      console.log(event.target.parentNode);
+      // console.log(event.target.parentNode);
       var dataID = event.target.parentNode.getAttribute('data-id');
-      console.log('the data-id is: ' + dataID);
+      // console.log('the data-id is: ' + dataID);
       if(dataID != null && dataID === activeUser) {
         $('#tab-activeuser-timeline a[href="#activeuser-timeline"]').tab('show');
       }
@@ -266,7 +266,7 @@ document.addEventListener('click', function(event) {
 
   if(dataID != null){
     var stringArray = dataID.split('-',2);
-    console.log(stringArray);
+    // console.log(stringArray);
     if(stringArray[0] === 'follow'){
       // console.log('you are not following user: ' + stringArray[1]);
       event.target.textContent = 'following';
@@ -288,12 +288,12 @@ document.addEventListener('click', function(event) {
 /*-----------------------------------------------------------------*/
 function randomRoar() {
   var length = allRoars.length;
-  console.log('allRoars length is: ' + length);
+  // console.log('allRoars length is: ' + length);
 
   if(length != null) {
     var random = Math.floor((Math.random() * (length-1)) + 1);
-    console.log('random number is: ' + random);
-    console.log(allRoars[random].message);
+    // console.log('random number is: ' + random);
+    // console.log(allRoars[random].message);
     var theMessage = allRoars[random].message;
     var roar = document.getElementById('random-roar-message');
     var roarMessage = document.createTextNode(theMessage);
@@ -383,13 +383,16 @@ function updateFollowing(username, following) {
       console.log(allUsers[i]);
     };
   };
+  console.log(allUsers);
 };
 
 function removeFollowing(username, following) {
+  console.log('the user you want to remove is: ' + following);
   var parent = document.getElementById('activeuser-following');
-  console.log(parent);
+  // console.log(parent);
   var children = parent.getElementsByTagName('a');
-  console.log(children);
+  // console.log(children);
+
   for(var i = 0; i < children.length; i++){
     console.log(children[i]);
     var child = children[i].getAttribute('data-id');
@@ -399,12 +402,18 @@ function removeFollowing(username, following) {
     };
   };
 
-  for(var i = 0; i < allUsers.length; i++){
-    if(allUsers[i].username === username){
-      allUsers[i].following.pop(following);
-      console.log(allUsers[i]);
+  for(var y = 0; i < allUsers.length; i++) {
+    if(allUsers[y].username === username) {
+      console.log('the user was following: ' + allUsers[y].following);
+      var myFollowing = allUsers[y].following;
+      for(var x = 0; x < myFollowing.length; x++) {
+        if(myFollowing[x] === following){
+          myFollowing.splice(x,1);
+        };
+      };
     };
   };
+  console.log(allUsers);
 };
 
 function getTotalFollowers(username) {
@@ -439,11 +448,11 @@ function isFollowing(username, theFollowing) {
 function setupActiveUserPanel(username) {
   var headerImage = document.getElementById('activeuser-panel-header');
   var headerURL = getHeaderImageUrl(username);
-  console.log('user header image url is: ' + headerURL);
+  // console.log('user header image url is: ' + headerURL);
   headerImage.style.backgroundImage = headerURL;
 
   var profileImage = document.getElementById('activeuser-panel-profile-pic');
-  console.log('user profile image url is: ' + getProfileImageUrl(username));
+  // console.log('user profile image url is: ' + getProfileImageUrl(username));
   var profileURL = getProfileImageUrl(username);
   profileImage.setAttribute('src', profileURL);
 
@@ -462,16 +471,16 @@ function setupFollowers(username) {
   for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       numFollowers = allUsers[i].followers.length;
-      console.log('The followers of ' + username + ' are: ' + allUsers[i].followers);
+      // console.log('The followers of ' + username + ' are: ' + allUsers[i].followers);
       theFollowers = allUsers[i].followers;
     };
   };
-  console.log(username + ' has ' + numFollowers + ' followers');
-  console.log(theFollowers);
+  // console.log(username + ' has ' + numFollowers + ' followers');
+  // console.log(theFollowers);
 
   var test = document.getElementById('activeuser-followers');
   var nodelistLength = test.getElementsByTagName('a').length;
-  console.log('the nodelist length is: ' + nodelistLength);
+  // console.log('the nodelist length is: ' + nodelistLength);
 
   var lgFollowers = document.getElementById('numFollowers');
   var totalFollowers = document.createTextNode(getTotalFollowers(username) + ' Followers');
@@ -496,17 +505,17 @@ function setupFollowing(username) {
   for(var i = 0; i < allUsers.length; i++) {
     if(allUsers[i].username === username) {
       numFollowing = allUsers[i].following.length;
-      console.log('Those following ' + username + ' are: ' + allUsers[i].following);
+      // console.log('Those following ' + username + ' are: ' + allUsers[i].following);
       theFollowing = allUsers[i].following;
     };
   };
 
-  console.log(username + ' is following ' + numFollowing + ' users');
-  console.log(theFollowing);
+  // console.log(username + ' is following ' + numFollowing + ' users');
+  // console.log(theFollowing);
 
   var test = document.getElementById('activeuser-following');
   var nodelistLength = test.getElementsByTagName('a').length;
-  console.log('the nodelist length is: ' + nodelistLength);
+  // console.log('the nodelist length is: ' + nodelistLength);
 
   var difference = numFollowing - nodelistLength;
   if(numFollowing != nodelistLength) {
@@ -527,29 +536,29 @@ function setupActiveUserTimeline(username) {
     };
   };
 
-  console.log('the tmpArray has this many roars: ' + tmpArray.length);
-  console.log(tmpArray);
-  console.log(numRoars);
+  // console.log('the tmpArray has this many roars: ' + tmpArray.length);
+  // console.log(tmpArray);
+  // console.log(numRoars);
 
   var test = document.getElementById('activeuser-timeline');
   var nodeListLength = test.getElementsByClassName('panel panel-info').length;
-  console.log('the active user has this many roar nodes: '+ nodeListLength);
+  // console.log('the active user has this many roar nodes: '+ nodeListLength);
 
   var theRealName = getRealName(username);
-  console.log('The real name is: ' + theRealName);
+  // console.log('The real name is: ' + theRealName);
   var theUserName = getUserName(username);
-  console.log('The user name is: ' + theUserName);
+  // console.log('The user name is: ' + theUserName);
   var profileImageURL = getProfileImageUrl(username);
-  console.log('The profile image URL is: ' + profileImageURL);
+  // console.log('The profile image URL is: ' + profileImageURL);
   var headerImageURL = getHeaderImageUrl(username);
-  console.log('The header image URL is: ' + headerImageURL);
+  // console.log('The header image URL is: ' + headerImageURL);
   var difference = numRoars - nodeListLength;
 
   setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 'activeuser-timeline');
 
   var test = document.getElementById('activeuser-timeline');
   var nodeListLength = test.getElementsByClassName('panel panel-info').length;
-  console.log('the active user has this many roar nodes: '+ nodeListLength);
+  // console.log('the active user has this many roar nodes: '+ nodeListLength);
   var tmpLength = tmpArray.length;
   var difference = numRoars - nodeListLength;
 
@@ -572,25 +581,25 @@ function setupInactiveUserTimeline(username) {
     };
   };
 
-  console.log('the tmpArray has this many roars: ' + tmpArray.length);
-  console.log(tmpArray);
-  console.log(numRoars);
+  // console.log('the tmpArray has this many roars: ' + tmpArray.length);
+  // console.log(tmpArray);
+  // console.log(numRoars);
 
   var test = document.getElementById('inactiveuser-timeline');
   var nodeListLength = test.getElementsByClassName('panel panel-info').length;
-  console.log('the inactive user has this many roar nodes: '+ nodeListLength);
+  // console.log('the inactive user has this many roar nodes: '+ nodeListLength);
 
   var theUserName = getUserName(username);
-  console.log('The user name is: ' + theUserName);
+  // console.log('The user name is: ' + theUserName);
 
   var theRealName = getRealName(username);
-  console.log('The real name is: ' + theRealName);
+  // console.log('The real name is: ' + theRealName);
 
   var headerImageURL = getHeaderImageUrl(username);
-  console.log('The header image URL is: ' + headerImageURL);
+  // console.log('The header image URL is: ' + headerImageURL);
 
   var profileImageURL = getProfileImageUrl(username);
-  console.log('The profile image URL is: ' + profileImageURL);
+  // console.log('The profile image URL is: ' + profileImageURL);
 
   var friendContainer = document.createElement('div');
   friendContainer.setAttribute('id', 'inactiveuser-timeline-container');
@@ -624,7 +633,7 @@ function displayAllRoars(){
 
   var test = document.getElementById('all-roars');
   var nodeListLength = test.getElementsByClassName('panel panel-info').length;
-  console.log('the all roar node list length is: '+ nodeListLength);
+  // console.log('the all roar node list length is: '+ nodeListLength);
 
   var difference = length - nodeListLength;
   if(difference != 0) {
@@ -792,12 +801,45 @@ function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 
     h4Header.appendChild(lgSpanUserName);
   };
 
-  if(theUserName != activeUser){
-    for(var i = 0; i < activeFollowing.length; i++) {
-      console.log('the active following user is: ' + activeFollowing[i]);
-      console.log('theUserName is: ' + theUserName);
+  // if(theUserName != activeUser){
+  //   for(var i = 0; i < activeFollowing.length; i++) {
+  //     // console.log('the active following user is: ' + activeFollowing[i]);
+  //     // console.log('theUserName is: ' + theUserName);
+  //
+  //     if(activeFollowing[i] === theUserName && following == true) {
+  //       console.log('setupHeader - inside the if(activeFollowing[i] === theUserName && following == true)');
+  //       var btnFollowing = document.createElement('button');
+  //       btnFollowing.setAttribute('type', 'button');
+  //       btnFollowing.setAttribute('data-id', 'following-' + theUserName);
+  //       var btnText = document.createTextNode('Following');
+  //       btnFollowing.appendChild(btnText);
+  //
+  //       h4Header.appendChild(lgSpanRealName);
+  //       h4Header.appendChild(lgSpanUserName);
+  //       h4Header.appendChild(btnFollowing);
+  //     };
+  //
+  //     if(activeFollowing[i] != theUserName && following != true) {
+  //       console.log('setupHeader - inside the if(activeFollowing[i] != theUserName && following != true)');
+  //       var btnFollow = document.createElement('button');
+  //       btnFollow.setAttribute('type', 'button');
+  //       btnFollow.setAttribute('data-id', 'follow-' + theUserName);
+  //       var btnText = document.createTextNode('Follow');
+  //       btnFollow.appendChild(btnText);
+  //
+  //       h4Header.appendChild(lgSpanRealName);
+  //       h4Header.appendChild(lgSpanUserName);
+  //       h4Header.appendChild(btnFollow);
+  //     };
+  //   };
+  // };
 
-      if(activeFollowing[i] === theUserName) {
+  if(theUserName != activeUser){
+      // console.log('the active following user is: ' + activeFollowing[i]);
+      // console.log('theUserName is: ' + theUserName);
+
+      if(following == true) {
+        console.log('setupHeader - inside the if(activeFollowing[i] === theUserName && following == true)');
         var btnFollowing = document.createElement('button');
         btnFollowing.setAttribute('type', 'button');
         btnFollowing.setAttribute('data-id', 'following-' + theUserName);
@@ -809,7 +851,8 @@ function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 
         h4Header.appendChild(btnFollowing);
       };
 
-      if(activeFollowing[i] != theUserName && following != true) {
+      if(following != true) {
+        console.log('setupHeader - inside the if(activeFollowing[i] != theUserName && following != true)');
         var btnFollow = document.createElement('button');
         btnFollow.setAttribute('type', 'button');
         btnFollow.setAttribute('data-id', 'follow-' + theUserName);
@@ -820,7 +863,7 @@ function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 
         h4Header.appendChild(lgSpanUserName);
         h4Header.appendChild(btnFollow);
       };
-    };
+    // };
   };
 
   var liInfo = document.createElement('li');

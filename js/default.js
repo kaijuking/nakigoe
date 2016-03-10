@@ -274,12 +274,18 @@ document.addEventListener('click', function(event) {
       console.log('you are now following user: ' + stringArray[1]);
       setupFriends(stringArray[1], 'activeuser-following');
       updateFollowing(activeUser, stringArray[1]);
+      var following = document.getElementById('numFollowing');
+      var followingText = getTotalFollowing(activeUser) + ' Following';
+      following.textContent = followingText;
     }
     if(stringArray[0] === 'following'){
       event.target.textContent = 'follow';
       event.target.setAttribute('data-id', 'follow-' + stringArray[1]);
       console.log('you are following user: ' + stringArray[1]);
       removeFollowing(activeUser, stringArray[1]);
+      var following = document.getElementById('numFollowing');
+      var followingText = getTotalFollowing(activeUser) + ' Following';
+      following.textContent = followingText;
     }
   };
 });

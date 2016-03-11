@@ -286,36 +286,7 @@ loginButton.addEventListener('click', function(event) {
 //
 // });
 
-/*GET 'Post Roar' BUTTON's 'submit' EVENT ON FORM*/
-// var myForm = document.getElementById('form-createRoar');
-// myForm.addEventListener('submit', function(event){
-//   event.preventDefault();
-//
-//   var time = event.timeStamp;
-//   var activeUser = getActiveUser();
-//   var message = document.getElementById('new-roar-message');
-//   var roarMessage = message.value;
-//   var location = ['all-roars-container', 'activeuser-timeline-container']
-//
-//   // createRoar(activeUser, roarMessage, time);
-//   createRoar(activeUser, roarMessage, getProfileImageUrl(activeUser), timestamp)
-//   for(var i = 0; i < location.length; i++) {
-//     // var isDone = postRoar(activeUser, roarMessage, location[i]);
-//     var isDone = roar(activeUer, getRealName(activeUser), getProfileImageUrl(activeUser), roarMessage, location[i])
-//     if(isDone == true) {
-//       continue;
-//     };
-//   };
-//   updateRoarCount(activeUser);
-//
-//   console.log('the post roar button was clicked');
-//   console.log('the Date/Timestamp is: ' + time);
-//   console.log('the active user is: ' + getActiveUser());
-//   console.log('the new roar message is: ' + roarMessage);
-//   console.log(allRoars);
-//   console.log(allUsers);
-//
-// }, false);
+
 
 /*Create a new tweet object and push it into the allTweets array*/
 function createRoar(username, roarMessage, profileimage, timestamp) {
@@ -808,7 +779,7 @@ function setupFollowing(username) {
 
   var parentNode = document.getElementById('activeuser-following');
   var child = document.getElementById('activeuser-following-container');
-  parentNode.removeChild(child);
+  parentNode.appendChild(child);
 
   var length = allUsers.length;
   if(length != 0){
@@ -816,12 +787,10 @@ function setupFollowing(username) {
       if(allUsers[i].username === username) {
         console.log(allUsers[i].following);
         for(var x = 0; x < allUsers[i].following.length; x++) {
-          var parent = document.getElementById('activeuser-following');
-          var div = document.createElement('div');
-          div.setAttribute('id', 'activeuser-following-container');
+          var parent = document.getElementById('activeuser-following-container');
+          parent.setAttribute('data-id', 'activeuser-' + activeUser);
           var theFollowing = following(allUsers[i].following[x]);
-          div.appendChild(theFollowing);
-          parent.appendChild(div);
+          parent.appendChild(theFollowing);
         }
       }
     }
@@ -836,19 +805,16 @@ function setupFollowers(username) {
 
   var parentNode = document.getElementById('activeuser-followers');
   var child = document.getElementById('activeuser-followers-container');
-  parentNode.removeChild(child);
+  parentNode.appendChild(child);
 
   var length = allUsers.length;
   for(var i = 0; i < length; i++) {
     if(allUsers[i].username === username) {
       console.log(allUsers[i].followers);
       for(var x = 0; x < allUsers[i].followers.length; x++) {
-        var parent = document.getElementById('activeuser-followers');
-        var div = document.createElement('div');
-        div.setAttribute('id', 'activeuser-followers-container');
+        var parent = document.getElementById('activeuser-followers-container');
         var theFollowers = follower(allUsers[i].followers[x]);
-        div.appendChild(theFollowers);
-        parent.appendChild(div);
+        parent.appendChild(theFollowers);
       }
     }
   }
@@ -1002,9 +968,7 @@ function updateRoarCount(username) {
 
 function clearTimeline() {
   var parent = document.getElementById('inactiveuser-timeline');
-  console.log('the parent node is: ' + parent);
   var firstChild = parent.firstElementChild;
-  console.log('the first child node is: ' + firstChild);
   if(firstChild != null){
     parent.removeChild(firstChild);
   };
@@ -1012,20 +976,31 @@ function clearTimeline() {
 
 function clearAllRoars() {
   var parent = document.getElementById('all-roars');
-  console.log('the parent node is: ' + parent);
   var firstChild = parent.firstElementChild;
-  console.log('the first child node is: ' + firstChild);
   if(firstChild != null){
     parent.removeChild(firstChild);
   };
 };
 
 function clearActiveUserProfile() {
-  //'activeuser-timeline-container');
   var parent = document.getElementById('activeuser-timeline');
-  console.log('the parent node is: ' + parent);
   var firstChild = parent.firstElementChild;
-  console.log('the first child node is: ' + firstChild);
+  if(firstChild != null){
+    parent.removeChild(firstChild);
+  };
+};
+
+function clearFollowers() {
+  var parent = document.getElementById('activeuser-followers');
+  var firstChild = parent.firstElementChild;
+  if(firstChild != null){
+    parent.removeChild(firstChild);
+  };
+};
+
+function clearFollowing() {
+  var parent = document.getElementById('activeuser-following');
+  var firstChild = parent.firstElementChild;
   if(firstChild != null){
     parent.removeChild(firstChild);
   };

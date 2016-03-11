@@ -23,11 +23,11 @@
             <form action='' method='post'>
               <div class="form-group">
                 <label for="user-username">Username</label>
-                <input type="text" class="form-control" id="user-username" placeholder="Username">
+                <input type="text" class="form-control" id="user-username" placeholder="Username" value='kaijuking'>
               </div>
               <div class="form-group">
                 <label for="user-password">Password</label>
-                <input type="password" class="form-control" id="user-password" placeholder="Password">
+                <input type="password" class="form-control" id="user-password" placeholder="Password" value='kaijuking'>
               </div>
               <button type="button" class="btn btn-default" id='roar-login-button'>Login</button>
               <div class="alert alert-warning alert-dismissible hide" role="alert" id='login-warning-alert'>
@@ -122,11 +122,11 @@
           <div class='col-md-8' id='all-activeuser-inactiveuser'>
             <!--START: Post Roar panel-->
             <div class="panel-body">
-              <form id='form-createRoar' action='' method='post'>
+              <form id='form-createRoar' action='' method='post' data-type='form-create-roar'>
                 <div class='form-group'>
                   <input type='text' class='form-control' id='new-roar-message' name='newRoar' maxlength='140' placeholder='type roar message here'>
                 </div>
-                <button type='submit' class='btn btn-primary' id="timeline-post-roar-button" value="PostRoar">Post Roar</button>
+                <button type='submit' class='btn btn-primary' id="timeline-post-roar-button" data-type='roar-button' value="PostRoar">Post Roar</button>
               </form>
             </div>
             <!--END: Post Roar panel-->

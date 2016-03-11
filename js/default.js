@@ -136,7 +136,6 @@ var allUsers = [
 
 var activeUser = '';
 
-
 var roar = function(username, message, timestamp) {
   this.username = username;
   this.message = message;
@@ -228,12 +227,7 @@ function createRoar(username, roarMessage, timestamp) {
 };
 
 //Saving for later use when it comes to displaying inactive user's timeline
-// create an array of activeUser's "following" roars
-// create an array of actieUser's roars
-// combine both arrays into one arrays
-// sort combined array by date/timestamp   (fyi - date/time stamp: Date.now())
-// make the tweet element
-// display the tweet element
+
 
 
 //Used for when the activeuser clicks on another user's profile image to view that user's profile page

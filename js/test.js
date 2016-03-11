@@ -298,6 +298,7 @@ document.addEventListener('click', function(event) {
 
   event.preventDefault();
   var theTarget = event.target;
+  console.log(theTarget);
 
   var myLinks = document.getElementsByTagName('a');
   var timeline = document.getElementById('all-roars');
@@ -327,7 +328,20 @@ document.addEventListener('click', function(event) {
     clearActiveUserProfile();
     setupActiveUserTimeline(activeUser);
 
+  };
+
+  if(theTarget.getAttribute('data-value') === 'following'){
+    console.log('following');
   }
+
+  if(theTarget.getAttribute('data-value') === 'follower'){
+    console.log('follower');
+  }
+
+  if(theTarget.getAttribute('data-value') === 'activeuser'){
+    console.log('activeuser');
+  }
+
 
 });
 
@@ -377,14 +391,120 @@ function randomRoar() {
   };
 };
 
+// function roar(theUserName, theRealName, profileImageURL, message, aLocation){
+//
+//   console.log('the location is: ' + aLocation);
+//   var profileImage = document.createElement('img');
+//   profileImage.setAttribute('class', 'media-object profile-pic');
+//   profileImage.setAttribute('data-id', theUserName);
+//   profileImage.setAttribute('src', profileImageURL);
+//   profileImage.setAttribute('alt', '...');
+//
+//   var imageDiv = document.createElement('div');
+//   imageDiv.setAttribute('data-id', theUserName);
+//   imageDiv.appendChild(profileImage);
+//
+//   var mediaImage = document.createElement('div');
+//   mediaImage.setAttribute('class', 'media-left');
+//
+//   if(aLocation === 'activeuser-timeline-container') {
+//       mediaImage.appendChild(imageDiv);
+//   } else if (aLocation === 'inactiveuser-timeline-container') {
+//       mediaImage.appendChild(imageDiv);
+//   } else {
+//       var aLink = document.createElement('a');
+//       aLink.setAttribute('href', '#');
+//       aLink.setAttribute('data-id', theUserName);
+//       aLink.appendChild(profileImage);
+//       mediaImage.appendChild(aLink);
+//   };
+//
+//   var spanRealName = document.createElement('span');
+//   spanRealName.setAttribute('class', 'realname');
+//   spanRealName.setAttribute('data-id', 'realname');
+//   var textRealName = document.createTextNode(theRealName);
+//   spanRealName.appendChild(textRealName);
+//
+//   var spanUserName = document.createElement('span');
+//   spanUserName.setAttribute('class', 'username');
+//   spanUserName.setAttribute('data-id', 'username');
+//   var textUserName = document.createTextNode('@' + theUserName);
+//   spanUserName.appendChild(textUserName);
+//
+//   var spanReRoar = document.createElement('span');
+//   spanReRoar.setAttribute('class', 're-roar');
+//   spanReRoar.setAttribute('data-id', 're-roar');
+//   var reRoarIcon = document.createElement('i');
+//   reRoarIcon.setAttribute('class', 'fa fa-retweet');
+//   spanReRoar.appendChild(reRoarIcon);
+//
+//   var spanFavorite = document.createElement('span');
+//   spanFavorite.setAttribute('class', 'favorite');
+//   spanFavorite.setAttribute('data-id', 'favorite');
+//   var favoriteIcon = document.createElement('i');
+//   favoriteIcon.setAttribute('class', 'fa fa-heart-o');
+//   spanFavorite.appendChild(favoriteIcon);
+//
+//   var mediaHeading1 = document.createElement('h4');
+//   mediaHeading1.setAttribute('class', 'media-heading');
+//   mediaHeading1.appendChild(spanRealName);
+//   mediaHeading1.appendChild(spanUserName);
+//   mediaHeading1.appendChild(spanReRoar);
+//   mediaHeading1.appendChild(spanFavorite);
+//
+//   var spanRoarMessage = document.createElement('span');
+//   spanRoarMessage.setAttribute('class', 'roar-message');
+//   spanRoarMessage.setAttribute('data-id', 'roar-message');
+//   var textRoarMessage = document.createTextNode(message);
+//   spanRoarMessage.appendChild(textRoarMessage);
+//
+//   var mediaHeading2 = document.createElement('h4');
+//   mediaHeading2.setAttribute('class', 'media-heading');
+//   mediaHeading2.appendChild(spanRoarMessage);
+//
+//   var mediaBody = document.createElement('div');
+//   mediaBody.setAttribute('class', 'media-body');
+//   mediaBody.setAttribute('data-id', theUserName);
+//   mediaBody.appendChild(mediaHeading1);
+//   mediaBody.appendChild(mediaHeading2);
+//
+//   var divMedia = document.createElement('div');
+//   divMedia.setAttribute('class', 'media');
+//   divMedia.setAttribute('data-id', theUserName);
+//   divMedia.appendChild(mediaImage);
+//   divMedia.appendChild(mediaBody);
+//
+//   var panelBody = document.createElement('div');
+//   panelBody.setAttribute('class', 'panel-body');
+//   panelBody.appendChild(divMedia);
+//
+//   var panel = document.createElement('div');
+//   panel.setAttribute('class', 'panel panel-info');
+//   panel.appendChild(panelBody);
+//
+//   return panel;
+// };
+
 function roar(theUserName, theRealName, profileImageURL, message, aLocation){
 
   console.log('the location is: ' + aLocation);
-  var profileImage = document.createElement('img');
-  profileImage.setAttribute('class', 'media-object profile-pic');
-  profileImage.setAttribute('data-id', theUserName);
-  profileImage.setAttribute('src', profileImageURL);
-  profileImage.setAttribute('alt', '...');
+  if(theUserName != activeUser){
+    var profileImage = document.createElement('img');
+    profileImage.setAttribute('class', 'media-object profile-pic');
+    profileImage.setAttribute('data-id', theUserName);
+    profileImage.setAttribute('data-value', 'following');
+    profileImage.setAttribute('src', profileImageURL);
+    profileImage.setAttribute('alt', '...');
+  };
+
+  if(theUserName === activeUser){
+    var profileImage = document.createElement('img');
+    profileImage.setAttribute('class', 'media-object profile-pic');
+    profileImage.setAttribute('data-id', theUserName);
+    profileImage.setAttribute('data-value', 'activeuser');
+    profileImage.setAttribute('src', profileImageURL);
+    profileImage.setAttribute('alt', '...');
+  };
 
   var imageDiv = document.createElement('div');
   imageDiv.setAttribute('data-id', theUserName);
@@ -395,15 +515,21 @@ function roar(theUserName, theRealName, profileImageURL, message, aLocation){
 
   if(aLocation === 'activeuser-timeline-container') {
       mediaImage.appendChild(imageDiv);
-  } else if (aLocation === 'inactiveuser-timeline-container') {
-      mediaImage.appendChild(imageDiv);
-  } else {
-      var aLink = document.createElement('a');
-      aLink.setAttribute('href', '#');
-      aLink.setAttribute('data-id', theUserName);
-      aLink.appendChild(profileImage);
-      mediaImage.appendChild(aLink);
   };
+
+  if(aLocation === 'inactiveuser-timeline-container') {
+      mediaImage.appendChild(imageDiv);
+  };
+
+  if(aLocation === 'all-roars-container') {
+    var aLink = document.createElement('a');
+    aLink.setAttribute('href', '#');
+    aLink.setAttribute('data-id', theUserName);
+    aLink.setAttribute('data-value', 'following');
+    aLink.appendChild(profileImage);
+    mediaImage.appendChild(aLink);
+  };
+
 
   var spanRealName = document.createElement('span');
   spanRealName.setAttribute('class', 'realname');
@@ -468,8 +594,6 @@ function roar(theUserName, theRealName, profileImageURL, message, aLocation){
   panel.setAttribute('class', 'panel panel-info');
   panel.appendChild(panelBody);
 
-  // var parent = document.getElementById('all-roars');
-  // parent.appendChild(panel);
   return panel;
 };
 
@@ -622,18 +746,6 @@ function setupInactiveUserTimeline(username) {
 
 function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, location) {
 
-  var roarDiv = document.createElement('div');
-  roarDiv.setAttribute('id', location);
-
-  if(location === 'activeuser-timeline-container') {
-    var parentDiv = document.getElementById('activeuser-timeline');
-    parentDiv.appendChild(roarDiv);
-  }
-  if(location === 'inactiveuser-timeline-container') {
-    var parentDiv = document.getElementById('inactiveuser-timeline');
-    parentDiv.appendChild(roarDiv);
-  }
-
   var pImage = document.createElement('img');
   pImage.setAttribute('class', 'img-thumbnail profile-pic');
   pImage.setAttribute('src', profileImageURL);
@@ -664,66 +776,6 @@ function setupHeader(theUserName, theRealName, headerImageURL, profileImageURL, 
   if(theUserName === activeUser){
     h4Header.appendChild(lgSpanRealName);
     h4Header.appendChild(lgSpanUserName);
-  };
-
-  if(theUserName != activeUser){
-      // console.log('the active following user is: ' + activeFollowing[i]);
-      // console.log('theUserName is: ' + theUserName);
-
-      if(following == true) {
-        console.log('setupHeader - inside the if(activeFollowing[i] === theUserName && following == true)');
-        var btnFollowing = document.createElement('button');
-        btnFollowing.setAttribute('type', 'button');
-        btnFollowing.setAttribute('data-id', 'following-' + theUserName);
-        btnFollowing.setAttribute('data-value', 'toggle-following');
-        var btnText = document.createTextNode('Following');
-        btnFollowing.appendChild(btnText);
-
-        h4Header.appendChild(lgSpanRealName);
-        h4Header.appendChild(lgSpanUserName);
-        h4Header.appendChild(btnFollowing);
-      };
-
-      if(follower == true && following != true) {
-        console.log('setupHeader - inside the if(activeFollowing[i] === theUserName && following == true)');
-        var btnFollowing = document.createElement('button');
-        btnFollowing.setAttribute('type', 'button');
-        btnFollowing.setAttribute('data-id', 'follow-' + theUserName);
-        btnFollowing.setAttribute('data-value', 'toggle-follower');
-        var btnText = document.createTextNode('Follow');
-        btnFollowing.appendChild(btnText);
-
-        h4Header.appendChild(lgSpanRealName);
-        h4Header.appendChild(lgSpanUserName);
-        h4Header.appendChild(btnFollowing);
-      };
-
-      // if(following != true && follower != true  ) {
-      //   console.log('setupHeader - inside the if(activeFollowing[i] != theUserName && following != true)');
-      //   var btnFollow = document.createElement('button');
-      //   btnFollow.setAttribute('type', 'button');
-      //   btnFollow.setAttribute('data-id', 'follow-' + theUserName);
-      //   var btnText = document.createTextNode('Follow');
-      //   btnFollow.appendChild(btnText);
-      //
-      //   h4Header.appendChild(lgSpanRealName);
-      //   h4Header.appendChild(lgSpanUserName);
-      //   h4Header.appendChild(btnFollow);
-      // };
-      //
-      // if(following != true && follower == true) {
-      //   console.log('setupHeader - inside the if(activeFollowing[i] != theUserName && following != true)');
-      //   var btnFollow = document.createElement('button');
-      //   btnFollow.setAttribute('type', 'button');
-      //   btnFollow.setAttribute('data-id', 'follow-' + theUserName);
-      //   var btnText = document.createTextNode('Follow');
-      //   btnFollow.appendChild(btnText);
-      //
-      //   h4Header.appendChild(lgSpanRealName);
-      //   h4Header.appendChild(lgSpanUserName);
-      //   h4Header.appendChild(btnFollow);
-      // };
-
   };
 
   var liInfo = document.createElement('li');
@@ -1000,6 +1052,30 @@ function clearFollowers() {
 
 function clearFollowing() {
   var parent = document.getElementById('activeuser-following');
+  var firstChild = parent.firstElementChild;
+  if(firstChild != null){
+    parent.removeChild(firstChild);
+  };
+};
+
+function clearAllRoars() {
+  var parent = document.getElementById('all-roars');
+  var firstChild = parent.firstElementChild;
+  if(firstChild != null){
+    parent.removeChild(firstChild);
+  };
+};
+
+function clearActiveUserProfile() {
+  var parent = document.getElementById('activeuser-timeline');
+  var firstChild = parent.firstElementChild;
+  if(firstChild != null){
+    parent.removeChild(firstChild);
+  };
+};
+
+function clearInactiveUserProfile() {
+  var parent = document.getElementById('inactiveuser-timeline');
   var firstChild = parent.firstElementChild;
   if(firstChild != null){
     parent.removeChild(firstChild);

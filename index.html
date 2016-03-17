@@ -14,13 +14,14 @@
         <div class='container' id='hero-overlay'>
             <h2 id='hero-text'>Welcome to Nakigoe!<h2>
             <h2>ようこそ！鳴き声へ！</h2>
+            <button type="button" class="btn btn-link pull-right hide" id='logout' data-id='logout'>Logout</button>
         </div>
       </div>
 
       <div class='container-fluid show' id='roar-login-page'>
         <div class='row'>
           <div class='col-md-4 .col-xs-12' id='login-div'>
-            <form action='' method='post'>
+            <form action='' method='post' id='form-login'>
               <div class="form-group">
                 <label for="user-username">Username</label>
                 <input type="text" class="form-control" id="user-username" placeholder="Username">
@@ -31,7 +32,6 @@
               </div>
               <button type="button" class="btn btn-default" id='roar-login-button'>Login</button>
               <div class="alert alert-warning alert-dismissible hide" role="alert" id='login-warning-alert'>
-                <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
                 <strong>Warning!</strong> Username and/or Password was incorrect. Please try again.
               </div>
             </form>
@@ -45,9 +45,6 @@
               <div class="panel-body">
                 <div class="media">
                   <div class="media-left">
-                    <!-- <a href="#">
-                      <img class="media-object profile-pic" id='random-roar-profile-pic' alt="...">
-                    </a> -->
                     <div>
                       <img class="media-object profile-pic" id='random-roar-profile-pic' alt="...">
                     </div>
@@ -76,7 +73,8 @@
               <li class="list-group-item">
                 <h4 class="media-heading">
                   <span class='activeuser-realname' id='activeuser-panel-realname'></span>
-                  <span class='activeuser-username' id='activeuser-panel-username'></span></h4>
+                  <span class='activeuser-username' id='activeuser-panel-username'></span>
+                </h4>
               </li>
             </ul>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -123,10 +121,12 @@
             <!--START: Post Roar panel-->
             <div class="panel-body">
               <form id='form-createRoar' action='' method='post' data-type='form-create-roar'>
-                <div class='form-group'>
+                <div class="input-group">
                   <input type='text' class='form-control' id='new-roar-message' name='newRoar' maxlength='140' placeholder='type roar message here'>
-                </div>
-                <button type='submit' class='btn btn-primary' id="timeline-post-roar-button" data-type='roar-button' value="PostRoar">Post Roar</button>
+                  <span class="input-group-btn">
+                    <button type='submit' class='btn btn-primary' id="timeline-post-roar-button" data-type='roar-button' value="PostRoar">Post Roar</button>
+                  </span>
+                </div><!-- /input-group -->
               </form>
             </div>
             <!--END: Post Roar panel-->
@@ -134,9 +134,11 @@
             <div>
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active" id='tab-all-roars'><a href="#all-roars" aria-controls="home" role="tab" data-toggle="tab">Timeline</a></li>
-                <li role="presentation" id='tab-activeuser-timeline'><a href="#activeuser-timeline" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+                <li role="presentation" class="show active" id='tab-all-roars'><a href="#all-roars" aria-controls="home" role="tab" data-toggle="tab">Timeline</a></li>
+                <li role="presentation" class='show' id='tab-activeuser-timeline'><a href="#activeuser-timeline" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
                 <li role="presentation" class='hidden' id='tab-inactiveuser-timeline'><a href="#inactiveuser-timeline" aria-controls="messages" role="tab" data-toggle="tab">Friends</a></li>
+                <li role="presentation" class='show' id='tab-user-all'><a href="#all-users-tab" aria-controls="messages" role="tab" data-toggle="tab">All Users</a></li>
+                <li role="presentation" class='show' id='tab-user-settings'><a href="#user-settings" aria-controls="messages" role="tab" data-toggle="tab">Settings</a></li>
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
@@ -145,9 +147,108 @@
 
                 <div role="tabpanel" class="tab-pane" id="activeuser-timeline"></div>
 
-                <div role="tabpanel" class="tab-pane" id="inactiveuser-timeline">
-                  <!-- <div id='inactiveuser-timeline-container'>
-                  </div> -->
+                <div role="tabpanel" class="tab-pane" id="inactiveuser-timeline"></div>
+
+                <div role="tabpanel" class='tab-pane' id='all-users-tab'>
+                  <div class="panel-body">
+                    <div class="list-group" id='all-users'>
+                      <div id='all-users-container'>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div role="tabpanel" class='tab-pane' id='user-settings'>
+                  <div class='show' id='user-settings-container'>
+                    <div class="list-group">
+                      <a href="#" class="list-group-item" data-id='user-account-information'><span data-id='user-account-information'>Account Information</span><span class='pull-right'><i class="fa fa-chevron-right "></i></span></a>
+                      <a href="#" class="list-group-item" data-id='user-password-information'><span data-id='user-password-information'>Password</span><span class='pull-right'><i class="fa fa-chevron-right "></i></span></a>
+                    </div>
+                  </div>
+                  <div class='hidden' id='account-information-container'>
+                    <form class="form-horizontal" action='' method='post' id='form-account-information'>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Account Information</h3>
+                        </div>
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <label for="account-username" class="col-sm-2 control-label">Username</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="account-username" placeholder="Username">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="account-realname" class="col-sm-2 control-label">Realname</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="account-realname" placeholder="Realname">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="account-email" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                              <input type="email" class="form-control" id="account-email" placeholder="Email">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="account-language" class="col-sm-2 control-label">Language</label>
+                            <div class="col-sm-10">
+                              <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="account-language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  Select A Language
+                                  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="account-language">
+                                  <li><a href="#">English</a></li>
+                                  <li><a href="#">Japanese</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                              <button type="submit" class="btn btn-primary" data-id='button-account-information-cancel'><span data-id='button-account-information-cancel' class='lang-en'>Cancel</span></button>
+                              <button type="submit" class="btn btn-danger" data-id='button-account-information-save'><span data-id='button-account-information-save' class='lang-en'>Save Changes</span></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                <div class='hidden' id='password-information-container'>
+                  <form class="form-horizontal" action='' method='post' id='form-password-information'>
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Password</h3>
+                      </div>
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <label for="current-password" class="col-sm-2 control-label">Current</label>
+                          <div class="col-sm-5">
+                            <input type="password" class="form-control" id="current-password" placeholder="Current Password">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="new-password" class="col-sm-2 control-label">New</label>
+                          <div class="col-sm-5">
+                            <input type="password" class="form-control" id="new-password" placeholder="New Password">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="verify-password" class="col-sm-2 control-label">Verify</label>
+                          <div class="col-sm-5">
+                            <input type="password" class="form-control" id="verify-password" placeholder="Verify New Password">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary" data-id='button-password-information-cancel'><span data-id='button-password-information-cancel' class='lang-en'>Cancel</span></button>
+                            <button type="submit" class="btn btn-danger" data-id='button-password-information-save'><span data-id='button-password-information-save' class='lang-en'>Save Changes</span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>

@@ -72,6 +72,10 @@
   /*border: 1px red solid;*/
 }
 
+#logout {
+  color: white;
+}
+
 .panel-title {
   text-align: center;
   /*color: white;*/
@@ -94,6 +98,18 @@
   margin-right: 5px;
 }
 
-.fa-retweet, .fa-heart-o {
+.fa-retweet, .fa-heart-o, .fa-heart {
   margin-left: 10px;
+}
+
+.fa-heart-o {
+    color: red;
+}
+
+.fa-heart {
+  color: pink;
+}
+
+.fa-retweet {
+  color: black;
 }

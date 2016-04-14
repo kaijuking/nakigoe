@@ -1,17 +1,19 @@
 # OCCS-Project-1
 OCCS Project #1 Repository
 
-<h1>Project #1</h1>
-For project #1 I have selected "Twitter".
-Date: 2/25/2016, I have done the following:
-- Created three mockups with each mockup related to a single, individual story.
-- Created a new repository on GIT entitled "OCCS-Project-1".
-- Created three "issues" one for each story and uploaded a screenshot of the mockup related to each story.
+Nakigoe
+- A "Twitter" like application where, instead of posting a "tweet", you post a "roar!". 
 
-Date: 3/2/2016
-Nakigoe v2
-Re-worked the layout of my project which now includes a login page.
-To access the site you can use anyone of the following usernames/passwords.
+For a live demo of my project please go here: http://nakigoe.herokuapp.com/
+
+The name of my project, 'Nakigoe', is Japanese (鳴き声) meaning either "cry (esp. animal)" or "roar". Here you can:
+- Follow and and Un-Follow users
+- View your profile as well as the profile of other users
+- Login/out of your account
+- Post a "Roar" to your profile and the main timeline
+- Update your Realname, Username and Password
+
+Here are several user accounts you can use to login into "Nakigoe".
 - Username = kaijuking, Password = kaijuking
 - Username = godzilla, Password = godzilla
 - Username = kingkong, Password = kingkong

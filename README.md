@@ -1,5 +1,5 @@
 # Nakigoe
-A "Twitter" like application where, instead of posting a "tweet", you post a "roar!". The name 'Nakigoe' is Japanese (鳴き声) meaning either "cry (esp. animal)" or "roar". 
+A "Twitter" like application where, instead of posting a "tweet", you post a "roar"! The name 'Nakigoe' is Japanese (鳴き声) meaning either "cry (esp. animal)" or "roar". 
 
 For a live demo of my project please go here: http://nakigoe.herokuapp.com/
 
@@ -13,11 +13,13 @@ For a live demo of my project please go here: http://nakigoe.herokuapp.com/
 <li>Update your Realname, Username and Password</li>
 </ul>
 
-# User Account
+# User Accounts
 Here are several user accounts you can use to login into "Nakigoe".
-- Username = kaijuking, Password = kaijuking
-- Username = godzilla, Password = godzilla
-- Username = kingkong, Password = kingkong
+<ul>
+<li>Username = kaijuking, Password = kaijuking</li>
+<li>Username = godzilla, Password = godzilla</li>
+<li>Username = kingkong, Password = kingkong</li>
+</ul>
 
 # Screenshots
 <img src="https://cloud.githubusercontent.com/assets/17255794/14541750/4f4be9e2-0240-11e6-9de2-621eaaa4cabe.png" width="15%" alt='nakigoe login'></img>

@@ -6,11 +6,11 @@ For a live demo of my project please go here: http://nakigoe.herokuapp.com/
 # Features
 "Nakigoe" has the following features:
 <ul>
-<li>Follow and and Un-Follow users</li>
+<li>Follow and Un-Follow users</li>
 <li>View your profile as well as the profile of other users</li>
 <li>Login/out of your account</li>
 <li>Post a "Roar" to your profile and the main timeline</li>
-<li>Update your Realname, Username and Password</li>
+<li>Update your settings like your Realname and Username</li>
 </ul>
 
 # User Accounts

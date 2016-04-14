@@ -1,6 +1,3 @@
-# OCCS-Project-1
-OCCS Project #1 Repository
-
 Nakigoe
 - A "Twitter" like application where, instead of posting a "tweet", you post a "roar!". 
 

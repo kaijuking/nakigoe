@@ -391,8 +391,12 @@ var userSettings = [
 var Roar = function(username, message, profileimage, timestamp) {
   this.username = username;
   this.message = message;
-  this.profileimage = profileimage
+  this.profileimage = profileimage;
   this.timestamp = timestamp;
+  this.sharedcount = 0;
+  this.sharedby = [];
+  this.favoredcount = 0;
+  this.favoredby = [];
 };
 
 document.addEventListener('DOMContentLoaded', function(event){

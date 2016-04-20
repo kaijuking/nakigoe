@@ -1,0 +1,23 @@
+{
+  "name": "nakigoe",
+  "version": "1.0.0",
+  "description": "OCCS Project #1 Repository",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaijuking/nakigoe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaijuking/nakigoe/issues"
+  },
+  "homepage": "https://github.com/kaijuking/nakigoe#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}

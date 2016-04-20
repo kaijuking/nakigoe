@@ -1048,7 +1048,7 @@ function setupInactiveUserProfile(username) {
   var parent = document.getElementById('inactiveuser-timeline-container');
   for(var i = allRoars.length - 1; i >= 0; i--) {
     if(allRoars[i].username === username){
-      parent.appendChild(roar(username, getRealName(username), getProfileImageUrl(username), allRoars[i].message, 'inactiveuser-timeline-container'));
+      parent.appendChild(roar(username, getRealName(username), getProfileImageUrl(username), allRoars[i].message, allRoars[i].timestamp, allRoars[i].favoredcount, 'inactiveuser-timeline-container'));
     };
   };
 

@@ -1,8 +1,6 @@
 # Nakigoe
 A "Twitter" like application where, instead of posting a "tweet", you post a "roar"! The name 'Nakigoe' is Japanese (鳴き声) meaning either "cry (esp. animal)" or "roar". 
 
-For a live demo of my project please go here: http://nakigoe.herokuapp.com/
-
 # Features
 "Nakigoe" has the following features:
 <ul>
